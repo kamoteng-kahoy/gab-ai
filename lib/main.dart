@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
 import 'preg/p_homepage.dart';
 import 'nutri/n_homepage.dart';
+import 'colors.dart';
 
 void main() {
   runApp(const MainApp());
@@ -48,6 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SystemColors.secondaryColor2,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Center(

@@ -9,14 +9,39 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icon.png"
+
 flutter:
   uses-material-design: true
   assets:
     - assets/BG.png
     - assets/logo-word.png
+    - assets/facebook.png
+    - assets/google.png
+
+  fonts:
+    - family: Merriweather
+      fonts:
+        - asset: assets/fonts/Merriweather-Regular.ttf
+        - asset: assets/fonts/Merriweather-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Merriweather-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Merriweather-BoldItalic.ttf
+          style: italic
+
+    - family: Nunito Sans
+      fonts:
+        - asset: assets/fonts/NunitoSans-Variable.ttf
+        - asset: assets/fonts/NunitoSans-Italic.ttf
+          style: italic
