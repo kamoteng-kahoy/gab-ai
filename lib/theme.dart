@@ -3,12 +3,11 @@ import 'colors.dart'; // Adjust the import according to your project structure
 
 final ThemeData appTheme = ThemeData(
   primaryColor: SystemColors.primaryColor,
-  hintColor: SystemColors.accentColor,
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(15.0),
       borderSide: const BorderSide(
-        color: SystemColors.textColor,
+        color: SystemColors.textColorDarker,
       ),
     ),
     focusedBorder: OutlineInputBorder(
@@ -19,24 +18,25 @@ final ThemeData appTheme = ThemeData(
       ),
     ),
     labelStyle: const TextStyle(
-      color: SystemColors.textColor,
+      color: SystemColors.textColorDarker,
     ),
   ),
   textTheme: ThemeData.light().textTheme.apply(
     fontFamily: 'Merriweather',
-    bodyColor: SystemColors.textColor,
-    displayColor: SystemColors.textColor,
+    bodyColor: SystemColors.textColorDarker,
+    displayColor: SystemColors.textColorDarker,
   ).copyWith(
     headlineLarge: const TextStyle(
       fontFamily: 'Merriweather',
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      color: SystemColors.textColor,
+      color: SystemColors.textColorDarker,
     ),
     bodyLarge: const TextStyle(
       fontFamily: 'Nunito Sans',
       fontSize: 16.0,
-      color: SystemColors.textColor,
+      fontWeight: FontWeight.bold,
+      color: SystemColors.textColorDarker,
     ),
     // Add other text styles as needed
   ),

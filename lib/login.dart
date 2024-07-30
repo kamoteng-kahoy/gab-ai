@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'colors.dart';
 import 'theme.dart';
+import 'fp_email.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -15,7 +16,7 @@ class LoginApp extends StatelessWidget {
     return MaterialApp(
       theme: appTheme,
       title: 'GAB-AY: Login',
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
@@ -30,12 +31,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  bool _isEmpty = false;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SystemColors.secondaryColor2,
+      backgroundColor: SystemColors.secondaryColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -59,6 +62,10 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 50.0),
                       TextField(
                         controller: _emailController,
+                        style: const TextStyle(
+                          fontFamily: 'Nunito Sans',
+                          fontWeight: FontWeight.bold,
+                        ),
                         decoration: const InputDecoration(
                           labelText: 'Username or Email',
                           labelStyle: TextStyle(
@@ -70,6 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16.0),
                       TextField(
                         controller: _passwordController,
+                        style: const TextStyle(
+                          fontFamily: 'Nunito Sans',
+                          fontWeight: FontWeight.bold,
+                        ),
                         decoration: const InputDecoration(
                           labelText: 'Password',
                           labelStyle: TextStyle(
@@ -83,22 +94,65 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {
-                            print('Forgot Password?');
-                          },
-                          child: const Text('Forgot Password?'),
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
+
+                                  // Simulate a delay for loading
+                                  await Future.delayed(const Duration(seconds: 2));
+
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+
+                                  // Navigate to Forgot Password screen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ForgotPassPage(),
+                                    ),
+                                  );
+                                },
+                          child: _isLoading
+                              ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      SystemColors.textColor,
+                                    ),
+                                    strokeWidth: 3.0,
+                                ),
+                              )
+                              : const Text('Forgot Password?'),
                         ),
                       ),
+                      if(_isEmpty == true)
+                        const Text(
+                          'Please fill in all fields.',
+                          style: TextStyle(
+                            color: SystemColors.errorColor,
+                          ),
+                        ),
                       const SizedBox(height: 16.0),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
                         height: MediaQuery.of(context).size.height * 0.08,
                         child: ElevatedButton(
                           onPressed: () {
-                            Text email = Text(_emailController.text);
+                            if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty){
+                              _isEmpty = true;
+                            }
+                            else{
+                              Text email = Text(_emailController.text);
                             Text password = Text(_passwordController.text);
                             print('Email: $email');
                             print('Password: $password');
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: SystemColors.primaryColorDarker,
@@ -132,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ],
                       ),
-                    const SizedBox(height: 10.0),
+                    const SizedBox(height: 30.0),
                     const Text('Or continue with:'),
                     const SizedBox(height: 10.0),
                     Container(

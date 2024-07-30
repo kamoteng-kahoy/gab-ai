@@ -28,6 +28,7 @@ flutter:
     - assets/logo-word.png
     - assets/facebook.png
     - assets/google.png
+    - assets/email_sent.png
 
   fonts:
     - family: Merriweather

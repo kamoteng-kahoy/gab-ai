@@ -9,6 +9,8 @@ class SystemColors {
   static const Color accentColor2 = Color(0xFFFFF5E1);
   static const Color backgroundColor = Color(0xFFFFF7F0);
   static const Color textColor = Color(0xFF444444);
+  static const Color textColorDarker = Color(0xFF0D0D0D);
+  static const Color errorColor = Color(0xFFAD2831);
   // Add more colors as needed
   
   // Example usage:
