@@ -22,23 +22,31 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
   textTheme: ThemeData.light().textTheme.apply(
-    fontFamily: 'Merriweather',
+    fontFamily: 'Merriweather', 
     bodyColor: SystemColors.textColorDarker,
     displayColor: SystemColors.textColorDarker,
   ).copyWith(
     headlineLarge: const TextStyle(
       fontFamily: 'Merriweather',
-      fontSize: 32.0,
+      fontSize: 30.0,
       fontWeight: FontWeight.bold,
       color: SystemColors.textColorDarker,
     ),
-    bodyLarge: const TextStyle(
+    headlineMedium: const TextStyle(
+      fontFamily: 'Merriweather',
+      fontSize: 24.0,
+      color: SystemColors.textColorDarker,
+    ),
+    headlineSmall: const TextStyle(
+      fontFamily: 'Merriweather',
+      fontSize: 16.0,
+      color: SystemColors.textColorDarker,
+    ),
+    bodyMedium: const TextStyle(
       fontFamily: 'Nunito Sans',
       fontSize: 16.0,
-      fontWeight: FontWeight.bold,
       color: SystemColors.textColorDarker,
-    ),
-    // Add other text styles as needed
+    ),// Add other text styles as needed
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(

@@ -52,14 +52,23 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
       _validateEmail();
       if (_errorMessage.isEmpty){
         _isLoading = true;
-        // add submit logic here
         
         // Navigate to the FPSent screen
-        Navigator.push(context,
-        MaterialPageRoute(
-          builder: (context) => FPSent(email: _emailController.text),
-        ),
-  );
+         if (_errorMessage.isEmpty) {
+          Future.delayed(const Duration(seconds: 2), () {
+            setState(() {
+              _isLoading = false;
+            });
+            // add submit logic here
+            // Navigate to the FPSent screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FPSent(email: _emailController.text),
+              ),
+            );
+          });
+        }
       }
     });
   }

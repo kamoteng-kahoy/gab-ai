@@ -29,6 +29,8 @@ flutter:
     - assets/facebook.png
     - assets/google.png
     - assets/email_sent.png
+    - assets/preg_icon.png
+    - assets/nd_icon.png
 
   fonts:
     - family: Merriweather
@@ -43,6 +45,6 @@ flutter:
 
     - family: Nunito Sans
       fonts:
-        - asset: assets/fonts/NunitoSans-Variable.ttf
         - asset: assets/fonts/NunitoSans-Italic.ttf
           style: italic
+        - asset: assets/fonts/NunitoSans-Regular.ttf

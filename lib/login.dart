@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
+import 'reg_as.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -49,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _emailController,
                         style: const TextStyle(
                           fontFamily: 'Nunito Sans',
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                         decoration: const InputDecoration(
                           labelText: 'Username or Email',
@@ -194,7 +194,13 @@ class _LoginPageState extends State<LoginPage> {
                           const Text("Don't have an account? "),
                           TextButton(
                             onPressed: () {
-                              // Add your sign-up logic here
+                              // Navigate to Register As screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterAs(),
+                                ),
+                              );
                             },
                             child: const Padding(
                               padding: EdgeInsets.zero,
@@ -204,7 +210,8 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     const SizedBox(height: 30.0),
-                    const Text('Or continue with:'),
+                    Text('Or continue with:',
+                    style: Theme.of(context).textTheme.bodyMedium),
                     const SizedBox(height: 10.0),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.6,
