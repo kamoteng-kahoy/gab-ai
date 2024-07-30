@@ -14,9 +14,9 @@ class FPSent extends StatelessWidget {
 	return MaterialApp(
 	  theme: appTheme,
 	  home: Scaffold(
-		backgroundColor: SystemColors.secondaryColor,
+		backgroundColor: SystemColors.bgColor,
 		appBar: AppBar(
-		  backgroundColor: SystemColors.secondaryColor,
+		  backgroundColor: SystemColors.bgColor,
 		  title: Image.asset(
 			'assets/logo-word.png',
 			height: 40.0,

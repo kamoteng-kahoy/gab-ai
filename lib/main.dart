@@ -13,7 +13,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: SplashScreen(),
     );
   }
@@ -42,14 +42,14 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  HomePage()));
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  LoginApp()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginApp()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SystemColors.secondaryColor,
+      backgroundColor: SystemColors.bgColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Center(

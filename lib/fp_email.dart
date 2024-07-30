@@ -5,6 +5,8 @@ import 'login.dart';
 import 'fp_emailsent.dart';
 
 class ForgotPassPage extends StatefulWidget {
+  const ForgotPassPage({super.key});
+
   @override
   _ForgotPassPageState createState() => _ForgotPassPageState();
 }
@@ -12,36 +14,64 @@ class ForgotPassPage extends StatefulWidget {
 class _ForgotPassPageState extends State<ForgotPassPage> {
   final TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
+  bool _isEmpty = false;
+  String _email = '';
+  String _errorMessage = '';
 
-  void _sendEmail() async {
-  setState(() {
-    _isLoading = true;
-  });
+  bool _isValidEmail(String email){
+    return RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email);
+  }
 
-  // Simulate a network request or any async operation
-  await Future.delayed(Duration(seconds: 2));
+  @override
+  void initState(){
+    super.initState();
+    _emailController.addListener(_validateEmail);
+  }
 
-  setState(() {
-    _isLoading = false;
-  });
+  @override
+  void dispose(){
+    _emailController.dispose();
+    super.dispose();
+  }
 
-  // Navigate to the FPSent screen
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => FPSent(email: _emailController.text),
-    ),
+  void _validateEmail(){
+    setState(() {
+      final email = _emailController.text;
+      if (email.isEmpty){
+        _errorMessage = 'Please enter your email.';
+      } else if (!_isValidEmail(email)){
+        _errorMessage = 'Please enter a valid email address.';
+      } else {
+        _errorMessage = '';
+      }
+    });
+  }
+
+  void _submit(){
+    setState(() {
+      _validateEmail();
+      if (_errorMessage.isEmpty){
+        _isLoading = true;
+        // add submit logic here
+        
+        // Navigate to the FPSent screen
+        Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) => FPSent(email: _emailController.text),
+        ),
   );
-}
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 	return MaterialApp(
 	  theme: appTheme,
 	  home: Scaffold(
-		backgroundColor: SystemColors.secondaryColor,
+		backgroundColor: SystemColors.bgColor,
 		appBar: AppBar(
-		  backgroundColor: SystemColors.secondaryColor,
+		  backgroundColor: SystemColors.bgColor,
 		  title: Image.asset(
 			'assets/logo-word.png',
 			height: 40.0,
@@ -82,16 +112,17 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.w600,
                   ),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Email',
-                    labelStyle: TextStyle(
+                    labelStyle: const TextStyle(
                       fontFamily: 'Merriweather',
                       color: SystemColors.textColor,
                     ),
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.email_outlined,
                       color: SystemColors.textColorDarker,
                     ),
+                    errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
                   ),
                 ),
                 const SizedBox(height: 5.0),
@@ -120,19 +151,28 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                   width: MediaQuery.of(context).size.width * 0.6,
                   height: MediaQuery.of(context).size.height * 0.08,
                   child: ElevatedButton(
-                    onPressed: _sendEmail,
+                    onPressed: _isLoading ? null : _submit,
                     style: ElevatedButton.styleFrom(
                     backgroundColor: SystemColors.primaryColorDarker,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(21.0),
                       ),
                     ),
-                    child: const Text(
-                    'Send',
-                    style: TextStyle(
-                      color: SystemColors.accentColor2,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
+                    child: _isLoading
+                    ? const SizedBox(
+                      height: 20.0,
+                      width: 20.0,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(SystemColors.accentColor2),
+                        strokeWidth: 2.0,
+                      ),
+                    )
+                    : const Text(
+                      'Send',
+                      style: TextStyle(
+                        color: SystemColors.accentColor2,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -166,15 +206,6 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
           );
         },
         ),
-        if (_isLoading)
-          Positioned.fill(
-            child: Container(
-              color: Colors.black54,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          ),
 		  ],
 		),
 	  ),

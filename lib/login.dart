@@ -31,14 +31,29 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
-  bool _isEmpty = false;
+  bool _isLoadingForgotPass = false;
+  bool _isLoadingLogin = false;
+  String _errorMessage = '';
+
+  void _submit(){
+    setState(() {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      if (email.isEmpty && password.isEmpty){
+        _errorMessage = 'Please fill in all fields.';
+      } else {
+        _errorMessage = '';
+        _isLoadingLogin = true;
+        // Add your login logic here
+      }
+    });
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SystemColors.secondaryColor,
+      backgroundColor: SystemColors.bgColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -94,18 +109,18 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: _isLoading
+                          onPressed: _isLoadingForgotPass
                               ? null
                               : () async {
                                   setState(() {
-                                    _isLoading = true;
+                                    _isLoadingForgotPass = true;
                                   });
 
                                   // Simulate a delay for loading
                                   await Future.delayed(const Duration(seconds: 2));
 
                                   setState(() {
-                                    _isLoading = false;
+                                    _isLoadingForgotPass = false;
                                   });
 
                                   // Navigate to Forgot Password screen
@@ -116,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                   );
                                 },
-                          child: _isLoading
+                          child: _isLoadingForgotPass
                               ? const SizedBox(
                                 width: 20,
                                 height: 20,
@@ -130,44 +145,46 @@ class _LoginPageState extends State<LoginPage> {
                               : const Text('Forgot Password?'),
                         ),
                       ),
-                      if(_isEmpty == true)
-                        const Text(
-                          'Please fill in all fields.',
-                          style: TextStyle(
-                            color: SystemColors.errorColor,
-                          ),
+                      if (_errorMessage.isNotEmpty)
+                      Text(_errorMessage,
+                        style: const TextStyle(
+                          color: SystemColors.errorColor,
+                          fontFamily: 'Nunito Sans',
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+
                       const SizedBox(height: 16.0),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
                         height: MediaQuery.of(context).size.height * 0.08,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_emailController.text.isEmpty ||
-                              _passwordController.text.isEmpty){
-                              _isEmpty = true;
-                            }
-                            else{
-                              Text email = Text(_emailController.text);
-                            Text password = Text(_passwordController.text);
-                            print('Email: $email');
-                            print('Password: $password');
-                            }
-                          },
+                          onPressed: _isLoadingLogin ? null : _submit,  
                           style: ElevatedButton.styleFrom(
                             backgroundColor: SystemColors.primaryColorDarker,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(21.0),
                             ),
                           ),
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(
-                              color: SystemColors.accentColor2,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: _isLoadingLogin
+                              ? const SizedBox(
+                                  height: 20.0,
+                                  width: 20.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      SystemColors.accentColor2,
+                                    ),
+                                    strokeWidth: 2.0,
+                                  ),
+                                )
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    color: SystemColors.accentColor2,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     const SizedBox(height: 6.0),
