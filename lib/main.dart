@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
 import 'preg/p_homepage.dart';
-import 'nutri/n_homepage.dart';
+import 'nd/n_homepage.dart';
 import 'colors.dart';
 
 void main() {
@@ -39,11 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2)); // Simulate loading time
     bool isLoggedIn = false; // Replace with actual login check
 
-    if (isLoggedIn) {
+    /*if (isLoggedIn) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  HomePage()));
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginApp()));
-    }
+    }*/
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginApp()));
   }
 
   @override

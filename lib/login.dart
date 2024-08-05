@@ -69,8 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       const SizedBox(height: 60.0),
                       Image.asset(
-                        'assets/logo-word.png',
-                        width: constraints.maxWidth * 0.5,
+                        'assets/word-only.png',
+                        width: constraints.maxWidth * 0.6,
                         height: constraints.maxHeight * 0.2,
                         fit: BoxFit.contain,
                       ),
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
 
                                   // Navigate to Forgot Password screen
-                                  Navigator.push(
+                                  Navigator.pushReplacement<void, void>(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ForgotPassPage(),

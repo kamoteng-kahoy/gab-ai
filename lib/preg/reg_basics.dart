@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/login.dart';
+import 'reg_otp.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class RegisBasics extends StatelessWidget {
+class RegisBasics extends StatefulWidget {
+  @override
+  State<RegisBasics> createState() => _RegisBasicsState();
+}
+
+class _RegisBasicsState extends State<RegisBasics> {
+  bool _isLoading = false;
+
+  void _handleNextButtonPress() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+  // Simulate a network call
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RegOTP(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +48,13 @@ class RegisBasics extends StatelessWidget {
 
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+
               const SizedBox(height: 30),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -36,13 +67,17 @@ class RegisBasics extends StatelessWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 16.0),
+
               Text('Let\'s start with the basics. Enter your name and login credentials.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: SystemColors.textColorDarker.withOpacity(0.7),
                 ),
               ),
+
               const SizedBox(height: 40.0),
+
               Text('Full Name',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
@@ -62,8 +97,10 @@ class RegisBasics extends StatelessWidget {
                     ),
                 ),
               ),
+
               const SizedBox(height: 16.0),
-              Text('Email Address / Phone Number',
+
+              Text('Email Address',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -72,7 +109,7 @@ class RegisBasics extends StatelessWidget {
               TextField(
                 style: Theme.of(context).textTheme.bodyMedium,
                 decoration: InputDecoration(
-                  labelText: 'Your Email / Phone Number',
+                  labelText: 'Your Email',
                   labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: SystemColors.textColorDarker.withOpacity(0.7),
                   ),
@@ -83,6 +120,43 @@ class RegisBasics extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16.0),
+
+              Text('Phone Number',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8.0),
+
+              InternationalPhoneNumberInput(
+                onInputChanged: (PhoneNumber number) {
+                  print(number.phoneNumber);
+                },
+                selectorConfig: const SelectorConfig(
+                  selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                ),
+                ignoreBlank: false,
+                autoValidateMode: AutovalidateMode.disabled,
+                selectorTextStyle: Theme.of(context).textTheme.bodyMedium,
+                initialValue: PhoneNumber(isoCode: 'PH'),
+                textFieldController: TextEditingController(),
+                formatInput: true,
+                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                inputDecoration: InputDecoration(
+                  labelText: 'Your Phone Number',
+                  labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: SystemColors.textColorDarker.withOpacity(0.7),
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.phone,
+                    color: SystemColors.textColorDarker,
+                  ),
+                ),
+                selectorButtonOnErrorPadding: 0,
+              ),
+
+              const SizedBox(height: 16.0),
+
               Text('Password',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
@@ -101,14 +175,13 @@ class RegisBasics extends StatelessWidget {
                       Icons.lock_outlined,
                       color: SystemColors.textColorDarker,
                     ),
-                  suffixIcon: Icon(Icons.visibility),
+                  suffixIcon: const Icon(Icons.visibility),
                 ),
               ),
+
               const SizedBox(height: 30.0),
               ElevatedButton(
-                onPressed: () {
-                  // TODO: Implement registration logic
-                },
+                onPressed: _isLoading ? null : _handleNextButtonPress,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: SystemColors.primaryColorDarker,
                   minimumSize: const Size(230, 58),
@@ -116,13 +189,17 @@ class RegisBasics extends StatelessWidget {
                     borderRadius: BorderRadius.circular(21.0),
                   ),
                 ),
-                child: Text('Next',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
+                child: _isLoading
+                    ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ) : Text('Next',
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                        ),
+                      ),
               ),
+
               const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

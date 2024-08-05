@@ -119,7 +119,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                   controller: _emailController,
                   style: const TextStyle(
                     fontFamily: 'Nunito Sans',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                   decoration: InputDecoration(
                     labelText: 'Email',
