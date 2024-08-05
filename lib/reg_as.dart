@@ -57,7 +57,7 @@ class RegisterAs extends StatelessWidget {
                       ),
                       iconSize: constraints.maxWidth * 0.1, // 10% of the screen width
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => RegisBasics(),

@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                   });
 
                                   // Navigate to Forgot Password screen
-                                  Navigator.pushReplacement<void, void>(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ForgotPassPage(),

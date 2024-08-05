@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/login.dart';
 import 'reg_otp.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 
 class RegisBasics extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _RegisBasicsState extends State<RegisBasics> {
     return Scaffold(
       backgroundColor: SystemColors.bgColor,
       appBar: AppBar(
-		  backgroundColor: SystemColors.bgColor,
+		  backgroundColor: Colors.transparent,
 		  title: Image.asset(
 			'assets/logo-word.png',
 			height: 40.0,
@@ -119,6 +119,7 @@ class _RegisBasicsState extends State<RegisBasics> {
                     ),
                 ),
               ),
+
               const SizedBox(height: 16.0),
 
               Text('Phone Number',
@@ -127,32 +128,33 @@ class _RegisBasicsState extends State<RegisBasics> {
                 ),
               ),
               const SizedBox(height: 8.0),
-
-              InternationalPhoneNumberInput(
-                onInputChanged: (PhoneNumber number) {
-                  print(number.phoneNumber);
-                },
-                selectorConfig: const SelectorConfig(
-                  selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                ),
-                ignoreBlank: false,
-                autoValidateMode: AutovalidateMode.disabled,
-                selectorTextStyle: Theme.of(context).textTheme.bodyMedium,
-                initialValue: PhoneNumber(isoCode: 'PH'),
-                textFieldController: TextEditingController(),
-                formatInput: true,
-                keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
-                inputDecoration: InputDecoration(
-                  labelText: 'Your Phone Number',
-                  labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: SystemColors.textColorDarker.withOpacity(0.7),
+              Row(
+                children: [
+                  CountryCodePicker(
+                    onChanged: (countryCode) {
+                      print("New Country selected: $countryCode");
+                    },
+                    initialSelection: 'US',
+                    favorite: ['+1', 'US'],
+                    showCountryOnly: false,
+                    showOnlyCountryWhenClosed: false,
+                    alignLeft: false,
                   ),
-                  prefixIcon: const Icon(
-                    Icons.phone,
-                    color: SystemColors.textColorDarker,
+                  Expanded(
+                    child: TextField(
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                        labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: SystemColors.textColorDarker.withOpacity(0.7),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                selectorButtonOnErrorPadding: 0,
+                ],
               ),
 
               const SizedBox(height: 16.0),
@@ -180,6 +182,7 @@ class _RegisBasicsState extends State<RegisBasics> {
               ),
 
               const SizedBox(height: 30.0),
+
               ElevatedButton(
                 onPressed: _isLoading ? null : _handleNextButtonPress,
                 style: ElevatedButton.styleFrom(
@@ -201,6 +204,7 @@ class _RegisBasicsState extends State<RegisBasics> {
               ),
 
               const SizedBox(height: 20),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
