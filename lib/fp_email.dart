@@ -3,6 +3,7 @@ import 'colors.dart';
 import 'theme.dart';
 import 'login.dart';
 import 'fp_emailsent.dart';
+import 'package:gab_ai/reg_as.dart';
 
 class ForgotPassPage extends StatefulWidget {
   const ForgotPassPage({super.key});
@@ -196,7 +197,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const LoginPage(),
+                            builder: (context) => RegisterAs(),
                           ),
                         );
                       },

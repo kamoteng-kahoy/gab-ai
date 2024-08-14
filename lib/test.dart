@@ -6,11 +6,11 @@ import 'fp_email.dart';
 import 'reg_as.dart';
 
 void main() {
-  runApp(const LoginApp());
+  runApp(const TestApp());
 }
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
+class TestApp extends StatelessWidget {
+  const TestApp({super.key});
 
   @override
   Widget build(BuildContext context) {
