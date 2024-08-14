@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'reg_photo.dart';
 
 class RegOTP extends StatefulWidget {
   @override
@@ -23,12 +24,12 @@ class _RegOTPState extends State<RegOTP> {
       _isLoading = false;
     });
 
-    /*Navigator.push(
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RegOTP(),
+        builder: (context) => const RegPhoto(),
       ),
-    );*/
+    );
   }
 
   @override
@@ -96,9 +97,14 @@ class _RegOTPState extends State<RegOTP> {
                   ),
                 ),
                 child: _isLoading
-                    ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ) : Text('Next',
+                    ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          strokeWidth: 2.0,
+                        ),
+                    ) : Text('Next',
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           color: Colors.white,
                           fontSize: 20.0,
