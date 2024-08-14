@@ -232,7 +232,8 @@ class ErrorMessage extends StatelessWidget {
       style: const TextStyle(
         color: SystemColors.errorColor,
         fontFamily: 'Nunito Sans',
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
+        fontSize: 14.0,
       ),
     );
   }
