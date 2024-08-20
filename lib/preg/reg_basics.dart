@@ -139,39 +139,40 @@ class PhoneNumberField extends StatelessWidget {
   const PhoneNumberField({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(
+Widget build(BuildContext context) {
+  return SizedBox(
+    width: double.infinity,
+    child: TextField(
+      keyboardType: TextInputType.phone,
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(10),
+      ],
+      decoration: InputDecoration(
+        prefixIcon: SizedBox(
           width: 120,
           child: CountryCodePicker(
             onChanged: print,
             initialSelection: 'PH',
-            favorite: ['+63', 'PH'],
+            favorite: const ['+63', 'PH'],
             showCountryOnly: false,
             showOnlyCountryWhenClosed: false,
             alignLeft: false,
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            keyboardType: TextInputType.phone,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(10),
-            ],
-            style: Theme.of(context).textTheme.bodyMedium,
-            decoration: InputDecoration(
-              labelText: 'Your Phone Number',
-              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: SystemColors.textColorDarker.withOpacity(0.7),
-              ),
+            textStyle: TextStyle(
+              fontFamily: Theme.of(context).textTheme.bodyMedium?.fontFamily,
+              color: SystemColors.textColorDarker,
+              fontSize: 16,
             ),
           ),
         ),
-      ],
-    );
-  }
+        labelText: 'Enter your phone number',
+        labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: SystemColors.textColorDarker.withOpacity(0.7),
+            ),
+      ),
+    ),
+  );
+}
 }
 
 class PasswordTextField extends StatefulWidget {

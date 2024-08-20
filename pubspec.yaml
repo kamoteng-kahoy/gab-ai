@@ -38,6 +38,9 @@ flutter:
     - assets/nd_icon.png
     - assets/otp.png
     - assets/word-only.png
+    - assets/check.png
+    - assets/check_small.png
+    - assets/ok.png
 
   fonts:
     - family: Merriweather

@@ -166,27 +166,46 @@ class EmailTextField extends StatelessWidget {
   }
 }
 
-class PasswordTextField extends StatelessWidget {
+class PasswordTextField extends StatefulWidget {
   final TextEditingController controller;
 
   const PasswordTextField({required this.controller});
 
   @override
+  State<PasswordTextField> createState() => _PasswordTextFieldState();
+}
+
+class _PasswordTextFieldState extends State<PasswordTextField> {
+  bool _obscureText = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
+      controller: widget.controller,
       style: const TextStyle(
         fontFamily: 'Nunito Sans',
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w500
       ),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Password',
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           fontFamily: 'Merriweather',
           color: SystemColors.textColor,
         ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: _togglePasswordVisibility,
+        ),
       ),
-      obscureText: true,
+      obscureText: _obscureText,
     );
   }
 }

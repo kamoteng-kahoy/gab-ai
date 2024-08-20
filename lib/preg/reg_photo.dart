@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'reg_done.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -99,47 +100,64 @@ class _UploadPhotoState extends State<UploadPhoto> {
     }
   }
 
+  void _removeImage() {
+    setState(() {
+      _image = null;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: _pickImage,
-          child: CircleAvatar(
-            radius: 100,
-            backgroundColor: const Color(0xFFD9D9D9),
-            backgroundImage: _image != null ? FileImage(_image!) : null,
-            child: _image == null
-                ? const Icon(
-                    Icons.camera_alt,
-                    color: SystemColors.textColorDarker,
-                    size: 50.0,
-                  )
-                : null,
+   return Column(
+  children: [
+    GestureDetector(
+      onTap: _pickImage,
+      child: CircleAvatar(
+        radius: 100,
+        backgroundColor: const Color(0xFFD9D9D9),
+        backgroundImage: _image != null ? FileImage(_image!) : null,
+        child: _image == null
+            ? const Icon(
+                Icons.camera_alt,
+                color: SystemColors.textColorDarker,
+                size: 50.0,
+              )
+            : null,
+      ),
+    ),
+    const SizedBox(height: 20),
+    TextButton(
+      onPressed: () {
+        if (_image != null) {
+          _pickImage();
+        } else {
+          // Handle the skip button press logic here
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RegDone(),
+            ),
+          );
+        }
+        
+      },
+      child: Text(_image != null ? 'Upload Again' : 'Skip',
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          color: SystemColors.primaryColorDarker,
+        ),
+      ),
+    ),
+    if (_image != null)
+      TextButton(
+        onPressed: _removeImage,
+        child: const Text('Remove Image',
+          style: TextStyle(
+            fontSize: 14.0,
           ),
         ),
-        const SizedBox(height: 20),
-        TextButton(
-          onPressed: () {
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage(),
-              ),
-            );*/
-          },
-          child: const Padding(
-            padding: EdgeInsets.zero,
-            child: Text(
-              'Skip',
-              style: TextStyle(
-                fontSize: 16.0,
-                )
-              ),
-          ),
-        ),
-      ],
-    );
+      ),
+  ],
+);
   }
 }
 
@@ -166,12 +184,12 @@ class _UploadButtonState extends State<UploadButton> {
     });
     // Handle the next button press logic here
     // For example, navigate to the next screen
-    /*Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RegOTP(),
-      ),
-    );*/
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RegDone(),
+        ),
+      );
   }
 
   @override
