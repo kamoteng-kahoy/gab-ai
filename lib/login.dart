@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gab_ai/preg/p_dashboard.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -46,6 +47,12 @@ class _LoginPageState extends State<LoginPage> {
         _errorMessage = '';
         _isLoadingLogin = true;
         // Add your login logic here
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DashboardPage(),
+          ),
+        );
       }
     });
   }

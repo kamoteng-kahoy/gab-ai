@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'p_dashboard.dart';
 
 class RegDone extends StatelessWidget {
   @override
@@ -117,7 +118,7 @@ class _GoButtonState extends State<GoButton> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => RegDone(),
+          builder: (context) => DashboardPage(),
         ),
       );
   }

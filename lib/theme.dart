@@ -39,7 +39,7 @@ final ThemeData appTheme = ThemeData(
     ),
     headlineSmall: const TextStyle(
       fontFamily: 'Merriweather',
-      fontSize: 16.0,
+      fontSize: 20.0,
       color: SystemColors.textColorDarker,
     ),
     bodyMedium: const TextStyle(
