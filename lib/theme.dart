@@ -42,6 +42,11 @@ final ThemeData appTheme = ThemeData(
       fontSize: 20.0,
       color: SystemColors.textColorDarker,
     ),
+    bodyLarge: const TextStyle(
+      fontFamily: 'Nunito Sans',
+      fontSize: 24.0,
+      color: SystemColors.textColorDarker,
+    ),
     bodyMedium: const TextStyle(
       fontFamily: 'Nunito Sans',
       fontSize: 16.0,

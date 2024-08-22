@@ -161,12 +161,14 @@ class EmailTextField extends StatelessWidget {
       style: const TextStyle(
         fontFamily: 'Nunito Sans',
         fontWeight: FontWeight.normal,
+        fontSize: 16,
       ),
       decoration: const InputDecoration(
         labelText: 'Username or Email',
         labelStyle: TextStyle(
           color: SystemColors.textColor,
           fontFamily: 'Merriweather',
+          fontSize: 16,
         ),
       ),
     );
@@ -197,13 +199,15 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
       controller: widget.controller,
       style: const TextStyle(
         fontFamily: 'Nunito Sans',
-        fontWeight: FontWeight.w500
+        fontWeight: FontWeight.w500,
+        fontSize: 16,
       ),
       decoration: InputDecoration(
         labelText: 'Password',
         labelStyle: const TextStyle(
           fontFamily: 'Merriweather',
           color: SystemColors.textColor,
+          fontSize: 16,
         ),
         suffixIcon: IconButton(
           icon: Icon(

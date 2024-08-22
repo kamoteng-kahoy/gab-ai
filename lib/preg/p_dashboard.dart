@@ -26,7 +26,13 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: AppBar(
-            backgroundColor: SystemColors.bgColorLighter,
+            backgroundColor: Colors.transparent,
+            title: Image.asset(
+              'assets/logo-word.png',
+              height: 40.0,
+              fit: BoxFit.contain,
+            ),
+            centerTitle: true,
             leading: Builder(
             builder: (context) => Padding(
               padding: const EdgeInsets.all(10.0),
@@ -64,17 +70,27 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
 
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             children: [
-              TextGreetings(),
-              SizedBox(height: 20.0),
-              Carousel(),
-              SizedBox(height: 40.0),
-              SummaryAppointments(),
-              SizedBox(height: 40.0),
+              const TextGreetings(),
+              const SizedBox(height: 40.0),
+              const Carousel(),
+              const SizedBox(height: 40.0),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Appointments',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20,),
+              Appointments(),
+              const SizedBox(height: 40.0),
             ],
           ),
         ),
@@ -115,6 +131,7 @@ class TextGreetings extends StatelessWidget {
           Text('Welcome to GAB-AI',
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.w600,
+              fontSize: 30,
             ),
           ),
           const SizedBox(height: 5.0),
@@ -140,9 +157,45 @@ class _CarouselState extends State<Carousel> {
   int _currentPage = 0;
 
   final List<Widget> _carouselItems = [
-    Container(color: Colors.red),
-    Container(color: Colors.green),
-    Container(color: Colors.blue),
+    Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            SystemColors.secondaryColor,
+            SystemColors.accentColor2,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+        borderRadius: BorderRadius.circular(25)
+      ),
+    ),
+    Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            SystemColors.secondaryColor,
+            SystemColors.accentColor2,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+        borderRadius: BorderRadius.circular(25)
+      ),
+    ),
+    Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            SystemColors.secondaryColor,
+            SystemColors.accentColor2,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+        borderRadius: BorderRadius.circular(25)
+      ),
+    ),
   ];
 
   @override
@@ -154,6 +207,7 @@ class _CarouselState extends State<Carousel> {
           options: CarouselOptions(
             height: 200.0, // Adjust the height as needed
             autoPlay: true,
+            autoPlayInterval: const Duration(seconds: 10),
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {
@@ -167,10 +221,10 @@ class _CarouselState extends State<Carousel> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: List<Widget>.generate(_carouselItems.length, (int index) {
             return AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              height: 10.0,
+              duration: const Duration(milliseconds: 400),
+              height: 8.0,
               width: (index == _currentPage) ? 20.0 : 10.0,
-              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
                 color: (index == _currentPage) ? SystemColors.primaryColor : Colors.grey,
                 borderRadius: BorderRadius.circular(5.0),
@@ -183,75 +237,81 @@ class _CarouselState extends State<Carousel> {
   }
 }
 
-class SummaryAppointments extends StatelessWidget {
-  const SummaryAppointments({Key? key}) : super(key: key);
+class Appointments extends StatefulWidget {
+  @override
+  _AppointmentsState createState() => _AppointmentsState();
+}
+
+class _AppointmentsState extends State<Appointments> {
+  final List<Map<String, String>> _appointments = [
+    {
+      'name': 'John Doe',
+      'profilePicture': 'https://ui-avatars.com/api/?name=John+Doe',
+      'timeDate': '2023-10-01 10:00 AM',
+    },
+    {
+      'name': 'Jane Smith',
+      'profilePicture': 'https://ui-avatars.com/api/?name=Jane+Smith',
+      'timeDate': '2023-10-01 11:00 AM',
+    },
+    {
+      'name': 'Alice Johnson',
+      'profilePicture': 'https://ui-avatars.com/api/?name=Alice+Johnson',
+      'timeDate': '2023-10-01 12:00 PM',
+    },
+    {
+      'name': 'Bob Brown',
+      'profilePicture': 'https://ui-avatars.com/api/?name=Bob+Brown',
+      'timeDate': '2023-10-01 01:00 PM',
+    },
+    {
+      'name': 'Charlie Davis',
+      'profilePicture': 'https://ui-avatars.com/api/?name=Charlie+Davis',
+      'timeDate': '2023-10-01 02:00 PM',
+    },
+  ];
+
+  void _addAppointment(Map<String, String> appointment) {
+    if (_appointments.length < 5) {
+      setState(() {
+        _appointments.add(appointment);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Appointments',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w600,
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _appointments.length,
+      itemBuilder: (context, index) {
+        final appointment = _appointments[index];
+        return SizedBox(
+          height: 100,
+          child: Card(
+            color: SystemColors.bgWhite,
+            child: Center(
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage(appointment['profilePicture']!),
+                ),
+                title: Text(appointment['name']!,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  ),
+                ),
+                subtitle: Text(appointment['timeDate']!),
+                trailing: IconButton(
+                  icon: Icon(Icons.message),
+                  onPressed: () {
+                    // Handle message button press
+                  },
+                ),
               ),
-        ),
-        const SizedBox(height: 10.0),
-        Container(
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: SystemColors.primaryColor,
-            borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2), // Darker shadow color
-                spreadRadius: 1, // Slightly smaller spread radius
-                blurRadius: 10, // Larger blur radius for a softer shadow
-                offset: Offset(0, 4), // Offset to create a drop shadow effect
-              ),
-            ],
+            ),
           ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'),
-                    radius: 20.0,
-                  ),
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Account Name',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                        Text(
-                          'Appointment Date and Time',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.message),
-                    onPressed: () {
-                      print('pressed');
-                      // Navigate to message screen
-                      //Navigator.pushNamed(context, '/messageScreen');
-                    },
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ]
+        );
+      },
     );
   }
 }

@@ -11,5 +11,6 @@ class SystemColors {
   static const Color textColorDarker = Color(0xFF0D0D0D);
   static const Color errorColor = Color(0xFFFF0000);
   static const Color bgColor = Color(0xFFFFF5E1);
+  static const Color bgWhite = Color(0xFFFFFFFF);
   static const Color bgColorLighter = Color(0xFFFFFCF5);
 }
