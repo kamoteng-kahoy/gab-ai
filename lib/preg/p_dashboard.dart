@@ -17,6 +17,7 @@ class _DashboardPageState extends State<DashboardPage> {
     //         ProfilePage(),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +28,6 @@ class _DashboardPageState extends State<DashboardPage> {
           padding: const EdgeInsets.all(10.0),
           child: AppBar(
             backgroundColor: Colors.transparent,
-            title: Image.asset(
-              'assets/logo-word.png',
-              height: 40.0,
-              fit: BoxFit.contain,
-            ),
             centerTitle: true,
             leading: Builder(
             builder: (context) => Padding(
@@ -47,6 +43,29 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
           ),
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.notifications_outlined),
+              onSelected: (String result) {
+                // Handle notification selection
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'Notification 1',
+                  child: Text('Notification 1'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Notification 2',
+                  child: Text('Notification 2'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Notification 3',
+                  child: Text('Notification 3'),
+                ),
+                // Add more notifications here
+              ],
+            ),
+          ],
           ),
         ),
       ),
@@ -196,6 +215,19 @@ class _CarouselState extends State<Carousel> {
         borderRadius: BorderRadius.circular(25)
       ),
     ),
+    Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            SystemColors.secondaryColor,
+            SystemColors.accentColor2,
+          ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+        borderRadius: BorderRadius.circular(25)
+      ),
+    ),
   ];
 
   @override
@@ -238,7 +270,10 @@ class _CarouselState extends State<Carousel> {
 }
 
 class Appointments extends StatefulWidget {
+  const Appointments({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AppointmentsState createState() => _AppointmentsState();
 }
 
@@ -246,28 +281,8 @@ class _AppointmentsState extends State<Appointments> {
   final List<Map<String, String>> _appointments = [
     {
       'name': 'John Doe',
-      'profilePicture': 'https://ui-avatars.com/api/?name=John+Doe',
+      'profilePicture': 'https://avatar.iran.liara.run/public',
       'timeDate': '2023-10-01 10:00 AM',
-    },
-    {
-      'name': 'Jane Smith',
-      'profilePicture': 'https://ui-avatars.com/api/?name=Jane+Smith',
-      'timeDate': '2023-10-01 11:00 AM',
-    },
-    {
-      'name': 'Alice Johnson',
-      'profilePicture': 'https://ui-avatars.com/api/?name=Alice+Johnson',
-      'timeDate': '2023-10-01 12:00 PM',
-    },
-    {
-      'name': 'Bob Brown',
-      'profilePicture': 'https://ui-avatars.com/api/?name=Bob+Brown',
-      'timeDate': '2023-10-01 01:00 PM',
-    },
-    {
-      'name': 'Charlie Davis',
-      'profilePicture': 'https://ui-avatars.com/api/?name=Charlie+Davis',
-      'timeDate': '2023-10-01 02:00 PM',
     },
   ];
 
@@ -302,7 +317,7 @@ class _AppointmentsState extends State<Appointments> {
                 ),
                 subtitle: Text(appointment['timeDate']!),
                 trailing: IconButton(
-                  icon: Icon(Icons.message),
+                  icon: const Icon(Icons.message),
                   onPressed: () {
                     // Handle message button press
                   },
