@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(70),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: AppBar(
@@ -45,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           actions: <Widget>[
             PopupMenuButton<String>(
-              icon: const Icon(Icons.notifications_outlined),
+              icon: const Icon(FluentIcons.alert_20_regular),
               onSelected: (String result) {
                 // Handle notification selection
               },
@@ -96,41 +97,121 @@ class _DashboardPageState extends State<DashboardPage> {
             children: [
               const TextGreetings(),
               const SizedBox(height: 40.0),
-              const Carousel(),
-              const SizedBox(height: 40.0),
+              QuickNav(),
+              const SizedBox(height: 20.0),
+              const Divider(
+                color: Colors.grey, // Set the color of the divider
+                thickness: 0.5,// Set the thickness of the divider
+                indent: 10.0, // Set the left indent
+                endIndent: 10.0,
+              ),
+              const SizedBox(height: 20.0),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Appointments',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  'Meal Plan',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 16,
                   ),
                 ),
               ),
-              const SizedBox(height: 20,),
-              Appointments(),
+              const SizedBox(height: 20.0),
+              //const MealPlan(),
               const SizedBox(height: 40.0),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        height: 70,
+        child: StylishBottomBar(
+          backgroundColor: SystemColors.bgColorLighter,
+          option: AnimatedBarOptions(
+            iconSize: 28,
+            barAnimation: BarAnimation.fade,
+            iconStyle: IconStyle.animated,
+            opacity: 0.3,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-        ],
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          items: [
+            BottomBarItem(
+              icon: Icon(FluentIcons.home_24_filled,
+                color: _selectedIndex == 0 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+              selectedIcon: const Icon(FluentIcons.home_24_filled,
+                color: SystemColors.primaryColorDarker,
+              ),
+              title: Text('Dashboard',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  color: SystemColors.primaryColorDarker,
+                ),
+              ),
+            ),
+            BottomBarItem(
+              icon: Icon(FluentIcons.food_24_filled,
+                color: _selectedIndex == 1 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+              selectedIcon: const Icon(FluentIcons.food_24_filled,
+                color: SystemColors.primaryColorDarker,
+              ),
+              title: Text('Meal Plan',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  color: SystemColors.primaryColorDarker,
+                ),
+              ),
+            ),
+            BottomBarItem(
+              icon: Icon(FluentIcons.calendar_24_filled,
+              color: _selectedIndex == 2 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+              selectedIcon: const Icon(FluentIcons.calendar_24_filled,
+                color: SystemColors.primaryColorDarker,
+              ),
+              title: Text('Appointments',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    color: SystemColors.primaryColorDarker,
+                  ),
+              ),
+            ),
+            BottomBarItem(
+              icon: Icon(FluentIcons.book_24_filled,
+                color: _selectedIndex == 3 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+              selectedIcon: const Icon(FluentIcons.calendar_24_filled,
+                color: SystemColors.primaryColorDarker,
+              ),
+              title: const Text('Journals',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  color: SystemColors.primaryColorDarker,
+                ),
+              ),
+            ),
+            BottomBarItem(
+              icon: Icon(FluentIcons.settings_24_filled,
+                color: _selectedIndex == 4 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+              selectedIcon: const Icon(FluentIcons.settings_24_filled,
+                color: SystemColors.primaryColorDarker,
+              ),
+              title: const Text('Settings',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  color: SystemColors.primaryColorDarker,
+                ),
+              ),
+            )
+          ],// Replace with a valid ConcreteBottomBarOption object
+        ),
       ),
     );
   }
@@ -153,10 +234,12 @@ class TextGreetings extends StatelessWidget {
               fontSize: 30,
             ),
           ),
-          const SizedBox(height: 5.0),
-          Text('Explore your nutrition journey with us.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w400,
+          Opacity(
+            opacity: 0.6,
+            child: Text('Explore your nutrition journey with us.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+              ),
             ),
           ),
         ],
@@ -165,168 +248,69 @@ class TextGreetings extends StatelessWidget {
   }
 }
 
-class Carousel extends StatefulWidget {
-  const Carousel({Key? key}) : super(key: key);
-
-  @override
-  _CarouselState createState() => _CarouselState();
-}
-
-class _CarouselState extends State<Carousel> {
-  int _currentPage = 0;
-
-  final List<Widget> _carouselItems = [
-    Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            SystemColors.secondaryColor,
-            SystemColors.accentColor2,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
-        borderRadius: BorderRadius.circular(25)
-      ),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            SystemColors.secondaryColor,
-            SystemColors.accentColor2,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
-        borderRadius: BorderRadius.circular(25)
-      ),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            SystemColors.secondaryColor,
-            SystemColors.accentColor2,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
-        borderRadius: BorderRadius.circular(25)
-      ),
-    ),
-    Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            SystemColors.secondaryColor,
-            SystemColors.accentColor2,
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-        ),
-        borderRadius: BorderRadius.circular(25)
-      ),
-    ),
-  ];
-
+class QuickNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildNavButton(context, 'Meal Plan', 'assets/icons/icon_mealplan.png', _navigateToMealPlan),
+        _buildNavButton(context, 'Appointments', 'assets/icons/icon_appointments.png', _navigateToAppointments),
+        _buildNavButton(context, 'Journals', 'assets/icons/icon_journal.png', _navigateToJournals),
+      ],
+    );
+  }
+
+  Widget _buildNavButton(BuildContext context, String label, String imagePath, void Function(BuildContext) onPressed) {
     return Column(
       children: [
-        CarouselSlider(
-          items: _carouselItems,
-          options: CarouselOptions(
-            height: 200.0, // Adjust the height as needed
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 10),
-            enlargeCenterPage: true,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
+        SizedBox(
+          height: 70,
+          width: 70,
+          child: ElevatedButton(
+            onPressed: () => onPressed(context),
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+              padding: const EdgeInsets.all(16.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  imagePath,
+                  height: 30,
+                  width: 30,
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 10.0), // Add space between the carousel and the indicator
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List<Widget>.generate(_carouselItems.length, (int index) {
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 400),
-              height: 8.0,
-              width: (index == _currentPage) ? 20.0 : 10.0,
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                color: (index == _currentPage) ? SystemColors.primaryColor : Colors.grey,
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-            );
-          }),
+        const SizedBox(height: 10),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
         ),
       ],
     );
   }
-}
 
-class Appointments extends StatefulWidget {
-  const Appointments({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _AppointmentsState createState() => _AppointmentsState();
-}
-
-class _AppointmentsState extends State<Appointments> {
-  final List<Map<String, String>> _appointments = [
-    {
-      'name': 'John Doe',
-      'profilePicture': 'https://avatar.iran.liara.run/public',
-      'timeDate': '2023-10-01 10:00 AM',
-    },
-  ];
-
-  void _addAppointment(Map<String, String> appointment) {
-    if (_appointments.length < 5) {
-      setState(() {
-        _appointments.add(appointment);
-      });
-    }
+  void _navigateToMealPlan(BuildContext context) {
+    //Navigator.pushNamed(context, '/mealPlan');
+    print('Navigating to Meal Plan');
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _appointments.length,
-      itemBuilder: (context, index) {
-        final appointment = _appointments[index];
-        return SizedBox(
-          height: 100,
-          child: Card(
-            color: SystemColors.bgWhite,
-            child: Center(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage(appointment['profilePicture']!),
-                ),
-                title: Text(appointment['name']!,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text(appointment['timeDate']!),
-                trailing: IconButton(
-                  icon: const Icon(Icons.message),
-                  onPressed: () {
-                    // Handle message button press
-                  },
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  void _navigateToAppointments(BuildContext context) {
+    //Navigator.pushNamed(context, '/appointments');
+    print('Navigating to Appointments');
+  }
+
+  void _navigateToJournals(BuildContext context) {
+    //Navigator.pushNamed(context, '/journals');
+    print('Navigating to Journals');
   }
 }
