@@ -3,6 +3,8 @@ import 'package:gab_ai/colors.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gab_ai/preg/homepage.dart';
+import 'package:gab_ai/login.dart';
+import 'package:gab_ai/preg/mealplan.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -12,9 +14,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     HomePage(),
-    NotificationsPage(),
+    MealPlanPage(),
     ProfilePage(),
     AppointmentsPage(),
     SettingsPage(),
@@ -30,11 +32,132 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(70),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            leading: Builder(
+            builder: (context) => Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: const CircleAvatar(
+                  radius: 10,
+                  backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
+                ),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              icon: const Icon(FluentIcons.alert_20_regular),
+              onSelected: (String result) {
+                // Handle notification selection
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                const PopupMenuItem<String>(
+                  value: 'Notification 1',
+                  child: Text('Notification 1'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Notification 2',
+                  child: Text('Notification 2'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'Notification 3',
+                  child: Text('Notification 3'),
+                ),
+                // Add more notifications here
+              ],
+            ),
+          ],
+          ),
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [SystemColors.secondaryColor2, SystemColors.bgColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Column(
+                children: [
+                  const CircleAvatar(
+                  radius: 30,
+                  backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Account Name',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            ListTile(
+              leading: const Icon(FluentIcons.person_24_filled),
+              title: Text('Profile',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                // Handle the tap event
+              },
+            ),
+            ListTile(
+              leading: const Icon(FluentIcons.settings_24_filled),
+              title: Text('Settings',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                // Handle the tap event
+              },
+            ),
+            ListTile(
+              leading: const Icon(FluentIcons.sign_out_24_filled),
+              title: Text('Log out',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                ),
+              ),
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (route) => false,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: SizedBox(
         height: 70,
         child: StylishBottomBar(
           backgroundColor: SystemColors.bgColorLighter,
@@ -120,16 +243,6 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-
-class NotificationsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Notifications Page'),
     );
   }
 }

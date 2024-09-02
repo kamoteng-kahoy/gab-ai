@@ -7,11 +7,11 @@ import 'fp_email.dart';
 import 'reg_as.dart';
 
 void main() {
-  runApp(const LoginApp());
+  runApp(const LoginScreen());
 }
 
-class LoginApp extends StatelessWidget {
-  const LoginApp({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

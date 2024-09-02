@@ -9,92 +9,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  List<Widget> _pages = [
-    // Add your pages here
-    // Example: HomePage(),
-    //         NotificationsPage(),
-    //         ProfilePage(),
-  ];
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            leading: Builder(
-            builder: (context) => Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: const CircleAvatar(
-                  radius: 10,
-                  backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
-                ),
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            PopupMenuButton<String>(
-              icon: const Icon(FluentIcons.alert_20_regular),
-              onSelected: (String result) {
-                // Handle notification selection
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
-                  value: 'Notification 1',
-                  child: Text('Notification 1'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'Notification 2',
-                  child: Text('Notification 2'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'Notification 3',
-                  child: Text('Notification 3'),
-                ),
-                // Add more notifications here
-              ],
-            ),
-          ],
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: const [
-            // Add your drawer items here
-            // Example: ListTile(
-            //           title: Text('Item 1'),
-            //           onTap: () {
-            //             // Handle item 1 tap
-            //           },
-            //         ),
-            //         ListTile(
-            //           title: Text('Item 2'),
-            //           onTap: () {
-            //             // Handle item 2 tap
-            //           },
-            //         ),
-          ],
-        ),
-      ),
-
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             children: [
+              const SizedBox(height: 10.0),
               const TextGreetings(),
               const SizedBox(height: 40.0),
               QuickNav(),
@@ -117,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              //const MealPlan(),
+              const MealPlanSummary(),
               const SizedBox(height: 40.0),
             ],
           ),
@@ -222,5 +147,54 @@ class QuickNav extends StatelessWidget {
   void _navigateToJournals(BuildContext context) {
     //Navigator.pushNamed(context, '/journals');
     print('Navigating to Journals');
+  }
+}
+
+class MealPlanSummary extends StatelessWidget {
+  const MealPlanSummary({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildMealCard('Breakfast', 'assets/default.png'),
+        const SizedBox(height: 10),
+        _buildMealCard('Lunch', 'assets/default.png'),
+        const SizedBox(height: 10),
+        _buildMealCard('Snacks', 'assets/default.png'),
+        const SizedBox(height: 10),
+        _buildMealCard('Dinner', 'assets/default.png'),
+      ],
+    );
+  }
+
+  Widget _buildMealCard(String mealType, String imagePath) {
+    return Card(
+      color: SystemColors.secondaryColor,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          Image.asset(
+            imagePath,
+            height: 150,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              mealType,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

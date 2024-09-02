@@ -13,9 +13,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: SplashScreen(),
-      //SplashScreen(),
+      routes: {
+        '/login': (context) => LoginScreen(),
+      },
     );
   }
 }
@@ -43,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  MainScreen()));
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginApp()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginScreen()));
     }
   }
 
