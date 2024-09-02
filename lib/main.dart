@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
-import 'preg/p_dashboard.dart';
+import 'preg/mainscreen.dart';
 import 'nd/n_homepage.dart';
 import 'colors.dart';
 
@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = false; // Replace with actual login check
 
     if (isLoggedIn) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  HomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  MainScreen()));
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginApp()));
     }

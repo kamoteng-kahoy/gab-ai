@@ -3,12 +3,12 @@ import 'package:gab_ai/colors.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
-class DashboardPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _DashboardPageState createState() => _DashboardPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
@@ -121,96 +121,6 @@ class _DashboardPageState extends State<DashboardPage> {
               const SizedBox(height: 40.0),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: 70,
-        child: StylishBottomBar(
-          backgroundColor: SystemColors.bgColorLighter,
-          option: AnimatedBarOptions(
-            iconSize: 28,
-            barAnimation: BarAnimation.fade,
-            iconStyle: IconStyle.animated,
-            opacity: 0.3,
-          ),
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            BottomBarItem(
-              icon: Icon(FluentIcons.home_24_filled,
-                color: _selectedIndex == 0 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-              selectedIcon: const Icon(FluentIcons.home_24_filled,
-                color: SystemColors.primaryColorDarker,
-              ),
-              title: Text('Dashboard',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: SystemColors.primaryColorDarker,
-                ),
-              ),
-            ),
-            BottomBarItem(
-              icon: Icon(FluentIcons.food_24_filled,
-                color: _selectedIndex == 1 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-              selectedIcon: const Icon(FluentIcons.food_24_filled,
-                color: SystemColors.primaryColorDarker,
-              ),
-              title: Text('Meal Plan',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: SystemColors.primaryColorDarker,
-                ),
-              ),
-            ),
-            BottomBarItem(
-              icon: Icon(FluentIcons.calendar_24_filled,
-              color: _selectedIndex == 2 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-              selectedIcon: const Icon(FluentIcons.calendar_24_filled,
-                color: SystemColors.primaryColorDarker,
-              ),
-              title: Text('Appointments',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    color: SystemColors.primaryColorDarker,
-                  ),
-              ),
-            ),
-            BottomBarItem(
-              icon: Icon(FluentIcons.book_24_filled,
-                color: _selectedIndex == 3 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-              selectedIcon: const Icon(FluentIcons.calendar_24_filled,
-                color: SystemColors.primaryColorDarker,
-              ),
-              title: const Text('Journals',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: SystemColors.primaryColorDarker,
-                ),
-              ),
-            ),
-            BottomBarItem(
-              icon: Icon(FluentIcons.settings_24_filled,
-                color: _selectedIndex == 4 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-              selectedIcon: const Icon(FluentIcons.settings_24_filled,
-                color: SystemColors.primaryColorDarker,
-              ),
-              title: const Text('Settings',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                  color: SystemColors.primaryColorDarker,
-                ),
-              ),
-            )
-          ],// Replace with a valid ConcreteBottomBarOption object
         ),
       ),
     );
