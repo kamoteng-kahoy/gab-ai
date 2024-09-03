@@ -47,11 +47,10 @@ class _LoginPageState extends State<LoginPage> {
         _errorMessage = '';
         _isLoadingLogin = true;
         // Add your login logic here
-        Navigator.push(
+        Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder: (context) => MainScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => MainScreen()),
+          (route) => false,
         );
       }
     });

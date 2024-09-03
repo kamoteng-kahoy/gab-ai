@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:gab_ai/preg/home_page.dart';
+import 'package:gab_ai/preg/dashboard.dart';
 import 'package:gab_ai/login.dart';
 import 'package:gab_ai/preg/meal_plan.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
+
   @override
-  _MainScreenState createState() => _MainScreenState();
+  MainScreenState createState() => MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -27,7 +29,13 @@ class _MainScreenState extends State<MainScreen> {
       _selectedIndex = index;
     });
   }
-
+  
+  void navigateToMealPlan() {
+    setState(() {
+      _selectedIndex = 1;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

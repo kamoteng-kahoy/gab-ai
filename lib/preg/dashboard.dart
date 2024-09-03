@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/main_screen.dart';
+import 'package:gab_ai/preg/meal_plan.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
@@ -135,9 +137,11 @@ class QuickNav extends StatelessWidget {
   }
 
   void _navigateToMealPlan(BuildContext context) {
-    //Navigator.pushNamed(context, '/mealPlan');
-    print('Navigating to Meal Plan');
+  final mainScreenState = context.findAncestorStateOfType<MainScreenState>();
+  if (mainScreenState != null) {
+    mainScreenState.navigateToMealPlan();
   }
+}
 
   void _navigateToAppointments(BuildContext context) {
     //Navigator.pushNamed(context, '/appointments');
