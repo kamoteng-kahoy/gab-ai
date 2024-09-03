@@ -14,7 +14,34 @@ class MealPlanBreakfast extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text('Breakfast Content'),
+              Text(
+                'Today\'s Breakfast:',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Oatmeal with fruits and nuts',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Scrambled eggs with toast',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Yogurt with granola',
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
             ],
           ),
         ),

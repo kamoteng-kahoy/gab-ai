@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         // Add your login logic here
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
           (route) => false,
         );
       }
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ForgotPassPage(),
+                              builder: (context) => const ForgotPassPage(),
                             ),
                           );
                         },
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
 class LogoImage extends StatelessWidget {
   final BoxConstraints constraints;
 
-  const LogoImage({required this.constraints});
+  const LogoImage({super.key, required this.constraints});
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +151,7 @@ class LogoImage extends StatelessWidget {
 class EmailTextField extends StatelessWidget {
   final TextEditingController controller;
 
-  const EmailTextField({required this.controller});
+  const EmailTextField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +177,7 @@ class EmailTextField extends StatelessWidget {
 class PasswordTextField extends StatefulWidget {
   final TextEditingController controller;
 
-  const PasswordTextField({required this.controller});
+  const PasswordTextField({super.key, required this.controller});
 
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
@@ -224,7 +224,7 @@ class ForgotPasswordButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
 
-  const ForgotPasswordButton({required this.isLoading, required this.onPressed});
+  const ForgotPasswordButton({super.key, required this.isLoading, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +252,7 @@ class ForgotPasswordButton extends StatelessWidget {
 class ErrorMessage extends StatelessWidget {
   final String message;
 
-  const ErrorMessage({required this.message});
+  const ErrorMessage({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +272,7 @@ class LoginButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
 
-  const LoginButton({required this.isLoading, required this.onPressed});
+  const LoginButton({super.key, required this.isLoading, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -312,6 +312,8 @@ class LoginButton extends StatelessWidget {
 }
 
 class SignUpRow extends StatelessWidget {
+  const SignUpRow({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -339,9 +341,11 @@ class SignUpRow extends StatelessWidget {
 }
 
 class SocialMediaButtons extends StatelessWidget {
+  const SocialMediaButtons({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       height: MediaQuery.of(context).size.height * 0.1,
       child: Row(

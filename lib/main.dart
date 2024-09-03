@@ -14,9 +14,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
+      home: const SplashScreen(),
       routes: {
-        '/login': (context) => LoginScreen(),
+        '/login': (context) => const LoginScreen(),
       },
     );
   }
@@ -43,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = false; // Replace with actual login check
 
     if (isLoggedIn) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  MainScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const MainScreen()));
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginScreen()));
     }
@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
         builder: (context, constraints) {
           return Center(
             child: Image.asset(
-              'assets/BG.png',
+              'assets/icons/fg.png',
               width: constraints.maxWidth * 0.8, // Adjust the width based on screen size
               height: constraints.maxHeight * 0.8, // Adjust the height based on screen size
               fit: BoxFit.contain, // Adjust the image fit

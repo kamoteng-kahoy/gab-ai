@@ -55,6 +55,7 @@ flutter:
     - assets/icons/icon_lunch_outlined.png
     - assets/icons/icon_snacks_outlined.png
     - assets/icons/icon_dinner_outlined.png
+    - assets/icons/fg.png
 
   fonts:
     - family: Merriweather

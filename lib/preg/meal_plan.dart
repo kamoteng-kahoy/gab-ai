@@ -6,12 +6,14 @@ import 'package:gab_ai/preg/mealplan_lunch.dart';
 import 'package:gab_ai/preg/mealplan_snacks.dart';
 
 class MealPlanPage extends StatelessWidget {
+  const MealPlanPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: DefaultTabController(
           length: 4,
           child: Column(

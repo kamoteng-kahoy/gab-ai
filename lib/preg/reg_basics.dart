@@ -6,6 +6,8 @@ import 'reg_otp.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 
 class RegisBasics extends StatefulWidget {
+  const RegisBasics({super.key});
+
   @override
   State<RegisBasics> createState() => _RegisBasicsState();
 }

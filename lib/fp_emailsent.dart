@@ -62,7 +62,7 @@ class FPSent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Didn\'t Recieve? ",
+                  const Text("Didn't Recieve? ",
                   style: TextStyle(
                     fontFamily: 'Nunito Sans',
                     fontWeight: FontWeight.bold,

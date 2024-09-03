@@ -6,6 +6,8 @@ import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10.0),
               const TextGreetings(),
               const SizedBox(height: 40.0),
-              QuickNav(),
+              const QuickNav(),
               const SizedBox(height: 20.0),
               const Divider(
                 color: Colors.grey, // Set the color of the divider
@@ -36,16 +38,27 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Meal Plan',
+                  'Meal Plan for Today',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 18,
                   ),
                 ),
               ),
               const SizedBox(height: 20.0),
               const MealPlanSummary(),
               const SizedBox(height: 40.0),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Upcoming Appointments',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0), // Add a space at the end.
             ],
           ),
         ),
@@ -86,6 +99,8 @@ class TextGreetings extends StatelessWidget {
 }
 
 class QuickNav extends StatelessWidget {
+  const QuickNav({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -111,6 +126,8 @@ class QuickNav extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25.0),
               ),
               padding: const EdgeInsets.all(16.0),
+              shadowColor: Colors.black.withOpacity(0.9),
+              elevation: 5.0,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -159,46 +176,154 @@ class MealPlanSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double buttonWidth = MediaQuery.of(context).size.width * 0.4;
+
     return Column(
       children: [
-        _buildMealCard('Breakfast', 'assets/default.png'),
-        const SizedBox(height: 10),
-        _buildMealCard('Lunch', 'assets/default.png'),
-        const SizedBox(height: 10),
-        _buildMealCard('Snacks', 'assets/default.png'),
-        const SizedBox(height: 10),
-        _buildMealCard('Dinner', 'assets/default.png'),
-      ],
-    );
-  }
-
-  Widget _buildMealCard(String mealType, String imagePath) {
-    return Card(
-      color: SystemColors.secondaryColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            imagePath,
-            height: 150,
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              mealType,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              child: IconButton(
+                icon: Container(
+                  width: buttonWidth,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFF0E68C),Color(0xFFFFE4B5)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/icon_breakfast_outlined.png', width: 30, height: 30),
+                      const SizedBox(height: 10),
+                      const Text('Breakfast'),
+                    ],
+                  ),
+                ),
+                onPressed: () {},
+                tooltip: 'Breakfast',
               ),
             ),
-          ),
-        ],
-      ),
+            Flexible(
+              child: IconButton(
+                icon: Container(
+                  width: buttonWidth,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF90EE90),Color(0xFF98FB98)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/icon_lunch_outlined.png', width: 30, height: 30),
+                      const SizedBox(height: 10),
+                      const Text('Lunch'),
+                    ],
+                  ),
+                ),
+                onPressed: () {},
+                tooltip: 'Lunch',
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              child: IconButton(
+                icon: Container(
+                  width: buttonWidth,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFD2B48C),Color(0xFFFFA54F)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/icon_snacks_outlined.png', width: 30, height: 30),
+                      const SizedBox(height: 10),
+                      const Text('Snacks'),
+                    ],
+                  ),
+                ),
+                onPressed: () {},
+                tooltip: 'Snacks',
+              ),
+            ),
+            Flexible(
+              child: IconButton(
+                icon: Container(
+                  width: buttonWidth,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF87CEEB),Color(0xFFC6E2FF)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 10.0,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/icon_dinner_outlined.png', width: 30, height: 30),
+                      const SizedBox(height: 10),
+                      const Text('Dinner'),
+                    ],
+                  ),
+                ),
+                onPressed: () {},
+                tooltip: 'Dinner',
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

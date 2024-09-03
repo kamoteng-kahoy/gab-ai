@@ -10,6 +10,8 @@ void main() {
 }
 
 class RegisterAs extends StatelessWidget {
+  const RegisterAs({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

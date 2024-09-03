@@ -17,11 +17,11 @@ class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    MealPlanPage(),
-    ProfilePage(),
-    AppointmentsPage(),
-    SettingsPage(),
+    const HomePage(),
+    const MealPlanPage(),
+    const ProfilePage(),
+    const AppointmentsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -152,7 +152,7 @@ class MainScreenState extends State<MainScreen> {
               onTap: () {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                   (route) => false,
                 );
               },
@@ -179,8 +179,10 @@ class MainScreenState extends State<MainScreen> {
           onTap: _onItemTapped,
           items: [
             BottomBarItem(
-                icon: Icon(FluentIcons.home_24_filled,
-                  color: _selectedIndex == 0 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+                icon: Icon(
+                  _selectedIndex == 0 ? FluentIcons.home_24_filled : FluentIcons.home_24_regular,
+                  color: _selectedIndex == 0 ? SystemColors.primaryColorDarker : SystemColors.textColor,
+                ),
                 selectedIcon: const Icon(FluentIcons.home_24_filled,
                   color: SystemColors.primaryColorDarker,
                 ),
@@ -193,10 +195,9 @@ class MainScreenState extends State<MainScreen> {
                 ),
               ),
               BottomBarItem(
-                icon: Icon(FluentIcons.food_24_filled,
-                  color: _selectedIndex == 1 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-                selectedIcon: const Icon(FluentIcons.food_24_filled,
-                  color: SystemColors.primaryColorDarker,
+                icon: Icon(
+                  _selectedIndex == 1 ? FluentIcons.food_24_filled : FluentIcons.food_24_regular,
+                  color: _selectedIndex == 1 ? SystemColors.primaryColorDarker : SystemColors.textColor,
                 ),
                 title: Text('Meal Plan',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -207,10 +208,9 @@ class MainScreenState extends State<MainScreen> {
                 ),
               ),
               BottomBarItem(
-                icon: Icon(FluentIcons.calendar_24_filled,
-                color: _selectedIndex == 2 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-                selectedIcon: const Icon(FluentIcons.calendar_24_filled,
-                  color: SystemColors.primaryColorDarker,
+                icon: Icon(
+                  _selectedIndex == 2 ? FluentIcons.calendar_24_filled : FluentIcons.calendar_24_regular,
+                  color: _selectedIndex == 2 ? SystemColors.primaryColorDarker : SystemColors.textColor,
                 ),
                 title: Text('Appointments',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -221,10 +221,9 @@ class MainScreenState extends State<MainScreen> {
                 ),
               ),
               BottomBarItem(
-                icon: Icon(FluentIcons.book_24_filled,
-                  color: _selectedIndex == 3 ? SystemColors.primaryColorDarker : SystemColors.textColor),
-                selectedIcon: const Icon(FluentIcons.calendar_24_filled,
-                  color: SystemColors.primaryColorDarker,
+                icon: Icon(
+                  _selectedIndex == 3 ? FluentIcons.book_24_filled : FluentIcons.book_24_regular,
+                  color: _selectedIndex == 3 ? SystemColors.primaryColorDarker : SystemColors.textColor,
                 ),
                 title: const Text('Journals',
                   style: TextStyle(
@@ -235,8 +234,10 @@ class MainScreenState extends State<MainScreen> {
                 ),
               ),
               BottomBarItem(
-                icon: Icon(FluentIcons.settings_24_filled,
-                  color: _selectedIndex == 4 ? SystemColors.primaryColorDarker : SystemColors.textColor),
+                icon: Icon(
+                  _selectedIndex == 4 ? FluentIcons.settings_24_filled : FluentIcons.settings_24_regular,
+                  color: _selectedIndex == 4 ? SystemColors.primaryColorDarker : SystemColors.textColor,
+                ),
                 selectedIcon: const Icon(FluentIcons.settings_24_filled,
                   color: SystemColors.primaryColorDarker,
                 ),
@@ -256,27 +257,33 @@ class MainScreenState extends State<MainScreen> {
 }
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Profile Page'),
     );
   }
 }
 
 class AppointmentsPage extends StatelessWidget {
+  const AppointmentsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Journals Page'),
     );
   }
 }
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Settings Page'),
     );
   }

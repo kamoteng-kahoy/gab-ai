@@ -23,7 +23,7 @@ class RegPhoto extends StatelessWidget {
 
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -34,7 +34,7 @@ class RegPhoto extends StatelessWidget {
               const SizedBox(height: 40.0),
               UploadPhoto(),
               const SizedBox(height: 60.0),
-              UploadButton(),
+              const UploadButton(),
             ],
           ),
         ),
@@ -83,6 +83,8 @@ class IntroText extends StatelessWidget {
 }
 
 class UploadPhoto extends StatefulWidget {
+  const UploadPhoto({super.key});
+
   @override
   _UploadPhotoState createState() => _UploadPhotoState();
 }
@@ -224,7 +226,7 @@ class _UploadButtonState extends State<UploadButton> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: RegPhoto(),
   ));
 }

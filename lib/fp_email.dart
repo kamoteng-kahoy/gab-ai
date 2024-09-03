@@ -15,8 +15,8 @@ class ForgotPassPage extends StatefulWidget {
 class _ForgotPassPageState extends State<ForgotPassPage> {
   final TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
-  bool _isEmpty = false;
-  String _email = '';
+  final bool _isEmpty = false;
+  final String _email = '';
   String _errorMessage = '';
 
   bool _isValidEmail(String email){
@@ -191,7 +191,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don\'t have an account? "),
+                    const Text("Don't have an account? "),
                     TextButton(
                       onPressed: () {
                         Navigator.push(

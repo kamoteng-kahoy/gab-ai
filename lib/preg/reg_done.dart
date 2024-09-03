@@ -3,6 +3,8 @@ import 'package:gab_ai/colors.dart';
 import 'dashboard.dart';
 
 class RegDone extends StatelessWidget {
+  const RegDone({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

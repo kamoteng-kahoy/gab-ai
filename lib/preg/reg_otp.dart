@@ -5,6 +5,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'reg_photo.dart';
 
 class RegOTP extends StatefulWidget {
+  const RegOTP({super.key});
+
   @override
   State<RegOTP> createState() => _RegOTPState();
 }
