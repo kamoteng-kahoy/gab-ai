@@ -30,7 +30,7 @@ class MealPlanPage extends StatelessWidget {
                   Tab(icon: Image.asset('assets/icons/icon_breakfast_outlined.png', width: 28, height: 28)),
                   Tab(icon: Image.asset('assets/icons/icon_lunch_outlined.png', width: 28, height: 28)),
                   Tab(icon: Image.asset('assets/icons/icon_snacks_outlined.png', width: 28, height: 28)),
-                  Tab(icon: Image.asset('assets/icons/icon_dinner_outlined.png', width: 28, height: 28)),
+                  //Tab(icon: Image.asset('assets/icons/icon_dinner_outlined.png', width: 28, height: 28)),
                 ],
               ),
               const Expanded(
