@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
-import 'preg/mainscreen.dart';
+import 'preg/main_screen.dart';
 import 'nd/n_homepage.dart';
 import 'colors.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'homepage.dart';
+import 'home_page.dart';
 
 class RegDone extends StatelessWidget {
   @override

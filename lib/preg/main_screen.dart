@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:gab_ai/preg/homepage.dart';
+import 'package:gab_ai/preg/home_page.dart';
 import 'package:gab_ai/login.dart';
-import 'package:gab_ai/preg/mealplan.dart';
+import 'package:gab_ai/preg/meal_plan.dart';
 
 class MainScreen extends StatefulWidget {
   @override

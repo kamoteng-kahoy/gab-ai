@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gab_ai/preg/mainscreen.dart';
+import 'package:gab_ai/preg/main_screen.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
