@@ -6,10 +6,17 @@ class MealPlanBreakfast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/logo-word.png', // Path to your image
+          height: 40, // Adjust the height as needed
+        ),
+        backgroundColor: SystemColors.primaryColor, // Adjust the color as needed
+      ),
 
-      body: Padding(
+      body: const Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(

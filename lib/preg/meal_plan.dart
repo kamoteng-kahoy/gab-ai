@@ -13,34 +13,122 @@ class MealPlanPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: DefaultTabController(
-          length: 4,
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TabBar(
-                indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: SystemColors.primaryColor,
+              Text('Your Meal Plan for Today',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 26
                 ),
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: SystemColors.textColorDarker,
-                dividerColor: Colors.transparent,
-                tabs: [
-                  Tab(icon: Image.asset('assets/icons/icon_breakfast_outlined.png', width: 28, height: 28)),
-                  Tab(icon: Image.asset('assets/icons/icon_lunch_outlined.png', width: 28, height: 28)),
-                  Tab(icon: Image.asset('assets/icons/icon_snacks_outlined.png', width: 28, height: 28)),
-                  //Tab(icon: Image.asset('assets/icons/icon_dinner_outlined.png', width: 28, height: 28)),
-                ],
               ),
-              const Expanded(
-                child: TabBarView(
-                  children: [
-                    MealPlanBreakfast(),
-                    MealPlanLunch(),
-                    MealPlanSnacks(),
-                    MealPlanDinner(),
-                  ],
+              const SizedBox(height: 20),
+              MealPlanCard(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MealPlanCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MealCard(
+          title: 'Breakfast',
+          imagePath: 'assets/background_images/bg_breakfast.jpg', 
+          onTap: () { 
+            print('Breakfast'); 
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MealPlanBreakfast()),
+            );
+          },
+        ),
+        MealCard(
+          title: 'Lunch', 
+          imagePath: 'assets/background_images/bg_lunch.jpg', 
+          onTap: () { 
+            print('Lunch');
+          },
+        ),
+        MealCard(
+          title: 'Snacks', 
+          imagePath: 'assets/background_images/bg_snacks.jpg', 
+          onTap: () { 
+            print('Snacks');
+          },
+        ),
+        MealCard(
+          title: 'Dinner', 
+          imagePath: 'assets/background_images/bg_dinner.jpg', 
+          onTap: () { 
+            print('Dinner');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class MealCard extends StatelessWidget {
+  final String title;
+  final String imagePath;
+  final VoidCallback onTap;
+
+  const MealCard({super.key, 
+    required this.title, 
+    required this.imagePath, 
+    required this.onTap
+    });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+        ),
+        child: SizedBox(
+          height: 120,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
+                  gradient: const LinearGradient(
+                    colors: [Colors.black, Colors.transparent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white, // Ensure text is visible on the image
+                  ),
                 ),
               ),
             ],

@@ -40,7 +40,6 @@ flutter:
     - assets/preg_icon.png
     - assets/nd_icon.png
     - assets/otp.png
-    - assets/word-only.png
     - assets/check.png
     - assets/check_small.png
     - assets/ok.png
@@ -56,6 +55,7 @@ flutter:
     - assets/icons/icon_snacks_outlined.png
     - assets/icons/icon_dinner_outlined.png
     - assets/icons/fg.png
+    - assets/background_images/
 
   fonts:
     - family: Merriweather
