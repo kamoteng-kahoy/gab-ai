@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/mealplan_dinner.dart';
 import 'package:gab_ai/preg/mealplan_lunch.dart';
@@ -10,10 +11,12 @@ class MealPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String currentDate = DateFormat('MMMM dd, yyyy').format(DateTime.now());
+
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,6 +27,14 @@ class MealPlanPage extends StatelessWidget {
                   fontSize: 26
                 ),
               ),
+              const SizedBox(height: 5),
+              Text(
+                currentDate,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 16,
+                  color: Colors.grey,
+              ),
+            ),
               const SizedBox(height: 20),
               MealPlanCard(),
             ],
@@ -44,10 +55,9 @@ class MealPlanCard extends StatelessWidget {
           title: 'Breakfast',
           imagePath: 'assets/background_images/bg_breakfast.jpg', 
           onTap: () { 
-            print('Breakfast'); 
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MealPlanBreakfast()),
+              MaterialPageRoute(builder: (context) => const MealPlanBreakfast()),
             );
           },
         ),
@@ -55,7 +65,10 @@ class MealPlanCard extends StatelessWidget {
           title: 'Lunch', 
           imagePath: 'assets/background_images/bg_lunch.jpg', 
           onTap: () { 
-            print('Lunch');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MealPlanLunch()),
+            );
           },
         ),
         MealCard(
@@ -69,7 +82,10 @@ class MealPlanCard extends StatelessWidget {
           title: 'Dinner', 
           imagePath: 'assets/background_images/bg_dinner.jpg', 
           onTap: () { 
-            print('Dinner');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MealPlanDinner())
+            );
           },
         ),
       ],

@@ -14,6 +14,7 @@ dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
   image_picker: ^1.1.2
+  intl: ^0.19.0
   pin_code_fields: ^8.0.1
   stylish_bottom_bar: ^1.1.0
 
@@ -56,6 +57,7 @@ flutter:
     - assets/icons/icon_dinner_outlined.png
     - assets/icons/fg.png
     - assets/background_images/
+    - assets/cover_photos/
 
   fonts:
     - family: Merriweather

@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: SystemColors.bgColorLighter,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
               const SizedBox(height: 10.0),

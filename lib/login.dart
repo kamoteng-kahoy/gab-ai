@@ -140,7 +140,7 @@ class LogoImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/word-only.png',
+      'assets/logo-word.png',
       width: constraints.maxWidth * 0.6,
       height: constraints.maxHeight * 0.2,
       fit: BoxFit.contain,

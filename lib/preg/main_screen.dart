@@ -45,7 +45,7 @@ class MainScreenState extends State<MainScreen> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: AppBar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: SystemColors.bgColorLighter,
             centerTitle: true,
             leading: Builder(
             builder: (context) => Padding(
