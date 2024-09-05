@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/preferences_personal-info.dart';
 import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/mealplan_dinner.dart';
@@ -37,6 +38,9 @@ class MealPlanPage extends StatelessWidget {
             ),
               const SizedBox(height: 20),
               const MealPlanCard(),
+              const SizedBox(height: 30),
+              const PreferencesButton(),
+              const SizedBox(height: 40)
             ],
           ),
         ),
@@ -153,6 +157,34 @@ class MealCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class PreferencesButton extends StatelessWidget {
+  const PreferencesButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Have specific preferences?"),
+        TextButton(
+          onPressed: () {
+            // Navigate to Register As screen
+            print('Pressed');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>PreferencesPersonal()),
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.zero,
+            child: Text('Set Here'),
+          ),
+        ),
+      ],
     );
   }
 }
