@@ -244,7 +244,7 @@ class _NextButtonState extends State<NextButton> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RegOTP(),
+        builder: (context) => const RegOTP(),
       ),
     );
   }
@@ -315,7 +315,7 @@ class BackToLogin extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: RegisBasics(),
   ));
 }

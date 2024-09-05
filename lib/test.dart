@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -105,14 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: _submit,
                       ),
                       const SizedBox(height: 6.0),
-                      SignUpRow(),
+                      const SignUpRow(),
                       const SizedBox(height: 30.0),
                       Text(
                         'Or continue with:',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 10.0),
-                      SocialMediaButtons(),
+                      const SocialMediaButtons(),
                       const Spacer(),
                     ],
                   ),
@@ -296,7 +295,7 @@ class SignUpRow extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RegisterAs(),
+                builder: (context) => const RegisterAs(),
               ),
             );
           },

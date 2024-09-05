@@ -21,20 +21,20 @@ class RegPhoto extends StatelessWidget {
 		  centerTitle: true,
 		  ),
 
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 30),
-              const Header(),
-              const SizedBox(height: 16.0),
-              const IntroText(),
-              const SizedBox(height: 40.0),
+              SizedBox(height: 30),
+              Header(),
+              SizedBox(height: 16.0),
+              IntroText(),
+              SizedBox(height: 40.0),
               UploadPhoto(),
-              const SizedBox(height: 60.0),
-              const UploadButton(),
+              SizedBox(height: 60.0),
+              UploadButton(),
             ],
           ),
         ),
@@ -137,7 +137,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RegDone(),
+              builder: (context) => const RegDone(),
             ),
           );
         }
@@ -189,7 +189,7 @@ class _UploadButtonState extends State<UploadButton> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => RegDone(),
+          builder: (context) => const RegDone(),
         ),
       );
   }

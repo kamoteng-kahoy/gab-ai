@@ -66,7 +66,7 @@ class MealPlanDinner extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  RecommendedFoodsCard(),
+                  const RecommendedFoodsCard(),
                   const SizedBox(height: 20)
                 ],
               ),

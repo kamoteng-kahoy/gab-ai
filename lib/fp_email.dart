@@ -197,7 +197,7 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterAs(),
+                            builder: (context) => const RegisterAs(),
                           ),
                         );
                       },

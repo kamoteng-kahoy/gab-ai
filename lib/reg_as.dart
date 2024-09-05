@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/theme.dart';
-import 'theme.dart';
 import 'colors.dart';
 import 'login.dart';
 import 'preg/reg_basics.dart';
 
 void main() {
-  runApp(RegisterAs());
+  runApp(const RegisterAs());
 }
 
 class RegisterAs extends StatelessWidget {
@@ -62,7 +61,7 @@ class RegisterAs extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisBasics(),
+                            builder: (context) => const RegisBasics(),
                           ),
                         );
                       },

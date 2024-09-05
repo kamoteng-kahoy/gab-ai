@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/main_screen.dart';
-import 'package:gab_ai/preg/meal_plan.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -120,7 +120,7 @@ class _GoButtonState extends State<GoButton> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
         ),
       );
   }
@@ -157,7 +157,7 @@ class _GoButtonState extends State<GoButton> {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: RegDone(),
   ));
 }

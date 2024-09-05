@@ -158,7 +158,7 @@ class CustomPinCodeTextField extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: RegOTP(),
   ));
 }

@@ -36,7 +36,7 @@ class MealPlanPage extends StatelessWidget {
               ),
             ),
               const SizedBox(height: 20),
-              MealPlanCard(),
+              const MealPlanCard(),
             ],
           ),
         ),
@@ -46,6 +46,8 @@ class MealPlanPage extends StatelessWidget {
 }
 
 class MealPlanCard extends StatelessWidget {
+  const MealPlanCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
