@@ -51,9 +51,9 @@ class PreferencesPersonal extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              const PersonalInfoInput(),
+              PersonalInfoInput(),
               const SizedBox(height: 30),
-              const DietaryPreferencesInput(),
+              DietaryPreferencesInput(),
               const SizedBox(height: 30),
               const HealhConditionsInput(),
               const SizedBox(height: 60),
@@ -68,7 +68,6 @@ class PreferencesPersonal extends StatelessWidget {
 }
 
 class PersonalInfoInput extends StatefulWidget {
-  const PersonalInfoInput({Key? key});
 
   @override
   State<PersonalInfoInput> createState() => _PersonalInfoInputState();
@@ -196,14 +195,13 @@ class _PersonalInfoInputState extends State<PersonalInfoInput> {
 }
 
 class DietaryPreferencesInput extends StatefulWidget {
-  const DietaryPreferencesInput({Key? key});
 
   @override
   State<DietaryPreferencesInput> createState() => _DietaryPreferencesInputState();
 }
 
 class _DietaryPreferencesInputState extends State<DietaryPreferencesInput> {
-  List<String> _selectedPreferences = []; // State variable to hold the selected preferences
+  final List<String> _selectedPreferences = []; // State variable to hold the selected preferences
 
   @override
   Widget build(BuildContext context) {
@@ -280,47 +278,16 @@ class _DietaryPreferencesInputState extends State<DietaryPreferencesInput> {
   }
 }
 
-class SubmitButton extends StatelessWidget {
-  const SubmitButton({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 250,
-        height: 60,
-        child: ElevatedButton(
-          onPressed: () {
-            // Add code to submit the form
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: SystemColors.primaryColorDarker,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(21),
-            ),
-          ),
-          child: const Text('Submit',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: SystemColors.bgWhite,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class HealhConditionsInput extends StatefulWidget {
-  const HealhConditionsInput({Key? key});
+  const HealhConditionsInput({super.key});
 
   @override
   State<HealhConditionsInput> createState() => _HealhConditionsInputState();
 }
 
 class _HealhConditionsInputState extends State<HealhConditionsInput> {
-  List<String> _selectedConditions = []; // State variable to hold the selected conditions
+  final List<String> _selectedConditions = []; // State variable to hold the selected conditions
 
   @override
   Widget build(BuildContext context) {
@@ -340,6 +307,19 @@ class _HealhConditionsInputState extends State<HealhConditionsInput> {
           Wrap(
             spacing: 10,
             children: _buildConditionChips(),
+          ),
+          const SizedBox(height: 15),
+          const TextField(
+            decoration: InputDecoration(
+              labelText: 'If Others, please specify',
+              labelStyle: TextStyle(
+                fontSize: 16,
+              ),
+              border: UnderlineInputBorder(),
+            ),
+            style: TextStyle(
+              fontSize: 16,
+            ),
           ),
         ],
       ),
@@ -381,6 +361,38 @@ class _HealhConditionsInputState extends State<HealhConditionsInput> {
         },
       );
     }).toList();
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  const SubmitButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 250,
+        height: 60,
+        child: ElevatedButton(
+          onPressed: () {
+            // Add code to submit the form
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: SystemColors.primaryColorDarker,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(21),
+            ),
+          ),
+          child: const Text('Submit',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: SystemColors.bgWhite,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/main_screen.dart';
+import 'package:gab_ai/preg/mealplan_breakfast.dart';
+import 'package:gab_ai/preg/mealplan_dinner.dart';
+import 'package:gab_ai/preg/mealplan_lunch.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -209,7 +212,12 @@ class MealPlanSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MealPlanBreakfast()),
+                  );
+                },
                 tooltip: 'Breakfast',
               ),
             ),
@@ -242,7 +250,12 @@ class MealPlanSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MealPlanLunch()),
+                  );
+                },
                 tooltip: 'Lunch',
               ),
             ),
@@ -314,7 +327,12 @@ class MealPlanSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MealPlanDinner()),
+                  );
+                },
                 tooltip: 'Dinner',
               ),
             ),

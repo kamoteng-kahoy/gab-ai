@@ -176,7 +176,7 @@ class PreferencesButton extends StatelessWidget {
             print('Pressed');
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>PreferencesPersonal()),
+              MaterialPageRoute(builder: (context) =>const PreferencesPersonal()),
             );
           },
           child: const Padding(
