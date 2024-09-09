@@ -12,6 +12,7 @@ dependencies:
   fluentui_system_icons: ^1.1.255
   flutter:
     sdk: flutter
+  flutter_facebook_auth: ^7.0.1
   flutter_launcher_icons: ^0.13.1
   image_picker: ^1.1.2
   intl: ^0.19.0

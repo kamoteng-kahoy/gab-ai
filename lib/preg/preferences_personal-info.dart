@@ -68,6 +68,8 @@ class PreferencesPersonal extends StatelessWidget {
 }
 
 class PersonalInfoInput extends StatefulWidget {
+  const PersonalInfoInput({super.key});
+
 
   @override
   State<PersonalInfoInput> createState() => _PersonalInfoInputState();
@@ -195,6 +197,8 @@ class _PersonalInfoInputState extends State<PersonalInfoInput> {
 }
 
 class DietaryPreferencesInput extends StatefulWidget {
+  const DietaryPreferencesInput({super.key});
+
 
   @override
   State<DietaryPreferencesInput> createState() => _DietaryPreferencesInputState();

@@ -49,5 +49,26 @@
 	<string>We need access to the camera to take pictures for your profile.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to the photo library to select pictures for your profile.</string>
+	
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>fb{your-app-id}</string>
+		</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>{your-app-id}</string>
+	<key>FacebookDisplayName</key>
+	<string>{your-app-name}</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>fbapi</string>
+	<string>fb-messenger-api</string>
+	<string>fbauth2</string>
+	<string>fbshareextension</string>
+	</array>
 </dict>
 </plist>

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/mealplan_dinner.dart';
 import 'package:gab_ai/preg/mealplan_lunch.dart';
-import 'package:gab_ai/preg/mealplan_snacks.dart';
 
 class MealPlanPage extends StatelessWidget {
   const MealPlanPage({super.key});

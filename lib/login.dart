@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/preg/main_screen.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -351,8 +352,21 @@ class SocialMediaButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconButton(
-            onPressed: () {
-              // Add your Facebook sign-in logic here
+            onPressed: () async {
+              try {
+                final LoginResult result = await FacebookAuth.instance.login();
+                if (result.status == LoginStatus.success) {
+                  // You are logged in
+                  final AccessToken accessToken = result.accessToken!;
+                  // Handle the access token as needed
+                } else {
+                  // Handle login failure
+                  print(result.status);
+                  print(result.message);
+                }
+              } catch (e) {
+                print('Error during Facebook login: $e');
+              }
             },
             icon: ClipRRect(
               borderRadius: BorderRadius.circular(15),
