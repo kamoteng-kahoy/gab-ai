@@ -4,6 +4,8 @@ import 'package:gab_ai/preg/booked_appointments.dart';
 import 'package:gab_ai/preg/list_appointments.dart';
 
 class AppointmentScreen extends StatefulWidget {
+  const AppointmentScreen({super.key});
+
   @override
   _AppointmentScreenState createState() => _AppointmentScreenState();
 }
@@ -31,7 +33,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
         children: [
           Container(
             width: 300,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   color: Colors.transparent, // Removes the line below the TabBar
@@ -73,7 +75,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
               controller: _tabController,
               children: [
                 AppointmentsList(),
-                BookedAppointments()
+                const BookedAppointments()
               ],
             ),
           ),

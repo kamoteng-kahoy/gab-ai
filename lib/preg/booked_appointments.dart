@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 
 class BookedAppointments extends StatelessWidget {
+  const BookedAppointments({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +31,7 @@ class BookedAppointments extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: BookedAppointments(),
   ));
 }
