@@ -5,6 +5,8 @@ void main() {
 }
 
 class AppointmentScreen extends StatelessWidget {
+  const AppointmentScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,28 +21,28 @@ class AppointmentScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               tabs: [
-                 Container(
+                 SizedBox(
                   height: 45, // Set the desired height here
                   child: Tab(
-                    icon: Icon(Icons.home),
+                    icon: const Icon(Icons.home),
                     child: Container(
                       color: Colors.transparent, // Transparent background for unselected tabs
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 45, // Set the desired height here
                   child: Tab(
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     child: Container(
                       color: Colors.transparent, // Transparent background for unselected tabs
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 45, // Set the desired height here
                   child: Tab(
-                    icon: Icon(Icons.settings),
+                    icon: const Icon(Icons.settings),
                     child: Container(
                       color: Colors.transparent, // Transparent background for unselected tabs
                     ),
@@ -49,7 +51,7 @@ class AppointmentScreen extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               Center(child: Text('Tab 1')),
               Center(child: Text('Tab 2')),

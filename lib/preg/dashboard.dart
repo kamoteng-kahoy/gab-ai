@@ -354,17 +354,17 @@ class AppointmentsSummary extends StatelessWidget {
     List<Map<String, String>> appointments = [
       {
         'name': 'John Doe',
-        'date': DateTime.now().add(Duration(days: 1)).toString().split(' ')[0],
+        'date': DateTime.now().add(const Duration(days: 1)).toString().split(' ')[0],
         'profilePicture': 'https://avatar.iran.liara.run/public/boy'
       },
       {
         'name': 'Jane Smith',
-        'date': DateTime.now().add(Duration(days: 2)).toString().split(' ')[0],
+        'date': DateTime.now().add(const Duration(days: 2)).toString().split(' ')[0],
         'profilePicture': 'https://avatar.iran.liara.run/public/88'
       },
       {
         'name': 'Alice Johnson',
-        'date': DateTime.now().add(Duration(days: 3)).toString().split(' ')[0],
+        'date': DateTime.now().add(const Duration(days: 3)).toString().split(' ')[0],
         'profilePicture': 'https://avatar.iran.liara.run/public/girl'
       },
     ];
