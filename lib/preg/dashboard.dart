@@ -369,22 +369,39 @@ class AppointmentsSummary extends StatelessWidget {
       },
     ];
 
+    List<void Function()> onTapFunctions = [
+      () {
+        // Function for the first card
+        print('Card tapped: John Doe');
+      },
+      // Add more functions for other cards here
+      (){
+        print('Card tapped: Jane Smith');
+      },
+      (){
+        print('Card tapped: Alice Johnson');
+      }
+    ];
+
     return Column(
       children: List.generate(
         upcomingAppointments,
         (index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
-          child: Card(
-            child: ListTile(
-              leading: Image.network(appointments[index]['profilePicture']!),
-              title: Text(
-                appointments[index]['name']!,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
+          child: InkWell(
+            onTap: onTapFunctions[index],
+            child: Card(
+              child: ListTile(
+                leading: Image.network(appointments[index]['profilePicture']!),
+                title: Text(
+                  appointments[index]['name']!,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
                 ),
+                subtitle: Text('Date: ${appointments[index]['date']}'),
               ),
-              subtitle: Text('Date: ${appointments[index]['date']}'),
             ),
           ),
         ),

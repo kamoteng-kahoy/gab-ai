@@ -1,65 +1,90 @@
 import 'package:flutter/material.dart';
+import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/booked_appointments.dart';
+import 'package:gab_ai/preg/list_appointments.dart';
 
-void main() {
-  runApp(AppointmentScreen());
+class AppointmentScreen extends StatefulWidget {
+  @override
+  _AppointmentScreenState createState() => _AppointmentScreenState();
 }
 
-class AppointmentScreen extends StatelessWidget {
-  const AppointmentScreen({super.key});
+class _AppointmentScreenState extends State<AppointmentScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3, // Number of tabs
-        child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 0,
-            bottom: TabBar(
-              indicator: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
+    return Scaffold(
+      backgroundColor: SystemColors.bgColorLighter,
+      body: Column(
+        children: [
+          Container(
+            width: 300,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.transparent, // Removes the line below the TabBar
+                ),
               ),
+            ),
+            child: TabBar(
+              controller: _tabController,
+              indicator: BoxDecoration(
+                color: SystemColors.primaryColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelColor: SystemColors.textColorDarker,// Ensures no line is drawn
               tabs: [
-                 SizedBox(
-                  height: 45, // Set the desired height here
-                  child: Tab(
-                    icon: const Icon(Icons.home),
-                    child: Container(
-                      color: Colors.transparent, // Transparent background for unselected tabs
+                Tab(
+                  child: Text(
+                    'Available',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 45, // Set the desired height here
-                  child: Tab(
-                    icon: const Icon(Icons.search),
-                    child: Container(
-                      color: Colors.transparent, // Transparent background for unselected tabs
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 45, // Set the desired height here
-                  child: Tab(
-                    icon: const Icon(Icons.settings),
-                    child: Container(
-                      color: Colors.transparent, // Transparent background for unselected tabs
+                Tab(
+                  child: Text(
+                    'Booked',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          body: const TabBarView(
-            children: [
-              Center(child: Text('Tab 1')),
-              Center(child: Text('Tab 2')),
-              Center(child: Text('Tab 3')),
-            ],
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                AppointmentsList(),
+                BookedAppointments()
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: AppointmentScreen(),
+  ));
 }
