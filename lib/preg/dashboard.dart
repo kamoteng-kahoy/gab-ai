@@ -59,6 +59,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 20.0), // Add a space at the end.
+              const AppointmentsSummary(),
+              const SizedBox(height: 40.0),
             ],
           ),
         ),
@@ -339,6 +341,54 @@ class MealPlanSummary extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+}
+
+class AppointmentsSummary extends StatelessWidget {
+  const AppointmentsSummary({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int upcomingAppointments = 3; // Replace with the actual number of upcoming appointments
+    List<Map<String, String>> appointments = [
+      {
+        'name': 'John Doe',
+        'date': DateTime.now().add(Duration(days: 1)).toString().split(' ')[0],
+        'profilePicture': 'https://avatar.iran.liara.run/public/boy'
+      },
+      {
+        'name': 'Jane Smith',
+        'date': DateTime.now().add(Duration(days: 2)).toString().split(' ')[0],
+        'profilePicture': 'https://avatar.iran.liara.run/public/88'
+      },
+      {
+        'name': 'Alice Johnson',
+        'date': DateTime.now().add(Duration(days: 3)).toString().split(' ')[0],
+        'profilePicture': 'https://avatar.iran.liara.run/public/girl'
+      },
+    ];
+
+    return Column(
+      children: List.generate(
+        upcomingAppointments,
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: Card(
+            child: ListTile(
+              leading: Image.network(appointments[index]['profilePicture']!),
+              title: Text(
+                appointments[index]['name']!,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ),
+              subtitle: Text('Date: ${appointments[index]['date']}'),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

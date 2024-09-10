@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/appointments_main.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gab_ai/preg/dashboard.dart';
@@ -19,8 +20,8 @@ class MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const HomePage(),
     const MealPlanPage(),
-    const ProfilePage(),
-    const AppointmentsPage(),
+    AppointmentScreen(),
+    const JournalPage(),
     const SettingsPage(),
   ];
 
@@ -256,19 +257,9 @@ class MainScreenState extends State<MainScreen> {
   }
 }
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile Page'),
-    );
-  }
-}
-
-class AppointmentsPage extends StatelessWidget {
-  const AppointmentsPage({super.key});
+class JournalPage extends StatelessWidget {
+  const JournalPage({super.key});
 
   @override
   Widget build(BuildContext context) {
