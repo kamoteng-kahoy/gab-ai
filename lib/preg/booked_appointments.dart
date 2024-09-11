@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/booked_message.dart';
 
 class BookedAppointments extends StatelessWidget {
   const BookedAppointments({super.key});
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
@@ -19,13 +20,18 @@ class BookedAppointments extends StatelessWidget {
               ),
               title: Text('Message ${index + 1}'),
               subtitle: const Text('This is a sample message.'),
-              onTap: () {
-                // Handle tapping on a message
-              },
+              onTap: () => _handleMessageTap(context),
             );
           },
         ),
       ),
+    );
+  }
+
+  void _handleMessageTap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => BookedMessage()),
     );
   }
 }
