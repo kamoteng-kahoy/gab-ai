@@ -91,8 +91,24 @@ class _BookedMessageState extends State<BookedMessage> {
                   );
                 } else if (message.type == 'file') {
                   if (message.fileType == 'jpg' || message.fileType == 'png') {
-                    return ListTile(
-                      title: Image.file(File(message.content)),
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: SystemColors.primaryColorDarker,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Image.file(
+                            File(message.content),
+                            width: 200, // Set the desired width
+                            height: 200, // Set the desired height
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ],
                     );
                   }
                 }
