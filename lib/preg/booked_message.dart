@@ -82,7 +82,13 @@ class _BookedMessageState extends State<BookedMessage> {
               itemBuilder: (context, index) {
                 final message = messages[index];
                 if (message.type == 'text') {
-                  return ChatBubble(message: message.content);
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: ChatBubble(message: message.content)),
+                    ],
+                  );
                 } else if (message.type == 'file') {
                   if (message.fileType == 'jpg' || message.fileType == 'png') {
                     return ListTile(
