@@ -24,8 +24,36 @@ class _BookedMessageState extends State<BookedMessage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final List<Message> messages = [];
+  final ScrollController _scrollController = ScrollController();
   String? _filePath;
   String? _fileType;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_scrollToBottom);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_scrollToBottom);
+    _scrollController.dispose();
+    _focusNode.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    if (_focusNode.hasFocus) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+  }
 
   void _sendMessage() {
     if (_controller.text.isNotEmpty) {
@@ -39,6 +67,7 @@ class _BookedMessageState extends State<BookedMessage> {
         }
         _controller.clear();
       });
+      _scrollToBottom();
       _focusNode.requestFocus(); // Retain the keyboard
     }
   }
@@ -68,7 +97,7 @@ class _BookedMessageState extends State<BookedMessage> {
         backgroundColor: SystemColors.bgColorLighter,
         toolbarHeight: 70,
         title: const Text('Booked Messages'),
-          leading: IconButton(
+        leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_20_filled), // Change this to any icon you prefer
           onPressed: () {
             Navigator.of(context).pop();
@@ -77,7 +106,12 @@ class _BookedMessageState extends State<BookedMessage> {
       ),
       body: Column(
         children: [
-          MessageList(messages: messages),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: MessageList(messages: messages),
+            ),
+          ),
           MessageInput(
             controller: _controller,
             focusNode: _focusNode,
@@ -123,55 +157,55 @@ class MessageList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final message = messages[index];
-          if (message.type == 'text') {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: messages.length,
+      itemBuilder: (context, index) {
+        final message = messages[index];
+        if (message.type == 'text') {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Flexible(
+                child: ChatBubble(message: message.content)),
+            ],
+          );
+        } else if (message.type == 'file') {
+          if (message.fileType == 'jpg' || message.fileType == 'png') {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
               children: [
-                Flexible(
-                  child: ChatBubble(message: message.content)),
-              ],
-            );
-          } else if (message.type == 'file') {
-            if (message.fileType == 'jpg' || message.fileType == 'png') {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: SystemColors.primaryColorDarker,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImagePreviewScreen(imagePath: message.content),
-                          ),
-                        );
-                      },
-                      child: Image.file(
-                        File(message.content),
-                        width: 200, // Set the desired width
-                        height: 200, // Set the desired height
-                        fit: BoxFit.cover,
-                      ),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: SystemColors.primaryColorDarker,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImagePreviewScreen(imagePath: message.content),
+                        ),
+                      );
+                    },
+                    child: Image.file(
+                      File(message.content),
+                      width: 200, // Set the desired width
+                      height: 200, // Set the desired height
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ],
-              );
-            }
+                ),
+              ],
+            );
           }
-          return const SizedBox.shrink();
-        },
-      ),
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
