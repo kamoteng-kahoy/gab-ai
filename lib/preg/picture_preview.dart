@@ -1,5 +1,8 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:gab_ai/colors.dart';
 import 'dart:io';
+import 'package:path/path.dart' as path;
 
 class ImagePreviewScreen extends StatelessWidget {
   final String imagePath;
@@ -8,12 +11,33 @@ class ImagePreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fileName = path.basename(imagePath);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Preview'),
+        leading: IconButton(
+          icon: const Icon(FluentIcons.arrow_left_20_filled),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text(fileName,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
+        backgroundColor: SystemColors.bgColorLighter,
       ),
-      body: Center(
-        child: Image.file(File(imagePath)),
+      body: Container(
+        color: SystemColors.bgColorLighter,
+        child: Stack(
+          children: [
+            Center(
+              child: Image.file(File(imagePath)),
+            ),
+          ],
+        ),
       ),
     );
   }
