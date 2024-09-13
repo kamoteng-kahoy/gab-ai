@@ -77,91 +77,12 @@ class _BookedMessageState extends State<BookedMessage> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                if (message.type == 'text') {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        child: ChatBubble(message: message.content)),
-                    ],
-                  );
-                } else if (message.type == 'file') {
-                  if (message.fileType == 'jpg' || message.fileType == 'png') {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            color: SystemColors.primaryColorDarker,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ImagePreviewScreen(imagePath: message.content),
-                                ),
-                              );
-                            },
-                            child: Image.file(
-                              File(message.content),
-                              width: 200, // Set the desired width
-                              height: 200, // Set the desired height
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
-            child: Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    child: TextField(
-                      controller: _controller,
-                      focusNode: _focusNode,
-                      decoration: InputDecoration(
-                        hintText: 'Type a message...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                      ),
-                      onSubmitted: (value) => _sendMessage(),
-                      minLines: 1,
-                      maxLines: null,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(FluentIcons.attach_20_filled),
-                  onPressed: _uploadFiles,
-                ),
-                IconButton(
-                  icon: const Icon(FluentIcons.send_20_filled),
-                  onPressed: _sendMessage,
-                ),
-              ],
-            ),
+          MessageList(messages: messages),
+          MessageInput(
+            controller: _controller,
+            focusNode: _focusNode,
+            onSendMessage: _sendMessage,
+            onUploadFiles: _uploadFiles,
           ),
         ],
       ),
@@ -190,6 +111,121 @@ class ChatBubble extends StatelessWidget {
         message,
         style: const TextStyle(color: Colors.white),
         textAlign: TextAlign.left,
+      ),
+    );
+  }
+}
+
+class MessageList extends StatelessWidget {
+  final List<Message> messages;
+
+  const MessageList({super.key, required this.messages});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: messages.length,
+        itemBuilder: (context, index) {
+          final message = messages[index];
+          if (message.type == 'text') {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Flexible(
+                  child: ChatBubble(message: message.content)),
+              ],
+            );
+          } else if (message.type == 'file') {
+            if (message.fileType == 'jpg' || message.fileType == 'png') {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: SystemColors.primaryColorDarker,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImagePreviewScreen(imagePath: message.content),
+                          ),
+                        );
+                      },
+                      child: Image.file(
+                        File(message.content),
+                        width: 200, // Set the desired width
+                        height: 200, // Set the desired height
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+}
+
+class MessageInput extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final VoidCallback onSendMessage;
+  final VoidCallback onUploadFiles;
+
+  const MessageInput({
+    super.key,
+    required this.controller,
+    required this.focusNode,
+    required this.onSendMessage,
+    required this.onUploadFiles,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              child: TextField(
+                controller: controller,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                  hintText: 'Type a message...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                ),
+                onSubmitted: (value) => onSendMessage(),
+                minLines: 1,
+                maxLines: null,
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(FluentIcons.attach_20_filled),
+            onPressed: onUploadFiles,
+          ),
+          IconButton(
+            icon: const Icon(FluentIcons.send_20_filled),
+            onPressed: onSendMessage,
+          ),
+        ],
       ),
     );
   }
