@@ -3,6 +3,7 @@ import 'dart:io'; // Import the dart:io package
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:gab_ai/preg/picture_preview.dart';
 
 class BookedMessage extends StatefulWidget {
   const BookedMessage({super.key});
@@ -101,18 +102,28 @@ class _BookedMessageState extends State<BookedMessage> {
                             color: SystemColors.primaryColorDarker,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: Image.file(
-                            File(message.content),
-                            width: 200, // Set the desired width
-                            height: 200, // Set the desired height
-                            fit: BoxFit.cover,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImagePreviewScreen(imagePath: message.content),
+                                ),
+                              );
+                            },
+                            child: Image.file(
+                              File(message.content),
+                              width: 200, // Set the desired width
+                              height: 200, // Set the desired height
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ],
                     );
                   }
                 }
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               },
             ),
           ),
@@ -178,7 +189,7 @@ class ChatBubble extends StatelessWidget {
       child: Text(
         message,
         style: const TextStyle(color: Colors.white),
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.left,
       ),
     );
   }

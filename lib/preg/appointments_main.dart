@@ -86,7 +86,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: AppointmentScreen(),
   ));
 }
