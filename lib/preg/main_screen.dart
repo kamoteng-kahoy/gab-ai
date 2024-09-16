@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/appointments_main.dart';
+import 'package:gab_ai/preg/settings_page.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gab_ai/preg/dashboard.dart';
@@ -8,7 +9,9 @@ import 'package:gab_ai/login.dart';
 import 'package:gab_ai/preg/meal_plan.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final int initialTabIndex;
+
+  const MainScreen({Key? key, this.initialTabIndex = 0}) : super(key: key);
 
   @override
   MainScreenState createState() => MainScreenState();
@@ -22,8 +25,14 @@ class MainScreenState extends State<MainScreen> {
     const MealPlanPage(),
     const AppointmentScreen(),
     const JournalPage(),
-    const SettingsPage(),
+    const SettingsPage()
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialTabIndex;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -265,17 +274,6 @@ class JournalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text('Journals Page'),
-    );
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Settings Page'),
     );
   }
 }

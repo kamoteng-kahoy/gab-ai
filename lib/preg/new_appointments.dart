@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/appointments_done.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,7 @@ class _NewAppointmentsState extends State<NewAppointments> {
         title: Text('New Appointment',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w600,
+            fontSize: 22,
           ),
         ),
         toolbarHeight: 80,
@@ -226,7 +228,7 @@ class _TimePickerState extends State<TimePicker> {
 
   void _generateTimeSlots() {
     final times = <String>[];
-    for (int hour = 0; hour < 24; hour++) {
+    for (int hour = 8; hour <= 20; hour++) { // Start at 8 AM and end at 8 PM
       for (int minute = 0; minute < 60; minute += 30) {
         final time = TimeOfDay(hour: hour, minute: minute);
         final formattedTime = time.format(context);
@@ -252,43 +254,43 @@ class _TimePickerState extends State<TimePicker> {
           ),
         ),
         const SizedBox(height: 10),
-       SizedBox(
-        height: 200, // Set a fixed height for the GridView
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1, // Adjust the aspect ratio as needed
-          ),
-          scrollDirection: Axis.horizontal,
-          itemCount: _timeSlots.length,
-          itemBuilder: (context, index) {
-            final time = _timeSlots[index];
-            final isSelected = _selectedTime == time;
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedTime = time;
-                });
-              },
-              child: SizedBox(
-                width: 120, // Adjust the width as needed
-                height: 50, // Adjust the height as needed
-                child: Card(
-                  color: isSelected ? SystemColors.primaryColorDarker : Colors.white,
-                  child: Center(
-                    child: Text(
-                      time,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+        SizedBox(
+          height: 200, // Set a fixed height for the GridView
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1, // Adjust the aspect ratio as needed
+            ),
+            scrollDirection: Axis.horizontal,
+            itemCount: _timeSlots.length,
+            itemBuilder: (context, index) {
+              final time = _timeSlots[index];
+              final isSelected = _selectedTime == time;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _selectedTime = time;
+                  });
+                },
+                child: SizedBox(
+                  width: 120, // Adjust the width as needed
+                  height: 50, // Adjust the height as needed
+                  child: Card(
+                    color: isSelected ? SystemColors.primaryColorDarker : Colors.white,
+                    child: Center(
+                      child: Text(
+                        time,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
       ],
     );
   }
@@ -442,6 +444,7 @@ class _PatientDetailsState extends State<PatientDetails> {
                   ),
                 );
               }).toList(),
+              underline: const SizedBox.shrink(),
             ),
           ),
           ),
@@ -473,13 +476,10 @@ class _SetAppointmentButtonState extends State<SetAppointmentButton> {
       _isLoading = false;
     });
 
-    // Show a notification that the appointment is set
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Appointment set successfully!')),
-    );
-
-    // Navigate back
-    Navigator.pop(context);
+    // Show a success message
+    Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const DoneScreen()
+      ));
   }
 
   @override

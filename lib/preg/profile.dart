@@ -112,8 +112,13 @@ class CustomSliverAppBar extends StatelessWidget {
             centerTitle: true,
             title: opacity < 0.5 ? Text(name) : null,
             background: Container(
-              decoration: const BoxDecoration(
-                color: SystemColors.secondaryColor2, // Interpolate between two colors
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [SystemColors.secondaryColor2, SystemColors.bgColor],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(4.0),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
