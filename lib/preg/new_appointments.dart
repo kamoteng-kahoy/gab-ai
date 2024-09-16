@@ -46,15 +46,19 @@ class _NewAppointmentsState extends State<NewAppointments> {
           },
         ),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const DatePicker(),
-              const SizedBox(height: 20),
+              DatePicker(),
+              SizedBox(height: 30),
               TimePicker(),
-              const SizedBox(height: 20),
+              SizedBox(height: 30),
+              PatientDetails(),
+              SizedBox(height: 60),
+              SetAppointmentButton(),
+              SizedBox(height: 40)
             ],
           ),
         ),
@@ -204,6 +208,8 @@ class _DatePickerState extends State<DatePicker> {
 }
 
 class TimePicker extends StatefulWidget {
+  const TimePicker({super.key});
+
   @override
   _TimePickerState createState() => _TimePickerState();
 }
@@ -236,26 +242,39 @@ class _TimePickerState extends State<TimePicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 200, // Set a fixed height for the GridView
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 2,
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text('Set Time',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
-            scrollDirection: Axis.horizontal,
-            itemCount: _timeSlots.length,
-            itemBuilder: (context, index) {
-              final time = _timeSlots[index];
-              final isSelected = _selectedTime == time;
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedTime = time;
-                  });
-                },
+          ),
+        ),
+        const SizedBox(height: 10),
+       SizedBox(
+        height: 200, // Set a fixed height for the GridView
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1, // Adjust the aspect ratio as needed
+          ),
+          scrollDirection: Axis.horizontal,
+          itemCount: _timeSlots.length,
+          itemBuilder: (context, index) {
+            final time = _timeSlots[index];
+            final isSelected = _selectedTime == time;
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedTime = time;
+                });
+              },
+              child: SizedBox(
+                width: 120, // Adjust the width as needed
+                height: 50, // Adjust the height as needed
                 child: Card(
-                  color: isSelected ? Colors.blue : Colors.white,
+                  color: isSelected ? SystemColors.primaryColorDarker : Colors.white,
                   child: Center(
                     child: Text(
                       time,
@@ -265,11 +284,230 @@ class _TimePickerState extends State<TimePicker> {
                     ),
                   ),
                 ),
-              );
-            },
+              ),
+            );
+          },
+        ),
+      ),
+      ],
+    );
+  }
+}
+
+class PatientDetails extends StatefulWidget {
+  const PatientDetails({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _PatientDetailsState createState() => _PatientDetailsState();
+}
+
+class _PatientDetailsState extends State<PatientDetails> {
+  String _name = "John Doe"; // Replace with the actual logged-in user's name
+  int _selectedAge = 18;
+  String? _selectedWeeksPregnant;
+  String? selectedInterval;
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> ageIntervals = [];
+    for (int i = 18; i <= 55; i += 4) {
+      int end = (i + 3 > 55) ? 55 : i + 3;
+      ageIntervals.add('$i-$end');
+    }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Patient Details',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Full Name',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontSize: 18,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('$_name',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Age',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontSize: 18,
+              color: Colors.grey[600],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: (selectedInterval?.isEmpty ?? true) ? ageIntervals.first : selectedInterval,
+                hint: Text(
+                  ageIntervals.first,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 18,
+                  ),
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedInterval = newValue!;
+                  });
+                },
+                items: ageIntervals.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      '$value years',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 18,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                underline: const SizedBox.shrink(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Weeks Pregnant',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontSize: 18,
+              color: Colors.grey[600],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+           child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: DropdownButton<String>(
+              isExpanded: true,
+              value: _selectedWeeksPregnant,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedWeeksPregnant = newValue!;
+                });
+              },
+              items: List<String>.generate(8, (i) {
+                int start = i * 5 + 1;
+                int end = start + 5 - 1;
+                return '$start-$end weeks';
+              }).map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 18,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SetAppointmentButton extends StatefulWidget {
+  const SetAppointmentButton({Key? key}) : super(key: key);
+
+  @override
+  _SetAppointmentButtonState createState() => _SetAppointmentButtonState();
+}
+
+class _SetAppointmentButtonState extends State<SetAppointmentButton> {
+  bool _isLoading = false;
+
+  void _setAppointment() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulate a network request or any async operation
+    await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    // Show a notification that the appointment is set
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Appointment set successfully!')),
+    );
+
+    // Navigate back
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: _isLoading ? null : _setAppointment,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: SystemColors.primaryColorDarker,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
-      ],
+        child: _isLoading
+          ? const SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+          )
+          : const Text(
+              'Set Appointment',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: SystemColors.bgWhite),
+            ),
+      ),
     );
   }
 }
