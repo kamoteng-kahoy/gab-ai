@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/profile.dart';
 
 class AppointmentsList extends StatelessWidget {
   AppointmentsList({super.key});
@@ -22,17 +23,24 @@ class AppointmentsList extends StatelessWidget {
     'https://avatar.iran.liara.run/public/boy?username=Robert'
   ];
 
-  final List<VoidCallback> cardFunctions = [
-    () => print('Tapped on Dr. John Doe'),
-    () => print('Tapped on Dr. Jane Smith'),
-    () => print('Tapped on Dr. Emily Johnson'),
-    () => print('Tapped on Dr. Michael Brown'),
-    () => print('Tapped on Dr. Linda Davis'),
-    () => print('Tapped on Dr. Robert Wilson'),
-  ];
+  List<VoidCallback> getCardFunctions(BuildContext context) {
+    return [
+      () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileDetails()),
+          ),
+      () => print('Tapped on Dr. Jane Smith'),
+      () => print('Tapped on Dr. Emily Johnson'),
+      () => print('Tapped on Dr. Michael Brown'),
+      () => print('Tapped on Dr. Linda Davis'),
+      () => print('Tapped on Dr. Robert Wilson'),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<VoidCallback> cardFunctions = getCardFunctions(context);
+
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       body: GridView.count(
@@ -61,7 +69,7 @@ class AppointmentsList extends StatelessWidget {
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],
-              )
+              ),
             ),
           );
         }),

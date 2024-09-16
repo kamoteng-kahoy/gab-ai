@@ -60,6 +60,8 @@ flutter:
     - assets/icons/fg.png
     - assets/background_images/
     - assets/cover_photos/
+    - assets/icons/icon_message.png
+    - assets/icons/icon_message-2.png
 
   fonts:
     - family: Merriweather

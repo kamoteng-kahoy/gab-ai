@@ -31,15 +31,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
       backgroundColor: SystemColors.bgColorLighter,
       body: Column(
         children: [
-          Container(
+          SizedBox(
             width: 300,
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.transparent, // Removes the line below the TabBar
-                ),
-              ),
-            ),
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
@@ -47,7 +40,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
                 borderRadius: BorderRadius.circular(15),
               ),
               indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: SystemColors.textColorDarker,// Ensures no line is drawn
               tabs: [
                 Tab(
                   child: Text(

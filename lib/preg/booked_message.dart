@@ -194,7 +194,7 @@ class MessageList extends StatelessWidget {
                     },
                     child: Image.file(
                       File(message.content),
-                      width: 200, // Set the desired width
+                      width: 230, // Set the desired width
                       height: 200, // Set the desired height
                       fit: BoxFit.cover,
                     ),
