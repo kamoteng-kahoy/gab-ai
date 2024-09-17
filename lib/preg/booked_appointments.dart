@@ -16,10 +16,22 @@ class BookedAppointments extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               leading: CircleAvatar(
-                child: Text((index + 1).toString()),
+                child: Text((index + 1).toString(),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 18,
+                  ),
+                ),
               ),
-              title: Text('Message ${index + 1}'),
-              subtitle: const Text('This is a sample message.'),
+              title: Text('Message ${index + 1}',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 22,
+                ),
+              ),
+              subtitle: Text('This is a sample message.',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 16,
+                ),
+              ),
               onTap: () => _handleMessageTap(context),
             );
           },

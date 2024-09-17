@@ -131,20 +131,27 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.75,
-      ),
-      decoration: BoxDecoration(
-        color: SystemColors.primaryColorDarker,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Text(
-        message,
-        style: const TextStyle(color: Colors.white),
-        textAlign: TextAlign.left,
+    // Get the keyboard height
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    return SingleChildScrollView(
+      reverse: true,
+      padding: EdgeInsets.only(bottom: keyboardHeight),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
+        ),
+        decoration: BoxDecoration(
+          color: SystemColors.primaryColorDarker,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
+          textAlign: TextAlign.left,
+        ),
       ),
     );
   }
@@ -227,27 +234,32 @@ class MessageInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, bottom: 10, top: 10),
+      padding: const EdgeInsets.only(left: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           Expanded(
             child: SizedBox(
-              child: TextField(
-                controller: controller,
-                focusNode: focusNode,
-                decoration: InputDecoration(
-                  hintText: 'Type a message...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: InputDecoration(
+                    hintText: 'Type a message...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                  onSubmitted: (value) => onSendMessage(),
+                  minLines: 1,
+                  maxLines: 5,
                 ),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                ),
-                onSubmitted: (value) => onSendMessage(),
-                minLines: 1,
-                maxLines: null,
               ),
             ),
           ),
