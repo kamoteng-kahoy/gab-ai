@@ -39,16 +39,6 @@ class _JournalsPageState extends State<JournalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Journals',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            fontSize: 24,
-            fontWeight: FontWeight.bold
-          ),
-        ),
-        backgroundColor: SystemColors.bgColorLighter,
-      ),
       body: Column(
         children: [
           CustomTableCalendar( // Custom TableCalendar widget
@@ -64,6 +54,7 @@ class _JournalsPageState extends State<JournalsPage> {
                 _focusedDay = focusedDay; // update `_focusedDay` here as well
               });
             },
+            weeksRowHeight: 30.0,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
                 setState(() {
@@ -75,12 +66,14 @@ class _JournalsPageState extends State<JournalsPage> {
               _focusedDay = focusedDay;
             },
           ),
-          EventList(
-            events: _getEventsForDay(_selectedDay ?? _focusedDay),
-            onEventTap: (event) {
-              // Handle event click
-              print('Event clicked: $event');
-            },
+          Expanded(
+            child: EventList(
+              events: _getEventsForDay(_selectedDay ?? _focusedDay),
+              onEventTap: (event) {
+                // Handle event click
+                print('Event clicked: $event');
+              },
+            ),
           ),
         ],
       ),
@@ -152,6 +145,7 @@ class CustomTableCalendar extends StatelessWidget {
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
+  final double weeksRowHeight;
 
   CustomTableCalendar({super.key, 
     required this.firstDay,
@@ -163,6 +157,7 @@ class CustomTableCalendar extends StatelessWidget {
     required this.onDaySelected,
     required this.onFormatChanged,
     required this.onPageChanged,
+    this.weeksRowHeight = 50.0,
   });
 
   @override
@@ -181,6 +176,8 @@ class CustomTableCalendar extends StatelessWidget {
       onDaySelected: onDaySelected,
       onFormatChanged: onFormatChanged,
       onPageChanged: onPageChanged,
+      daysOfWeekHeight: weeksRowHeight, // Use the weeksRowHeight parameter
+      calendarStyle: CalendarStyle(),
       calendarBuilders: CalendarBuilders(
         todayBuilder: (context, date, _) {
           return Container(
@@ -188,7 +185,7 @@ class CustomTableCalendar extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border.all(color: SystemColors.primaryColorDarker, width: 2.0),
-              borderRadius: BorderRadius.circular(12.0), //for current day
+              borderRadius: BorderRadius.circular(15.0), //for current day
             ),
             child: Text(
               date.day.toString(),
@@ -202,7 +199,7 @@ class CustomTableCalendar extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: SystemColors.primaryColorDarker,
-              borderRadius: BorderRadius.circular(12.0), //for selected day
+              borderRadius: BorderRadius.circular(15.0), //for selected day
             ),
             child: Text(
               date.day.toString(),
@@ -259,7 +256,8 @@ class EventList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      child: Expanded(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height, // Set a specific height or use MediaQuery to get screen height
         child: ListView.builder(
           itemCount: events.length,
           itemBuilder: (context, index) {

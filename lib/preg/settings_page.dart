@@ -37,13 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: SystemColors.bgColorLighter,
       body: Column(
         children: [
-          const Text(
-            'Settings',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           const SizedBox(height: 30),
           ListTile(
             title: Text('Profile',

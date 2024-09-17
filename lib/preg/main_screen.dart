@@ -29,6 +29,12 @@ class MainScreenState extends State<MainScreen> {
     const SettingsPage()
   ];
 
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('Appointments'),
+    Text('Journals'),
+    Text('Settings'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +52,19 @@ class MainScreenState extends State<MainScreen> {
       _selectedIndex = 1;
     });
   }
+
+  String _getAppBarTitle() {
+    switch (_selectedIndex) {
+      case 2:
+        return 'Appointments';
+      case 3:
+        return 'Journals';
+      case 4:
+        return 'Settings';
+      default:
+        return '';
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -58,6 +77,12 @@ class MainScreenState extends State<MainScreen> {
           child: AppBar(
             backgroundColor: SystemColors.bgColorLighter,
             centerTitle: true,
+            title: Text(_getAppBarTitle(),
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontSize: 22,
+                fontWeight: FontWeight.bold
+              ),
+            ),
             leading: Builder(
             builder: (context) => Padding(
               padding: const EdgeInsets.all(10.0),

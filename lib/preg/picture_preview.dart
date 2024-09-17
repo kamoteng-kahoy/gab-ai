@@ -23,7 +23,7 @@ class ImagePreviewScreen extends StatelessWidget {
         ),
         title: Text(fileName,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.normal,
             fontSize: 20,
           ),
         ),
