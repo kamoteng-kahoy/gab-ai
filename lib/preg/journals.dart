@@ -1,10 +1,11 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/create_journal.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: JournalsPage(),
+      home: const JournalsPage(),
     );
   }
 }
@@ -33,7 +34,7 @@ class _JournalsPageState extends State<JournalsPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  Map<DateTime, List<String>> _events = {};
+  final Map<DateTime, List<String>> _events = {};
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,12 @@ class _JournalsPageState extends State<JournalsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _addEventDialog(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewJournal(),
+            ),
+          );
         },
         backgroundColor: SystemColors.primaryColorDarker,
         shape: RoundedRectangleBorder(
@@ -97,42 +103,6 @@ class _JournalsPageState extends State<JournalsPage> {
     return _events[day] ?? [];
   }
 
-  void _addEventDialog(BuildContext context) {
-    TextEditingController _eventController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Event'),
-        content: TextField(
-          controller: _eventController,
-          decoration: const InputDecoration(hintText: 'Enter event title'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              if (_eventController.text.isEmpty) return;
-              setState(() {
-                if (_events[_selectedDay] != null) {
-                  _events[_selectedDay]!.add(_eventController.text);
-                } else {
-                  _events[_selectedDay!] = [_eventController.text];
-                }
-              });
-              Navigator.pop(context);
-            },
-            child: const Text('Add'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class CustomTableCalendar extends StatelessWidget {
@@ -147,7 +117,7 @@ class CustomTableCalendar extends StatelessWidget {
   final Function(DateTime) onPageChanged;
   final double weeksRowHeight;
 
-  CustomTableCalendar({super.key, 
+  const CustomTableCalendar({super.key, 
     required this.firstDay,
     required this.lastDay,
     required this.focusedDay,
@@ -177,7 +147,7 @@ class CustomTableCalendar extends StatelessWidget {
       onFormatChanged: onFormatChanged,
       onPageChanged: onPageChanged,
       daysOfWeekHeight: weeksRowHeight, // Use the weeksRowHeight parameter
-      calendarStyle: CalendarStyle(),
+      calendarStyle: const CalendarStyle(),
       calendarBuilders: CalendarBuilders(
         todayBuilder: (context, date, _) {
           return Container(

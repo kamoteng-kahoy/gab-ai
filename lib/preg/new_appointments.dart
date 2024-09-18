@@ -8,6 +8,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,6 +23,8 @@ class MyApp extends StatelessWidget {
 }
 
 class NewAppointments extends StatefulWidget {
+  const NewAppointments({super.key});
+
   @override
   _NewAppointmentsState createState() => _NewAppointmentsState();
 }
@@ -305,8 +309,8 @@ class PatientDetails extends StatefulWidget {
 }
 
 class _PatientDetailsState extends State<PatientDetails> {
-  String _name = "John Doe"; // Replace with the actual logged-in user's name
-  int _selectedAge = 18;
+  final String _name = "John Doe"; // Replace with the actual logged-in user's name
+  final int _selectedAge = 18;
   String? _selectedWeeksPregnant;
   String? selectedInterval;
 
@@ -350,7 +354,7 @@ class _PatientDetailsState extends State<PatientDetails> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('$_name',
+                child: Text(_name,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 18,
                   ),

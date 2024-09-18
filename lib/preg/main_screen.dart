@@ -25,7 +25,7 @@ class MainScreenState extends State<MainScreen> {
     const HomePage(),
     const MealPlanPage(),
     const AppointmentScreen(),
-    JournalsPage(),
+    const JournalsPage(),
     const SettingsPage()
   ];
 
