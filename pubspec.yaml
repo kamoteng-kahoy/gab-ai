@@ -64,6 +64,11 @@ flutter:
     - assets/icons/icon_message.png
     - assets/icons/icon_message-2.png
     - assets/check_2.png
+    - assets/icons/Happy.png
+    - assets/icons/Sad.png
+    - assets/icons/Angry.png
+    - assets/icons/Excited.png
+    - assets/icons/Relaxed.png
 
   fonts:
     - family: Merriweather
