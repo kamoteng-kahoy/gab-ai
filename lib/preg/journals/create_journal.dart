@@ -239,9 +239,9 @@ class FoodIntake extends StatefulWidget {
 
 class _FoodIntakeState extends State<FoodIntake> {
   List<Widget> _foodItems = [];
-  String _selectedPortion = 'cup';
+  List<String?> _selectedPortions = ['oz'];
 
-  Widget _buildFoodItem() {
+  Widget _buildFoodItem(int index) {
     final TextEditingController _controller = TextEditingController();
     final TextEditingController _numServingsController = TextEditingController();
 
@@ -313,22 +313,18 @@ class _FoodIntakeState extends State<FoodIntake> {
                   ],
                 ),
                 child: DropdownButton<String>(
-                  value: _selectedPortion,
+                  value: _selectedPortions[index],
                   onChanged: (newValue) {
                     setState(() {
-                      _selectedPortion = newValue!;
+                      _selectedPortions[index] = newValue!;
                     });
                   },
                   dropdownColor: Colors.white,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: SystemColors.textColorDarker,
                   ),
-                  items: <String>[
-                    'oz', 'cup', 'tablespoon', 'slice', 'piece', 'small', 'medium', 'large', 
-                    'bowl', 'plate', 'bottle', 'package', 'box', 'bag', 'can', 'jar', 'bunch', 
-                    'handful', 'pinch', 'dash', 'tsp', 'tbsp', 'ml', 'l', 'g', 'kg', 'mg', 
-                    'mcg', 'IU', 'serving'
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  items: <String>['oz', 'cup', 'tablespoon', 'teaspoon', 'slice', 'piece', 'small', 'medium', 'large']
+                      .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -344,7 +340,8 @@ class _FoodIntakeState extends State<FoodIntake> {
               iconSize: 20,
               onPressed: () {
                 setState(() {
-                  _foodItems.removeLast();
+                  _foodItems.removeAt(index);
+                  _selectedPortions.removeAt(index);
                 });
               },
             ),
@@ -357,17 +354,22 @@ class _FoodIntakeState extends State<FoodIntake> {
   @override
   Widget build(BuildContext context) {
     if (_foodItems.isEmpty) {
-      _foodItems.add(_buildFoodItem());
+      _foodItems.add(_buildFoodItem(0));
+      _selectedPortions.add('oz');
     }
 
     return Column(
       children: [
-        ..._foodItems,
+        ..._foodItems.asMap().entries.map((entry) {
+          int index = entry.key;
+          return _buildFoodItem(index);
+        }).toList(),
         const SizedBox(height: 25),
         TextButton(
           onPressed: () {
             setState(() {
-              _foodItems.add(_buildFoodItem());
+              _foodItems.add(_buildFoodItem(_foodItems.length));
+              _selectedPortions.add('oz');
             });
           },
           style: TextButton.styleFrom(
