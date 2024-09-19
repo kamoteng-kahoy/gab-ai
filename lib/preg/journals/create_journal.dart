@@ -76,7 +76,7 @@ class _NewJournalState extends State<NewJournal> {
                 child: Text('Meal Category',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                    fontSize: 22,
                   ),           
                 ),
               ),
@@ -88,7 +88,7 @@ class _NewJournalState extends State<NewJournal> {
                 child: Text('Mood for the day',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                    fontSize: 22,
                   ),           
                 ),
               ),
@@ -107,12 +107,14 @@ class _NewJournalState extends State<NewJournal> {
                 child: Text('Food Intake',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 20,
+                    fontSize: 22,
                   ),           
                 ),
               ),
               const SizedBox(height: 10),
               FoodIntake(),
+              const SizedBox(height: 30),
+              JournalBody(),
               const SizedBox(height: 60),
               SaveButton(onPressed: _saveJournal),
             ],
@@ -364,7 +366,7 @@ class _FoodIntakeState extends State<FoodIntake> {
           int index = entry.key;
           return _buildFoodItem(index);
         }).toList(),
-        const SizedBox(height: 25),
+        const SizedBox(height: 20),
         TextButton(
           onPressed: () {
             setState(() {
@@ -384,6 +386,63 @@ class _FoodIntakeState extends State<FoodIntake> {
               color: SystemColors.primaryColorDarker,
             ),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class JournalBody extends StatelessWidget {
+  final TextEditingController _bodyController = TextEditingController();
+
+  JournalBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Other Details',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
+              ),
+        ),
+        const SizedBox(height: 10),
+        Stack(
+          children: [
+            TextField(
+              controller: _bodyController,
+              maxLines: 10,
+              decoration: InputDecoration(
+                hintText: 'Write your journal entry here...',
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black.withOpacity(0.4),
+                      fontSize: 16,
+                    ),
+                border: const OutlineInputBorder(),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.black,
+                    fontSize: 16,
+                  ),
+            ),
+            Positioned(
+              bottom: 8,
+              right: 8,
+              child: IconButton(
+                icon: const Icon(FluentIcons.attach_24_filled),
+                onPressed: () {
+                  // Define your function here
+                  print('Icon pressed!');
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -417,3 +476,4 @@ class SaveButton extends StatelessWidget {
     );
   }
 }
+
