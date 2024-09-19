@@ -3,7 +3,7 @@ import 'dart:io'; // Import the dart:io package
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:gab_ai/preg/picture_preview.dart';
+import 'package:gab_ai/preg/appointments/picture_preview.dart';
 
 class BookedMessage extends StatefulWidget {
   const BookedMessage({super.key});
