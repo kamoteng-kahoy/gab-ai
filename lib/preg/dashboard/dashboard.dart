@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/main_screen.dart';
-import 'package:gab_ai/preg/mealplan_breakfast.dart';
-import 'package:gab_ai/preg/mealplan_dinner.dart';
-import 'package:gab_ai/preg/mealplan_lunch.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_lunch.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

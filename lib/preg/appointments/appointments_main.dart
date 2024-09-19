@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/booked_appointments.dart';
-import 'package:gab_ai/preg/list_appointments.dart';
+import 'package:gab_ai/preg/appointments/booked_appointments.dart';
+import 'package:gab_ai/preg/appointments/list_appointments.dart';
 
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});

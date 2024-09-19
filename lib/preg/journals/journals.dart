@@ -1,7 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/create_journal.dart';
+import 'package:gab_ai/preg/journals/create_journal.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 void main() {

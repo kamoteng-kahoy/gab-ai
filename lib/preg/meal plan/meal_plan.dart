@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/preferences_personal-info.dart';
+import 'package:gab_ai/preg/meal%20plan/preferences_personal-info.dart';
 import 'package:intl/intl.dart';
-import 'package:gab_ai/preg/mealplan_breakfast.dart';
-import 'package:gab_ai/preg/mealplan_dinner.dart';
-import 'package:gab_ai/preg/mealplan_lunch.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_lunch.dart';
 
 class MealPlanPage extends StatelessWidget {
   const MealPlanPage({super.key});

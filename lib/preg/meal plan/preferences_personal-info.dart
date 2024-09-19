@@ -1,7 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
+import '../../colors.dart';
 
 class PreferencesPersonal extends StatelessWidget {
   const PreferencesPersonal({super.key});

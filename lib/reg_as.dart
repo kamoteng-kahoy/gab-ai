@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/theme.dart';
 import 'colors.dart';
 import 'login.dart';
-import 'preg/reg_basics.dart';
+import 'preg/registration/reg_basics.dart';
 
 void main() {
   runApp(const RegisterAs());

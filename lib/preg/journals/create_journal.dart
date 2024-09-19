@@ -29,13 +29,11 @@ class NewJournal extends StatefulWidget {
 
 class _NewJournalState extends State<NewJournal> {
   final _titleController = TextEditingController();
-  final _moodController = TextEditingController();
   final _bodyController = TextEditingController();
   String? _selectedMood;
 
   void _saveJournal() {
     final title = _titleController.text;
-    final mood = _moodController.text;
     final body = _bodyController.text;
 
     // Here you can add the logic to save the journal entry

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/booked_message.dart';
+import 'package:gab_ai/preg/appointments/booked_message.dart';
 
 class BookedAppointments extends StatelessWidget {
   const BookedAppointments({super.key});

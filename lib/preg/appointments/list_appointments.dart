@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/profile.dart';
+import 'package:gab_ai/preg/appointments/profile.dart';
 
 class AppointmentsList extends StatelessWidget {
   AppointmentsList({super.key});

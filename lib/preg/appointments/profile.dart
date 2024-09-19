@@ -1,7 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/new_appointments.dart';
+import 'package:gab_ai/preg/appointments/new_appointments.dart';
 
 void main() {
   runApp(const MyApp());
