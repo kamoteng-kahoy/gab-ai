@@ -205,7 +205,7 @@ class BookAppointmentButton extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => NewAppointments()),
+              MaterialPageRoute(builder: (context) => const NewAppointments()),
             );
           },
           style: ElevatedButton.styleFrom(

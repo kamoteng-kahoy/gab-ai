@@ -4,7 +4,7 @@ import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/login.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

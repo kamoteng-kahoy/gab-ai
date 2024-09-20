@@ -36,11 +36,11 @@ class _NewJournalState extends State<NewJournal> {
   void _saveJournal() {
     final title = _titleController.text;
     final body = _bodyController.text;
-    String? _selectedMood;
+    String? selectedMood;
 
     // Here you can add the logic to save the journal entry
     print('Title: $title');
-    print('Mood: $_selectedMood');
+    print('Mood: $selectedMood');
     print('Body: $body');
   }
 
@@ -196,7 +196,7 @@ class MoodChoiceChip extends StatefulWidget {
   final String? selectedMood;
   final Function(String?) onMoodSelected;
 
-  MoodChoiceChip({required this.selectedMood, required this.onMoodSelected});
+  const MoodChoiceChip({super.key, required this.selectedMood, required this.onMoodSelected});
 
   @override
   _MoodChoiceChipState createState() => _MoodChoiceChipState();
@@ -235,17 +235,19 @@ class _MoodChoiceChipState extends State<MoodChoiceChip> {
 }
 
 class FoodIntake extends StatefulWidget {
+  const FoodIntake({super.key});
+
   @override
   _FoodIntakeState createState() => _FoodIntakeState();
 }
 
 class _FoodIntakeState extends State<FoodIntake> {
-  List<Widget> _foodItems = [];
-  List<String?> _selectedPortions = ['oz'];
+  final List<Widget> _foodItems = [];
+  final List<String?> _selectedPortions = ['oz'];
 
   Widget _buildFoodItem(int index) {
-    final TextEditingController _controller = TextEditingController();
-    final TextEditingController _numServingsController = TextEditingController();
+    final TextEditingController controller = TextEditingController();
+    final TextEditingController numServingsController = TextEditingController();
 
     return Column(
       children: [
@@ -254,7 +256,7 @@ class _FoodIntakeState extends State<FoodIntake> {
           children: [
             Expanded(
               child: TextField(
-                controller: _controller,
+                controller: controller,
                 maxLines: 1,
                 scrollPadding: const EdgeInsets.all(20),
                 decoration: InputDecoration(
@@ -278,7 +280,7 @@ class _FoodIntakeState extends State<FoodIntake> {
             SizedBox(
               width: 40,
               child: TextField(
-                controller: _numServingsController,
+                controller: numServingsController,
                 maxLines: 1,
                 scrollPadding: const EdgeInsets.all(20),
                 decoration: InputDecoration(

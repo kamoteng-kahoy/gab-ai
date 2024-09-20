@@ -83,7 +83,7 @@ class _JournalsPageState extends State<JournalsPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NewJournal(),
+              builder: (context) => const NewJournal(),
             ),
           );
         },
