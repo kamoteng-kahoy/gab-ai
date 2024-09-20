@@ -1,4 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 
@@ -112,9 +114,9 @@ class _NewJournalState extends State<NewJournal> {
                 ),
               ),
               const SizedBox(height: 10),
-              FoodIntake(),
+              const FoodIntake(),
               const SizedBox(height: 30),
-              JournalBody(),
+              const JournalBody(),
               const SizedBox(height: 60),
               SaveButton(onPressed: _saveJournal),
             ],
@@ -394,10 +396,26 @@ class _FoodIntakeState extends State<FoodIntake> {
   }
 }
 
-class JournalBody extends StatelessWidget {
-  final TextEditingController _bodyController = TextEditingController();
+class JournalBody extends StatefulWidget {
 
-  JournalBody({super.key});
+  const JournalBody({super.key});
+
+  @override
+  State<JournalBody> createState() => _JournalBodyState();
+}
+
+class _JournalBodyState extends State<JournalBody> {
+  final TextEditingController _bodyController = TextEditingController();
+  File? _selectedFile;
+
+  Future<void> _pickFile() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles();
+  if (result != null) {
+    setState(() {
+      _selectedFile = File(result.files.single.path!);
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -413,39 +431,44 @@ class JournalBody extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Stack(
-          children: [
-            TextField(
-              controller: _bodyController,
-              maxLines: 10,
-              decoration: InputDecoration(
-                hintText: 'Write your journal entry here...',
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black.withOpacity(0.4),
-                      fontSize: 16,
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  controller: _bodyController,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    hintText: 'Write your journal entry here...',
+                    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.black.withOpacity(0.4),
+                          fontSize: 16,
+                        ),
+                    border: const OutlineInputBorder(),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: SystemColors.primaryColorDarker),
                     ),
-                border: const OutlineInputBorder(),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue),
-                ),
-              ),
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.black,
+                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: SystemColors.textColorDarker,
                     fontSize: 16,
                   ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _pickFile,
+                  child: const Text('Pick File'),
+                ),
+                if (_selectedFile != null) ...[
+                  const SizedBox(height: 10),
+                  Text('Selected File: ${_selectedFile!.path.split(Platform.pathSeparator).last}'),
+                  // Display the file content or preview here
+                ],
+              ],
             ),
-            Positioned(
-              bottom: 8,
-              right: 8,
-              child: IconButton(
-                icon: const Icon(FluentIcons.attach_24_filled),
-                onPressed: () {
-                  // Define your function here
-                  print('Icon pressed!');
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
       ],
     );
   }
