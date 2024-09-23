@@ -4,6 +4,7 @@ import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/journals/create_journal.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'journal_details.dart';
 
 void main() {
   runApp(const MyApp());
@@ -72,8 +73,12 @@ class _JournalsPageState extends State<JournalsPage> {
             child: EventList(
               events: _getEventsForDay(_selectedDay ?? _focusedDay),
               onEventTap: (event) {
-                // Handle event click
-                print('Event clicked: $event');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => JournalDetails(event: event),
+                  ),
+                );
               },
             ),
           ),
@@ -242,7 +247,7 @@ class EventList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height, // Set a specific height or use MediaQuery to get screen height
+        height: MediaQuery.of(context).size.height,
         child: ListView.builder(
           itemCount: events.length,
           itemBuilder: (context, index) {

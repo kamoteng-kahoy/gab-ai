@@ -78,6 +78,12 @@ class _NewJournalState extends State<NewJournal> {
       'body': body,
       'mood': selectedMood,
       'createdTime': createdTime,
+      'foodIntake': _foodIntakeDetails.map((food) => {
+        'foodName': food.foodName,
+        'servings': food.servings,
+        'portion': food.portion,
+      }).toList(),
+      'attachedFiles': _selectedFiles.map((file) => file.path).toList(),
     });
   }
 
