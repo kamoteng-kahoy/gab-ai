@@ -33,23 +33,25 @@ class NewJournal extends StatefulWidget {
 }
 
 class _NewJournalState extends State<NewJournal> {
-  final _titleController = TextEditingController();
-  final _bodyController = TextEditingController();
+  final TextEditingController _bodyController = TextEditingController();
+  List<File> _selectedFiles = [];
   String? _selectedMood;
   String? _selectedCategory;
 
   void _saveJournal() {
-    final title = _titleController.text;
     final body = _bodyController.text;
     final selectedMood = _selectedMood;
     final selectedCategory = _selectedCategory;
     final createdTime = DateTime.now();
 
     // Here you can add the logic to save the journal entry
-    print('Title: $title');
+    print('Category: $selectedCategory');
     print('Mood: $selectedMood');
     print('Body: $body');
-    print('Category: $selectedCategory');
+    print('Files Selected:');
+    for (var file in _selectedFiles) {
+      print(file.path);
+    }
     print('Created Time: $createdTime');
 
     const snackBar = SnackBar(
@@ -66,11 +68,16 @@ class _NewJournalState extends State<NewJournal> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
      Navigator.pop(context, {
-      'title': title,
+      'category': selectedCategory,
       'body': body,
       'mood': selectedMood,
-      'category': selectedCategory,
       'createdTime': createdTime,
+    });
+  }
+
+  void _onFilesSelected(List<File> files) {
+    setState(() {
+      _selectedFiles = files;
     });
   }
 
@@ -150,7 +157,9 @@ class _NewJournalState extends State<NewJournal> {
               const SizedBox(height: 10),
               const FoodIntake(),
               const SizedBox(height: 30),
-              const JournalBody(),
+              JournalBody(
+                controller: _bodyController,
+                onFilesSelected: _onFilesSelected),
               const SizedBox(height: 60),
               SaveButton(onPressed: _saveJournal),
             ],
@@ -282,10 +291,17 @@ class FoodIntake extends StatefulWidget {
 class _FoodIntakeState extends State<FoodIntake> {
   final List<Widget> _foodItems = [];
   final List<String?> _selectedPortions = ['oz'];
+  final List<TextEditingController> _controllers = [];
+  final List<TextEditingController> _numServingsControllers = [];
 
   Widget _buildFoodItem(int index) {
-    final TextEditingController controller = TextEditingController();
-    final TextEditingController numServingsController = TextEditingController();
+    if (_controllers.length <= index) {
+      _controllers.add(TextEditingController());
+      _numServingsControllers.add(TextEditingController());
+    }
+
+    final TextEditingController controller = _controllers[index];
+    final TextEditingController numServingsController = _numServingsControllers[index];
 
     return Column(
       children: [
@@ -433,15 +449,17 @@ class _FoodIntakeState extends State<FoodIntake> {
 }
 
 class JournalBody extends StatefulWidget {
+  final TextEditingController controller;
+  final Function(List<File>) onFilesSelected;
 
-  const JournalBody({super.key});
+  const JournalBody({super.key, required this.controller, required this.onFilesSelected});
 
   @override
   State<JournalBody> createState() => _JournalBodyState();
 }
 
 class _JournalBodyState extends State<JournalBody> {
-  final TextEditingController _bodyController = TextEditingController();
+  
   List<File> _selectedFiles = [];
 
   Future<void> _pickFiles() async {
@@ -450,6 +468,7 @@ class _JournalBodyState extends State<JournalBody> {
       setState(() {
         _selectedFiles.addAll(result.paths.map((path) => File(path!)).toList());
       });
+      widget.onFilesSelected(_selectedFiles);
     }
   }
 
@@ -472,7 +491,7 @@ class _JournalBodyState extends State<JournalBody> {
             child: Column(
               children: [
                 TextField(
-                  controller: _bodyController,
+                  controller: widget.controller,
                   maxLines: 10,
                   decoration: InputDecoration(
                     hintText: 'Write other details here ...',
@@ -513,30 +532,44 @@ class _JournalBodyState extends State<JournalBody> {
                   const SizedBox(height: 10),
                   Column(
                     children: _selectedFiles.map((file) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ImagePreviewScreen(imagePath: file.path),
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImagePreviewScreen(imagePath: file.path),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: Text(
+                                  'Selected File: ${file.path.split(Platform.pathSeparator).last}',
+                                  style: const TextStyle(
+                                    color: SystemColors.textColorDarker,
+                                  ),
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
                           ),
-                          child: Text(
-                            'Selected File: ${file.path.split(Platform.pathSeparator).last}',
-                            style: const TextStyle(
-                              color: SystemColors.textColorDarker,
-                            ),
+                          IconButton(
+                            icon: const Icon(FluentIcons.dismiss_24_filled),
+                            onPressed: () {
+                              setState(() {
+                                _selectedFiles.remove(file);
+                              });
+                            },
                           ),
-                        ),
+                        ],
                       );
                     }).toList(),
                   ),
