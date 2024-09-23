@@ -37,6 +37,7 @@ class _NewJournalState extends State<NewJournal> {
   List<File> _selectedFiles = [];
   String? _selectedMood;
   String? _selectedCategory;
+  List<FoodIntakeDetails> _foodIntakeDetails = [];
 
   void _saveJournal() {
     final body = _bodyController.text;
@@ -48,11 +49,16 @@ class _NewJournalState extends State<NewJournal> {
     print('Category: $selectedCategory');
     print('Mood: $selectedMood');
     print('Body: $body');
-    print('Files Selected:');
     for (var file in _selectedFiles) {
-      print(file.path);
+      print('Files Selected: $file.path');
     }
     print('Created Time: $createdTime');
+
+    for (var food in _foodIntakeDetails) {
+      print('Food Name: ${food.foodName}');
+      print('Servings: ${food.servings}');
+      print('Portion: ${food.portion}');
+    }
 
     const snackBar = SnackBar(
       content: AwesomeSnackbarContent(
@@ -67,7 +73,7 @@ class _NewJournalState extends State<NewJournal> {
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-     Navigator.pop(context, {
+    Navigator.pop(context, {
       'category': selectedCategory,
       'body': body,
       'mood': selectedMood,
@@ -78,6 +84,12 @@ class _NewJournalState extends State<NewJournal> {
   void _onFilesSelected(List<File> files) {
     setState(() {
       _selectedFiles = files;
+    });
+  }
+
+  void _onFoodIntakeChanged(List<FoodIntakeDetails> details) {
+    setState(() {
+      _foodIntakeDetails = details;
     });
   }
 
@@ -155,7 +167,7 @@ class _NewJournalState extends State<NewJournal> {
                 ),
               ),
               const SizedBox(height: 10),
-              const FoodIntake(),
+              FoodIntake(onFoodIntakeChanged: _onFoodIntakeChanged),
               const SizedBox(height: 30),
               JournalBody(
                 controller: _bodyController,
@@ -281,8 +293,18 @@ class _MoodChoiceChipState extends State<MoodChoiceChip> {
   }
 }
 
+class FoodIntakeDetails {
+  final String foodName;
+  final int servings;
+  final String portion;
+
+  FoodIntakeDetails({required this.foodName, required this.servings, required this.portion});
+}
+
 class FoodIntake extends StatefulWidget {
-  const FoodIntake({super.key});
+  final Function(List<FoodIntakeDetails>) onFoodIntakeChanged;
+
+  const FoodIntake({super.key, required this.onFoodIntakeChanged});
 
   @override
   _FoodIntakeState createState() => _FoodIntakeState();
@@ -293,6 +315,22 @@ class _FoodIntakeState extends State<FoodIntake> {
   final List<String?> _selectedPortions = ['oz'];
   final List<TextEditingController> _controllers = [];
   final List<TextEditingController> _numServingsControllers = [];
+
+  List<FoodIntakeDetails> getFoodIntakeDetails() {
+    List<FoodIntakeDetails> details = [];
+    for (int i = 0; i < _controllers.length; i++) {
+      details.add(FoodIntakeDetails(
+        foodName: _controllers[i].text,
+        servings: int.tryParse(_numServingsControllers[i].text) ?? 0,
+        portion: _selectedPortions[i]!,
+      ));
+    }
+    return details;
+  }
+
+  void _notifyParent() {
+    widget.onFoodIntakeChanged(getFoodIntakeDetails());
+  }
 
   Widget _buildFoodItem(int index) {
     if (_controllers.length <= index) {
@@ -328,6 +366,7 @@ class _FoodIntakeState extends State<FoodIntake> {
                   color: SystemColors.textColorDarker,
                   fontSize: 16,
                 ),
+                onChanged: (value) => _notifyParent(),
               ),
             ),
             const SizedBox(width: 10),
@@ -353,6 +392,7 @@ class _FoodIntakeState extends State<FoodIntake> {
                   fontSize: 16,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (value) => _notifyParent(),
               ),
             ),
             const SizedBox(width: 10), 
@@ -375,6 +415,7 @@ class _FoodIntakeState extends State<FoodIntake> {
                   onChanged: (newValue) {
                     setState(() {
                       _selectedPortions[index] = newValue!;
+                      _notifyParent();
                     });
                   },
                   dropdownColor: Colors.white,
@@ -400,6 +441,9 @@ class _FoodIntakeState extends State<FoodIntake> {
                 setState(() {
                   _foodItems.removeAt(index);
                   _selectedPortions.removeAt(index);
+                  _controllers.removeAt(index);
+                  _numServingsControllers.removeAt(index);
+                  _notifyParent();
                 });
               },
             ),
@@ -428,6 +472,7 @@ class _FoodIntakeState extends State<FoodIntake> {
             setState(() {
               _foodItems.add(_buildFoodItem(_foodItems.length));
               _selectedPortions.add('oz');
+              _notifyParent();
             });
           },
           style: TextButton.styleFrom(

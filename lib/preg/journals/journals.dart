@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/journals/create_journal.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,7 +43,7 @@ class _JournalsPageState extends State<JournalsPage> {
       backgroundColor: SystemColors.bgColorLighter,
       body: Column(
         children: [
-          CustomTableCalendar( // Custom TableCalendar widget
+          CustomTableCalendar(
             firstDay: DateTime.utc(2010, 10, 16),
             lastDay: DateTime.utc(2030, 3, 14),
             focusedDay: _focusedDay,
@@ -91,10 +92,11 @@ class _JournalsPageState extends State<JournalsPage> {
             setState(() {
               final event = result as Map<String, dynamic>;
               final date = event['createdTime'] as DateTime;
-              if (_events[date] == null) {
-                _events[date] = [];
+              final eventDate = DateTime(date.year, date.month, date.day); // Normalize to date only
+              if (_events[eventDate] == null) {
+                _events[eventDate] = [];
               }
-              _events[date]!.add(event);
+              _events[eventDate]!.add(event);
             });
           }
         },
@@ -111,7 +113,8 @@ class _JournalsPageState extends State<JournalsPage> {
   }
 
   List<Map<String, dynamic>> _getEventsForDay(DateTime day) {
-    return _events[day] ?? [];
+    final normalizedDay = DateTime(day.year, day.month, day.day); // Normalize to date only
+    return _events[normalizedDay] ?? [];
   }
 }
 
@@ -127,7 +130,8 @@ class CustomTableCalendar extends StatelessWidget {
   final Function(DateTime) onPageChanged;
   final double weeksRowHeight;
 
-  const CustomTableCalendar({super.key, 
+  const CustomTableCalendar({
+    super.key,
     required this.firstDay,
     required this.lastDay,
     required this.focusedDay,
@@ -151,12 +155,13 @@ class CustomTableCalendar extends StatelessWidget {
         return isSameDay(selectedDay, day);
       },
       eventLoader: (day) {
-        return events[day] ?? [];
+        final normalizedDay = DateTime(day.year, day.month, day.day);
+        return events[normalizedDay] ?? [];
       },
       onDaySelected: onDaySelected,
       onFormatChanged: onFormatChanged,
       onPageChanged: onPageChanged,
-      daysOfWeekHeight: weeksRowHeight, // Use the weeksRowHeight parameter
+      daysOfWeekHeight: weeksRowHeight,
       calendarStyle: const CalendarStyle(),
       calendarBuilders: CalendarBuilders(
         todayBuilder: (context, date, _) {
@@ -165,7 +170,7 @@ class CustomTableCalendar extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border.all(color: SystemColors.primaryColorDarker, width: 2.0),
-              borderRadius: BorderRadius.circular(15.0), //for current day
+              borderRadius: BorderRadius.circular(15.0),
             ),
             child: Text(
               date.day.toString(),
@@ -179,7 +184,7 @@ class CustomTableCalendar extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: SystemColors.primaryColorDarker,
-              borderRadius: BorderRadius.circular(15.0), //for selected day
+              borderRadius: BorderRadius.circular(15.0),
             ),
             child: Text(
               date.day.toString(),
@@ -204,13 +209,13 @@ class CustomTableCalendar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: SystemColors.secondaryColor2, // Change this color to your desired color
+        color: SystemColors.primaryColor,
       ),
-      width: 16.0,
-      height: 16.0,
+      width: 10.0,
+      height: 10.0,
       child: Center(
         child: Text(
-          '${events.length}',
+          '',
           style: const TextStyle().copyWith(
             color: SystemColors.textColor,
             fontSize: 12.0,
@@ -242,19 +247,29 @@ class EventList extends StatelessWidget {
           itemCount: events.length,
           itemBuilder: (context, index) {
             final event = events[index];
+            final createdTime = event['createdTime'] as DateTime?;
+            final formattedTime = createdTime != null
+                ? DateFormat('hh:mm a').format(createdTime)
+                : 'No Time';
+
             return GestureDetector(
               onTap: () => onEventTap(event),
               child: Card(
+                color: SystemColors.accentColor2,
                 child: ListTile(
                   title: Text(
                     event['category'] ?? 'No Category',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   subtitle: Text(
-                    event['createdTime'].toString(),
-                    style: Theme.of(context).textTheme.bodySmall,
+                    formattedTime,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      color: Colors.grey
+                    ),
                   ),
                 ),
               ),
