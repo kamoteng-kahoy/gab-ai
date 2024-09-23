@@ -1,8 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/appointments/picture_preview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,16 +36,42 @@ class _NewJournalState extends State<NewJournal> {
   final _titleController = TextEditingController();
   final _bodyController = TextEditingController();
   String? _selectedMood;
+  String? _selectedCategory;
 
   void _saveJournal() {
     final title = _titleController.text;
     final body = _bodyController.text;
-    String? selectedMood;
+    final selectedMood = _selectedMood;
+    final selectedCategory = _selectedCategory;
+    final createdTime = DateTime.now();
 
     // Here you can add the logic to save the journal entry
     print('Title: $title');
     print('Mood: $selectedMood');
     print('Body: $body');
+    print('Category: $selectedCategory');
+    print('Created Time: $createdTime');
+
+    const snackBar = SnackBar(
+      content: AwesomeSnackbarContent(
+        title: 'Success',
+        message: 'Journal has been saved!',
+        contentType: ContentType.success,
+      ),
+      backgroundColor: Colors.transparent,
+      behavior: SnackBarBehavior.floating,
+      elevation: 0,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+     Navigator.pop(context, {
+      'title': title,
+      'body': body,
+      'mood': selectedMood,
+      'category': selectedCategory,
+      'createdTime': createdTime,
+    });
   }
 
   @override
@@ -83,7 +111,13 @@ class _NewJournalState extends State<NewJournal> {
                 ),
               ),
               const SizedBox(height: 10),
-              const MealCategory(),
+              MealCategory(
+                onCategorySelected: (category) {
+                  setState(() {
+                    _selectedCategory = category;
+                  });
+                },
+              ),
               const SizedBox(height: 30),
               Align(
                 alignment: Alignment.centerLeft,
@@ -128,7 +162,8 @@ class _NewJournalState extends State<NewJournal> {
 }
 
 class MealCategory extends StatefulWidget {
-  const MealCategory({super.key});
+  final Function(String) onCategorySelected;
+  const MealCategory({super.key, required this.onCategorySelected});
 
   @override
   _MealCategoryState createState() => _MealCategoryState();
@@ -162,7 +197,7 @@ class _MealCategoryState extends State<MealCategory> {
             hint: Text('Select a category',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.black.withOpacity(0.4),
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
             ),
@@ -173,7 +208,7 @@ class _MealCategoryState extends State<MealCategory> {
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: SystemColors.textColorDarker,
                     fontWeight: FontWeight.w600,
-                    fontSize: 20
+                    fontSize: 18
                   ),
                 ),
               );
@@ -182,8 +217,9 @@ class _MealCategoryState extends State<MealCategory> {
               setState(() {
                 _selectedCategory = newValue;
               });
+              widget.onCategorySelected(newValue!);
             },
-            dropdownColor: Colors.white, // Set the dropdown background color
+            dropdownColor: SystemColors.accentColor2, // Set the dropdown background color
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: SystemColors.textColorDarker,
             ),
@@ -406,16 +442,16 @@ class JournalBody extends StatefulWidget {
 
 class _JournalBodyState extends State<JournalBody> {
   final TextEditingController _bodyController = TextEditingController();
-  File? _selectedFile;
+  List<File> _selectedFiles = [];
 
-  Future<void> _pickFile() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles();
-  if (result != null) {
-    setState(() {
-      _selectedFile = File(result.files.single.path!);
-    });
+  Future<void> _pickFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+    if (result != null) {
+      setState(() {
+        _selectedFiles.addAll(result.paths.map((path) => File(path!)).toList());
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -439,7 +475,7 @@ class _JournalBodyState extends State<JournalBody> {
                   controller: _bodyController,
                   maxLines: 10,
                   decoration: InputDecoration(
-                    hintText: 'Write your journal entry here...',
+                    hintText: 'Write other details here ...',
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.black.withOpacity(0.4),
                           fontSize: 16,
@@ -456,13 +492,54 @@ class _JournalBodyState extends State<JournalBody> {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: _pickFile,
-                  child: const Text('Pick File'),
+                  onPressed: _pickFiles,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(100, 40), // Set the button size
+                    backgroundColor: SystemColors.accentColor2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    elevation: 3,
+                  ),
+                  child: Text('Attach File',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: SystemColors.textColorDarker,
+                    ),
+                  ),
                 ),
-                if (_selectedFile != null) ...[
+                if (_selectedFiles.isNotEmpty) ...[
                   const SizedBox(height: 10),
-                  Text('Selected File: ${_selectedFile!.path.split(Platform.pathSeparator).last}'),
-                  // Display the file content or preview here
+                  Column(
+                    children: _selectedFiles.map((file) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImagePreviewScreen(imagePath: file.path),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: Text(
+                            'Selected File: ${file.path.split(Platform.pathSeparator).last}',
+                            style: const TextStyle(
+                              color: SystemColors.textColorDarker,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
               ],
             ),

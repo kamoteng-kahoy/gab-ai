@@ -34,7 +34,7 @@ class _JournalsPageState extends State<JournalsPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  final Map<DateTime, List<String>> _events = {};
+  final Map<DateTime, List<Map<String, dynamic>>> _events = {};
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +79,24 @@ class _JournalsPageState extends State<JournalsPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const NewJournal(),
             ),
           );
+
+          if (result != null) {
+            setState(() {
+              final event = result as Map<String, dynamic>;
+              final date = event['createdTime'] as DateTime;
+              if (_events[date] == null) {
+                _events[date] = [];
+              }
+              _events[date]!.add(event);
+            });
+          }
         },
         backgroundColor: SystemColors.primaryColorDarker,
         shape: RoundedRectangleBorder(
@@ -99,10 +110,9 @@ class _JournalsPageState extends State<JournalsPage> {
     );
   }
 
-  List<String> _getEventsForDay(DateTime day) {
+  List<Map<String, dynamic>> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
   }
-
 }
 
 class CustomTableCalendar extends StatelessWidget {
@@ -111,7 +121,7 @@ class CustomTableCalendar extends StatelessWidget {
   final DateTime focusedDay;
   final CalendarFormat calendarFormat;
   final DateTime? selectedDay;
-  final Map<DateTime, List> events;
+  final Map<DateTime, List<Map<String, dynamic>>> events;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
   final Function(DateTime) onPageChanged;
@@ -213,8 +223,8 @@ class CustomTableCalendar extends StatelessWidget {
 }
 
 class EventList extends StatelessWidget {
-  final List<String> events;
-  final Function(String) onEventTap;
+  final List<Map<String, dynamic>> events;
+  final Function(Map<String, dynamic>) onEventTap;
 
   const EventList({
     super.key,
@@ -237,10 +247,14 @@ class EventList extends StatelessWidget {
               child: Card(
                 child: ListTile(
                   title: Text(
-                    event,
+                    event['category'] ?? 'No Category',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 18,
                     ),
+                  ),
+                  subtitle: Text(
+                    event['createdTime'].toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
               ),
