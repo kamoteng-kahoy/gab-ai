@@ -511,7 +511,7 @@ class JournalBody extends StatefulWidget {
 
 class _JournalBodyState extends State<JournalBody> {
   
-  List<File> _selectedFiles = [];
+  final List<File> _selectedFiles = [];
 
   Future<void> _pickFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);

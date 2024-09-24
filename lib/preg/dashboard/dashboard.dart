@@ -155,7 +155,7 @@ class QuickNav extends StatelessWidget {
     );
   }
 
-  void _navigateToMealPlan(BuildContext context) {
+void _navigateToMealPlan(BuildContext context) {
   final mainScreenState = context.findAncestorStateOfType<MainScreenState>();
   if (mainScreenState != null) {
     mainScreenState.navigateToMealPlan();
@@ -163,13 +163,17 @@ class QuickNav extends StatelessWidget {
 }
 
   void _navigateToAppointments(BuildContext context) {
-    //Navigator.pushNamed(context, '/appointments');
-    print('Navigating to Appointments');
+    final mainScreenState = context.findAncestorStateOfType<MainScreenState>();
+    if (mainScreenState != null) {
+      mainScreenState.navigateToAppointments();
+    }
   }
 
   void _navigateToJournals(BuildContext context) {
-    //Navigator.pushNamed(context, '/journals');
-    print('Navigating to Journals');
+    final mainScreenState = context.findAncestorStateOfType<MainScreenState>();
+    if (mainScreenState != null) {
+      mainScreenState.navigateToJournals();
+    }
   }
 }
 
