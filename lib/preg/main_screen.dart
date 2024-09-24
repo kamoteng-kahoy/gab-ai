@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/appointments/appointments_main.dart';
 import 'package:gab_ai/preg/journals/journals.dart';
+import 'package:gab_ai/preg/settings/profile.dart';
 import 'package:gab_ai/preg/settings/settings_page.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -184,7 +185,11 @@ class MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 onTap: () {
-                  // Handle the tap event
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  );
                 },
               ),
               ListTile(
@@ -196,8 +201,11 @@ class MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 onTap: () {
-                  // Handle the tap event
-                },
+                  setState(() {
+                    _selectedIndex = 4;
+                  });
+                  Navigator.pop(context);
+                }
               ),
               ListTile(
                 leading: const Icon(FluentIcons.sign_out_24_filled),

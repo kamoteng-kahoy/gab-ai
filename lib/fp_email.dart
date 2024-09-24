@@ -112,21 +112,17 @@ class _ForgotPassPageState extends State<ForgotPassPage> {
                 ),
                 const SizedBox(height: 20.0),
                 Text('Don\'t worry! Enter your registered email or phone number below to receive password reset instructions.',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 70.0),
                 TextField(
                   controller: _emailController,
-                  style: const TextStyle(
-                    fontFamily: 'Nunito Sans',
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    labelStyle: const TextStyle(
-                      fontFamily: 'Merriweather',
-                      color: SystemColors.textColor,
+                    labelStyle: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontSize: 18.0,
                     ),
                     prefixIcon: const Icon(
                       Icons.email_outlined,

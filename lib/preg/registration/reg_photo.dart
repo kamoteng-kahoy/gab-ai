@@ -146,6 +146,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
       child: Text(_image != null ? 'Upload Again' : 'Skip',
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
           color: SystemColors.primaryColorDarker,
+          fontSize: 16.0,
         ),
       ),
     ),

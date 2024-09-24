@@ -4,6 +4,7 @@ import 'package:gab_ai/preg/main_screen.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_lunch.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_snacks.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -300,7 +301,12 @@ class MealPlanSummary extends StatelessWidget {
                     ],
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MealPlanSnacks()),
+                  );
+                },
                 tooltip: 'Snacks',
               ),
             ),

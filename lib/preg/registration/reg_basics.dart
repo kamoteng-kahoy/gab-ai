@@ -145,6 +145,7 @@ Widget build(BuildContext context) {
   return SizedBox(
     width: double.infinity,
     child: TextField(
+      style: Theme.of(context).textTheme.bodyMedium,
       keyboardType: TextInputType.phone,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
@@ -169,8 +170,8 @@ Widget build(BuildContext context) {
         ),
         labelText: 'Enter your phone number',
         labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: SystemColors.textColorDarker.withOpacity(0.7),
-            ),
+          color: SystemColors.textColorDarker.withOpacity(0.7),
+        ),
       ),
     ),
   );

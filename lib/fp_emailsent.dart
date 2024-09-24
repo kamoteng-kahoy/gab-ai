@@ -46,7 +46,7 @@ class FPSent extends StatelessWidget {
               const SizedBox(height: 20.0),
 
               Text('We\'ve sent a password resent link to $email.',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
 
@@ -61,15 +61,12 @@ class FPSent extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Didn't Recieve? ",
-                  style: TextStyle(
-                    fontFamily: 'Nunito Sans',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0)
+                  Text("Didn't Recieve? ",
+                  style: Theme.of(context).textTheme.bodyMedium, 
                   ),
                   TextButton(
                     onPressed: () {
-                      
+                      print('Resend email');
                     },
                     child: const Padding(
                       padding: EdgeInsets.zero,
@@ -84,7 +81,7 @@ class FPSent extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 50.0),
+              const SizedBox(height: 80.0),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 height: MediaQuery.of(context).size.height * 0.08,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/main_screen.dart';
 import '../dashboard/dashboard.dart';
 
 class RegDone extends StatelessWidget {
@@ -52,8 +53,8 @@ class Header extends StatelessWidget {
         Text(
           'All Done',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const Image(
           image: AssetImage('assets/check_small.png'),
@@ -117,12 +118,11 @@ class _GoButtonState extends State<GoButton> {
     });
     // Handle the next button press logic here
     // For example, navigate to the next screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
-      );
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+      (route) => false,
+    );
   }
 
   @override

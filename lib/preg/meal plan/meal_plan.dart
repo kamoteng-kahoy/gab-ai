@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/meal%20plan/mealplan_snacks.dart';
 import 'package:gab_ai/preg/meal%20plan/preferences_personal-info.dart';
 import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
@@ -80,7 +81,10 @@ class MealPlanCard extends StatelessWidget {
           title: 'Snacks', 
           imagePath: 'assets/background_images/bg_snacks.jpg', 
           onTap: () { 
-            print('Snacks');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MealPlanSnacks()),
+            );
           },
         ),
         MealCard(
