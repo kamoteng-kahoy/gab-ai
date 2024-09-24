@@ -123,21 +123,68 @@ class MainScreenState extends State<MainScreen> {
             actions: <Widget>[
               PopupMenuButton<String>(
                 icon: const Icon(FluentIcons.alert_20_regular),
+                color: SystemColors.accentColor2,
                 onSelected: (String result) {
-                  // Handle notification selection
+                  switch (result) {
+                    case 'Notification 1': //based on the value of the selected item
+                      print('Notification 1');
+                    break;
+                    case 'Notification 2':
+                      print('Notification 2');
+                    break;
+                    default:
+                      print('no notification');
+                  }
                 },
+                offset: const Offset(0, 40),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'Notification 1',
-                    child: Text('Notification 1'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CircleAvatar(
+                            backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/girl'), // Replace with your logo asset
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  const PopupMenuItem<String>(
+                  PopupMenuItem<String>(
                     value: 'Notification 2',
-                    child: Text('Notification 2'),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'Notification 3',
-                    child: Text('Notification 3'),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CircleAvatar(
+                            backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/boy'), // Replace with your logo asset
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                              softWrap: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   // Add more notifications here
                 ],
