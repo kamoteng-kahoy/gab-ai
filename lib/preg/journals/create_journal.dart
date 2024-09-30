@@ -428,7 +428,7 @@ class _FoodIntakeState extends State<FoodIntake> {
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: SystemColors.textColorDarker,
                   ),
-                  items: <String>['oz', 'cup', 'tablespoon', 'teaspoon', 'slice', 'piece', 'small', 'medium', 'large']
+                  items: <String>['oz', 'cup', 'glass', 'tablespoon', 'teaspoon', 'slice', 'piece', 'small', 'medium', 'large']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

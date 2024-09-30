@@ -38,62 +38,161 @@ class JournalDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Category:',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      height: 40.0,
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          event['category'] ?? 'No Category',
-                          style: Theme.of(context).textTheme.headlineSmall,
-                        ),
+                  const SizedBox(height: 8.0),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.all(8.0),
+                    width: double.infinity,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Text(
+                      event['category'] ?? 'No Category',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 18,
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                'Mood: ${event['mood'] ?? 'No Mood'}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                'Food Intake:',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              ...foodIntake.map((food) {
-                return Text(
-                  '${food['foodName']} - ${food['servings']} ${food['portion']}',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                );
-              }).toList(),
-              const SizedBox(height: 8.0),
-              Text(
-                'Body: ${event['body'] ?? 'No Body'}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                'Attached Files:',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              ...attachedFiles.map((file) {
-                return _buildFileWidget(file);
-              }).toList(),
+              ],
+            ),
+            const SizedBox(height: 12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Mood:',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(8.0),
+                  width: double.infinity,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    event['mood'] ?? 'No Mood',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Food Intake:',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: foodIntake.map((food) {
+                    return Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.all(8.0),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Text(
+                            '${food['foodName']} - ${food['servings']} ${food['portion']}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        const SizedBox(height: 8.0),
+                      ],
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Body:',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(8.0),
+                  width: double.infinity,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    event['body'] ?? 'No Body',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Attached Files:',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      ...attachedFiles.map((file) {
+                        return Row(
+                          children: [
+                            _buildFileWidget(file),
+                            const SizedBox(width: 8.0), // Add space between images
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
             ],
           ),
         ),
@@ -102,36 +201,28 @@ class JournalDetails extends StatelessWidget {
   }
 
   Widget _buildFileWidget(String filePath) {
-    final file = File(filePath);
-    final fileExtension = file.path.split('.').last.toLowerCase();
+  final file = File(filePath);
+  final fileExtension = file.path.split('.').last.toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
-      // Display image
+      // Display resized image
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Image.file(file,
-          width: 300,
-          height: 300,
-          fit: BoxFit.cover,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.file(
+            file,
+            width: 200, // Set desired width
+            height: 200, // Set desired height
+            fit: BoxFit.cover, // Adjust the image to cover the container
+          ),
         ),
-      );
-    } else if (['mp4', 'mov', 'avi', 'wmv'].contains(fileExtension)) {
-      // Display video
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: VideoPlayerWidget(file: file),
       );
     } else {
-      // Display other file types
+      // Handle other file types
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ListTile(
-          leading: const Icon(Icons.attach_file),
-          title: Text(file.path.split(Platform.pathSeparator).last),
-          onTap: () {
-            // Handle file tap, e.g., open the file using a suitable app
-          },
-        ),
+        child: Text('Unsupported file type'),
       );
     }
   }

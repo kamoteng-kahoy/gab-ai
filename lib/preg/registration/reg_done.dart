@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/main_screen.dart';
-import '../dashboard/dashboard.dart';
 
 class RegDone extends StatelessWidget {
   const RegDone({super.key});

@@ -83,7 +83,7 @@ bool _isPasswordVisible = false;
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Full Name',
@@ -106,7 +106,7 @@ bool _isPasswordVisible = false;
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Email Address/Phone Number',
@@ -129,7 +129,7 @@ bool _isPasswordVisible = false;
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text('Password',
