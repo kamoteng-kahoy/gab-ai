@@ -232,16 +232,21 @@ class CustomTableCalendar extends StatelessWidget {
   }
 }
 
-class EventList extends StatelessWidget {
+class EventList extends StatefulWidget {
   final List<Map<String, dynamic>> events;
   final Function(Map<String, dynamic>) onEventTap;
 
   const EventList({
     super.key,
     required this.events,
-    required this.onEventTap,
+    required this.onEventTap, 
   });
 
+  @override
+  State<EventList> createState() => _EventListState();
+}
+
+class _EventListState extends State<EventList> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -249,16 +254,16 @@ class EventList extends StatelessWidget {
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: ListView.builder(
-          itemCount: events.length,
+          itemCount: widget.events.length,
           itemBuilder: (context, index) {
-            final event = events[index];
+            final event = widget.events[index];
             final createdTime = event['createdTime'] as DateTime?;
             final formattedTime = createdTime != null
                 ? DateFormat('hh:mm a').format(createdTime)
                 : 'No Time';
 
             return GestureDetector(
-              onTap: () => onEventTap(event),
+              onTap: () => widget.onEventTap(event),
               child: Card(
                 color: SystemColors.accentColor2,
                 child: ListTile(
@@ -275,6 +280,38 @@ class EventList extends StatelessWidget {
                       fontSize: 14,
                       color: Colors.grey
                     ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Confirm Deletion'),
+                            content: const Text('Are you sure you want to delete this event?'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Yes'),
+                                onPressed: () {
+                                  setState(() {
+                                    // Remove the event from the list
+                                    widget.events.removeAt(index);
+                                  });
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
               ),
