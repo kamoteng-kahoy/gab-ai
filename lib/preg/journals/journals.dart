@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
@@ -286,7 +287,7 @@ class _EventListState extends State<EventList> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (BuildContext context) {
+                        builder: (BuildContext dialogContext) {
                           return AlertDialog(
                             title: const Text('Confirm Deletion'),
                             content: const Text('Are you sure you want to delete this event?'),
@@ -294,7 +295,7 @@ class _EventListState extends State<EventList> {
                               TextButton(
                                 child: const Text('Cancel'),
                                 onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(dialogContext).pop(); // Close the dialog
                                 },
                               ),
                               TextButton(
@@ -304,7 +305,19 @@ class _EventListState extends State<EventList> {
                                     // Remove the event from the list
                                     widget.events.removeAt(index);
                                   });
-                                  Navigator.of(context).pop(); // Close the dialog
+                                  Navigator.of(dialogContext).pop(); // Close the dialog
+                                  const snackBar = SnackBar(
+                                    content: AwesomeSnackbarContent(
+                                      title: 'Deleted',
+                                      message: 'Journal has been deleted!',
+                                      contentType: ContentType.success,
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                    behavior: SnackBarBehavior.floating,
+                                    elevation: 0,
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                 },
                               ),
                             ],

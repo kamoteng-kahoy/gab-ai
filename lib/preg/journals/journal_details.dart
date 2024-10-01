@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/appointments/picture_preview.dart';
 import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
@@ -228,10 +229,16 @@ class JournalDetails extends StatelessWidget {
     final file = File(filePath);
     final fileExtension = file.path.split('.').last.toLowerCase();
 
-    if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
+    if (['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'].contains(fileExtension)) {
       // Simulate a delay to show the loading indicator
       return FutureBuilder<File>(
-        future: Future.delayed(const Duration(seconds: 2), () => file),
+        future: Future.delayed(const Duration(seconds: 2), () async {
+          if (await file.exists()) {
+            return file;
+          } else {
+            throw Exception('File does not exist');
+          }
+        }),
         builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -245,15 +252,13 @@ class JournalDetails extends StatelessWidget {
                       width: 200,
                       height: 200,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100], // Placeholder color
-                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        color: SystemColors.textColor, // Set the color to black
+                      child: const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                   ],
@@ -261,70 +266,77 @@ class JournalDetails extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
-            return const Center(
-              child: Text('Error loading image'),
+            return Center(
+              child: Text('Error loading file: ${snapshot.error}'),
             );
+          } else if (snapshot.hasData) {
+            try {
+              return _displayFile(snapshot.data!);
+            } catch (e) {
+              return Center(
+                child: Text('Invalid file data'),
+              );
+            }
           } else {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.file(
-                  snapshot.data!,
-                  width: 200, // Set desired width
-                  height: 200, // Set desired height
-                  fit: BoxFit.cover, // Adjust the image to cover the container
-                ),
-              ),
+            return Center(
+              child: Text('File not found'),
             );
           }
         },
       );
     } else {
-      // Handle other file types
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+      return Center(
         child: Text('Unsupported file type'),
       );
     }
   }
-}
 
-class VideoPlayerWidget extends StatefulWidget {
-  final File file;
+  Widget _displayFile(File file) {
+    final fileExtension = file.path.split('.').last.toLowerCase();
 
-  const VideoPlayerWidget({super.key, required this.file});
-
-  @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
-}
-
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.file(widget.file)
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.play();
-      });
+    if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
+      return Image.file(
+        file,
+        width: 200, // Set the desired width
+        height: 200, // Set the desired height
+        fit: BoxFit.cover, // Adjust the image to cover the box
+      );
+    } else if (['mp4', 'mov'].contains(fileExtension)) {
+      return _displayVideo(file);
+    } else {
+      throw Exception('Unsupported file type');
+    }
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  Widget _displayVideo(File file) {
+    VideoPlayerController _controller = VideoPlayerController.file(file);
 
-  @override
-  Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-        : const CircularProgressIndicator();
+    return FutureBuilder<void>(
+      future: _controller.initialize(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 200, // Set the desired width
+                height: 200, // Set the desired height
+                child: AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                ),
+              ),
+              Icon(
+                Icons.play_circle_outline,
+                size: 50,
+                color: Colors.white.withOpacity(0.7),
+              ),
+            ],
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }
