@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
 
@@ -17,7 +18,7 @@ class JournalDetails extends StatelessWidget {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
-        title: Text('Event Details',
+        title: Text('Journal Details',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -38,6 +39,27 @@ class JournalDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Time Created: ',
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    event['createdTime'] != null
+                        ? DateFormat('yyyy-MM-dd    hh:mm a').format(event['createdTime'])
+                        : 'No Time',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -146,22 +168,24 @@ class JournalDetails extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8.0),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.all(8.0),
-                  width: double.infinity,
-                  height: 40.0,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    event['body'] ?? 'No Body',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 18,
+                SingleChildScrollView(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.all(8.0),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Text(
+                      event['body'] ?? 'No Body',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 12.0),
               ],
             ),
             const SizedBox(height: 12.0),
@@ -201,27 +225,65 @@ class JournalDetails extends StatelessWidget {
   }
 
   Widget _buildFileWidget(String filePath) {
-  final file = File(filePath);
-  final fileExtension = file.path.split('.').last.toLowerCase();
+    final file = File(filePath);
+    final fileExtension = file.path.split('.').last.toLowerCase();
 
     if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
-      // Display resized image
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.file(
-            file,
-            width: 200, // Set desired width
-            height: 200, // Set desired height
-            fit: BoxFit.cover, // Adjust the image to cover the container
-          ),
-        ),
+      // Simulate a delay to show the loading indicator
+      return FutureBuilder<File>(
+        future: Future.delayed(const Duration(seconds: 2), () => file),
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100], // Placeholder color
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: SystemColors.textColor, // Set the color to black
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error loading image'),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.file(
+                  snapshot.data!,
+                  width: 200, // Set desired width
+                  height: 200, // Set desired height
+                  fit: BoxFit.cover, // Adjust the image to cover the container
+                ),
+              ),
+            );
+          }
+        },
       );
     } else {
       // Handle other file types
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0),
         child: Text('Unsupported file type'),
       );
     }
