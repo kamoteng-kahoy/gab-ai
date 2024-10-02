@@ -208,7 +208,17 @@ class JournalDetails extends StatelessWidget {
                       ...attachedFiles.map((file) {
                         return Row(
                           children: [
-                            _buildFileWidget(file),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ImagePreviewScreen(imagePath: file),
+                                  ),
+                                );
+                              },
+                              child: _buildFileWidget(file),
+                            ),
                             const SizedBox(width: 8.0), // Add space between images
                           ],
                         );
@@ -273,19 +283,19 @@ class JournalDetails extends StatelessWidget {
             try {
               return _displayFile(snapshot.data!);
             } catch (e) {
-              return Center(
+              return const Center(
                 child: Text('Invalid file data'),
               );
             }
           } else {
-            return Center(
+            return const Center(
               child: Text('File not found'),
             );
           }
         },
       );
     } else {
-      return Center(
+      return const Center(
         child: Text('Unsupported file type'),
       );
     }
@@ -309,10 +319,10 @@ class JournalDetails extends StatelessWidget {
   }
 
   Widget _displayVideo(File file) {
-    VideoPlayerController _controller = VideoPlayerController.file(file);
+    VideoPlayerController controller = VideoPlayerController.file(file);
 
     return FutureBuilder<void>(
-      future: _controller.initialize(),
+      future: controller.initialize(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return Stack(
@@ -322,8 +332,8 @@ class JournalDetails extends StatelessWidget {
                 width: 200, // Set the desired width
                 height: 200, // Set the desired height
                 child: AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
+                  aspectRatio: controller.value.aspectRatio,
+                  child: VideoPlayer(controller),
                 ),
               ),
               Icon(
@@ -334,7 +344,7 @@ class JournalDetails extends StatelessWidget {
             ],
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

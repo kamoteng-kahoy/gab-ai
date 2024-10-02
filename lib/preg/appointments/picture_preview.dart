@@ -56,6 +56,7 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
+  bool _isPlaying = false;
 
   @override
   void initState() {
@@ -63,8 +64,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _controller = VideoPlayerController.file(File(widget.videoPath))
       ..initialize().then((_) {
         setState(() {});
-        _controller.play();
       });
+    _controller.addListener(() {
+      if (_controller.value.isInitialized) {
+        setState(() {}); // Update the state to reflect the current position
+      }
+    });
   }
 
   @override
@@ -73,13 +78,46 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
   }
 
+  void _togglePlayPause() {
+    setState(() {
+      _isPlaying ? _controller.pause() : _controller.play();
+      _isPlaying = !_isPlaying;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
-          )
-        : const CircularProgressIndicator();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (_controller.value.isInitialized)
+          GestureDetector(
+            onTap: _togglePlayPause,
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            ),
+          ),
+        if (_controller.value.isInitialized)
+          VideoProgressIndicator(_controller, allowScrubbing: true),
+        if (_controller.value.isInitialized)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(
+                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                ),
+                onPressed: _togglePlayPause,
+              ),
+              Text(
+                '${_controller.value.position.inMinutes}:${(_controller.value.position.inSeconds % 60).toString().padLeft(2, '0')} / ${_controller.value.duration.inMinutes}:${(_controller.value.duration.inSeconds % 60).toString().padLeft(2, '0')}',
+              ),
+            ],
+          ),
+        if (!_controller.value.isInitialized)
+          const CircularProgressIndicator(),
+      ],
+    );
   }
 }
