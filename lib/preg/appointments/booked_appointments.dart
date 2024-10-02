@@ -11,39 +11,71 @@ class BookedAppointments extends StatelessWidget {
       backgroundColor: SystemColors.bgColorLighter,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: 10, // Replace with the actual number of messages
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: CircleAvatar(
-                child: Text((index + 1).toString(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              title: Text('Message ${index + 1}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 22,
-                ),
-              ),
-              subtitle: Text('This is a sample message.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 16,
-                ),
-              ),
-              onTap: () => _handleMessageTap(context),
-            );
-          },
-        ),
+        child: ListedMessages(),
       ),
     );
   }
+}
 
-  void _handleMessageTap(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const BookedMessage()),
+class ListedMessages extends StatelessWidget {
+  const ListedMessages({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    int upcomingAppointments = 3; // Replace with the actual number of upcoming appointments
+    List<Map<String, String>> appointments = [
+      {
+        'name': 'John Doe',
+        'lastMessage': 'Message Here ...',
+        'profilePicture': 'https://avatar.iran.liara.run/public/boy'
+      },
+      {
+        'name': 'Jane Smith',
+        'lastMessage': 'Message Here ...',
+        'profilePicture': 'https://avatar.iran.liara.run/public/88'
+      },
+      {
+        'name': 'Alice Johnson',
+        'lastMessage': 'Message Here ...',
+        'profilePicture': 'https://avatar.iran.liara.run/public/girl'
+      },
+    ];
+
+    void onTapFunction(BuildContext context, int index) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BookedMessage(
+            name: appointments[index]['name']!,
+            profilePicture: appointments[index]['profilePicture']!,
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: List.generate(
+        upcomingAppointments,
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5.0),
+          child: InkWell(
+            onTap: () => onTapFunction(context, index),
+            child: Card(
+              child: ListTile(
+                leading: Image.network(appointments[index]['profilePicture']!),
+                title: Text(
+                  appointments[index]['name']!,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                subtitle: Text(appointments[index]['lastMessage']!),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

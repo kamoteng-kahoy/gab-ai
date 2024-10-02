@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/login.dart';
 import 'package:gab_ai/preg/settings/edit_profile.dart';
+import 'package:gab_ai/preg/settings/personal_info.dart';
 
 void main() {
   runApp(const MyApp());
@@ -126,6 +127,32 @@ class Options extends StatelessWidget {
               color: SystemColors.secondaryColor2,
               borderRadius: BorderRadius.circular(10),
             ),
+            child: const Icon(FluentIcons.person_24_filled),
+          ),
+          title: Text('View Personal Information',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PersonalInfoScreen()),
+            );
+          },
+          trailing: const Icon(FluentIcons.chevron_right_24_filled, size: 20),
+        ),
+        const SizedBox(height: 15),
+        ListTile(
+          leading: Container(
+            width: 50,
+            height: 50,
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: SystemColors.secondaryColor2,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: const Icon(FluentIcons.sign_out_24_filled)
           ),
           title: Text('Log Out',
@@ -169,6 +196,7 @@ class Options extends StatelessWidget {
             }
           },
         ),
+        const SizedBox(height: 30),
       ],
     );
   }

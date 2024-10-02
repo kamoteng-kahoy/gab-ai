@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/appointments/booked_message.dart';
 import 'package:gab_ai/preg/main_screen.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';
@@ -379,19 +380,17 @@ class AppointmentsSummary extends StatelessWidget {
       },
     ];
 
-    List<void Function()> onTapFunctions = [
-      () {
-        // Function for the first card
-        print('Card tapped: John Doe');
-      },
-      // Add more functions for other cards here
-      (){
-        print('Card tapped: Jane Smith');
-      },
-      (){
-        print('Card tapped: Alice Johnson');
-      }
-    ];
+    void onTapFunction(BuildContext context, int index) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BookedMessage(
+            name: appointments[index]['name']!,
+            profilePicture: appointments[index]['profilePicture']!,
+          ),
+        ),
+      );
+    }
 
     return Column(
       children: List.generate(
@@ -399,7 +398,7 @@ class AppointmentsSummary extends StatelessWidget {
         (index) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0),
           child: InkWell(
-            onTap: onTapFunctions[index],
+            onTap: () => onTapFunction(context, index),
             child: Card(
               child: ListTile(
                 leading: Image.network(appointments[index]['profilePicture']!),

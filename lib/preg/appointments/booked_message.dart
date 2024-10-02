@@ -6,7 +6,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:gab_ai/preg/appointments/picture_preview.dart';
 
 class BookedMessage extends StatefulWidget {
-  const BookedMessage({super.key});
+  final String name;
+  final String profilePicture;
+
+  const BookedMessage({super.key, required this.name, required this.profilePicture});
 
   @override
   _BookedMessageState createState() => _BookedMessageState();
@@ -27,7 +30,7 @@ class _BookedMessageState extends State<BookedMessage> {
   final ScrollController _scrollController = ScrollController();
   String? _filePath;
   String? _fileType;
-
+  
   @override
   void initState() {
     super.initState();
@@ -96,7 +99,15 @@ class _BookedMessageState extends State<BookedMessage> {
       appBar: AppBar(
         backgroundColor: SystemColors.bgColorLighter,
         toolbarHeight: 70,
-        title: const Text('Booked Messages'),
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.profilePicture),
+            ),
+            const SizedBox(width: 15),
+            Text(widget.name),
+          ],
+        ),
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_20_filled), // Change this to any icon you prefer
           onPressed: () {
