@@ -138,7 +138,7 @@ class Options extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => PersonalInfoScreen()),
+              MaterialPageRoute(builder: (context) => const PersonalInfoScreen()),
             );
           },
           trailing: const Icon(FluentIcons.chevron_right_24_filled, size: 20),

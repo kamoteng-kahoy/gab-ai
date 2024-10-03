@@ -1,12 +1,15 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:gab_ai/preg/settings/edit_personal_info.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -192,7 +195,10 @@ class EditButton extends StatelessWidget {
         padding: const EdgeInsets.all(16.0), // Adjust the padding as needed
         child: FloatingActionButton(
           onPressed: () {
-            // Add your onPressed code here!
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditPersonalInfo()),
+            );
           },
           backgroundColor: SystemColors.primaryColorDarker,
           child: const Icon(FluentIcons.edit_20_filled,
