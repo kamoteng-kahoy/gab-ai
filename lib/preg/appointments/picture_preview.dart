@@ -57,6 +57,7 @@ class VideoPlayerWidget extends StatefulWidget {
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
   bool _isPlaying = false;
+  bool _isMuted = false; // Initial mute state
 
   @override
   void initState() {
@@ -82,6 +83,13 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     setState(() {
       _isPlaying ? _controller.pause() : _controller.play();
       _isPlaying = !_isPlaying;
+    });
+  }
+
+  void _toggleMute() {
+    setState(() {
+      _isMuted = !_isMuted;
+      _controller.setVolume(_isMuted ? 0 : 1);
     });
   }
 
@@ -112,6 +120,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               ),
               Text(
                 '${_controller.value.position.inMinutes}:${(_controller.value.position.inSeconds % 60).toString().padLeft(2, '0')} / ${_controller.value.duration.inMinutes}:${(_controller.value.duration.inSeconds % 60).toString().padLeft(2, '0')}',
+              ),
+              IconButton(
+                icon: Icon(_isMuted ? Icons.volume_off : Icons.volume_up),
+                onPressed: _toggleMute,
               ),
             ],
           ),

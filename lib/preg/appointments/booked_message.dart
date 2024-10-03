@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:gab_ai/preg/appointments/picture_preview.dart';
+import 'package:video_player/video_player.dart'; // Import the video_player package
 
 class BookedMessage extends StatefulWidget {
   final String name;
@@ -190,39 +191,146 @@ class MessageList extends StatelessWidget {
             ],
           );
         } else if (message.type == 'file') {
-          if (message.fileType == 'jpg' || message.fileType == 'png') {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.end, // Align the image to the right
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: SystemColors.primaryColorDarker,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ImagePreviewScreen(imagePath: message.content),
-                        ),
-                      );
-                    },
-                    child: Image.file(
-                      File(message.content),
-                      width: 230, // Set the desired width
-                      height: 200, // Set the desired height
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end, // Align the file to the right
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: SystemColors.primaryColorDarker,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-              ],
-            );
-          }
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImagePreviewScreen(imagePath: message.content),
+                      ),
+                    );
+                  },
+                  child: _buildFileWidget(message.content),
+                ),
+              ),
+            ],
+          );
         }
         return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildFileWidget(String filePath) {
+    final file = File(filePath);
+    final fileExtension = file.path.split('.').last.toLowerCase();
+
+    if (['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov'].contains(fileExtension)) {
+      return FutureBuilder<File>(
+        future: Future.delayed(const Duration(seconds: 2), () async {
+          if (await file.exists()) {
+            return file;
+          } else {
+            throw Exception('File does not exist');
+          }
+        }),
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: SizedBox(
+                width: 200,
+                height: 200,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error loading file: ${snapshot.error}'),
+            );
+          } else if (snapshot.hasData) {
+            try {
+              return _displayFile(snapshot.data!);
+            } catch (e) {
+              return const Center(
+                child: Text('Invalid file data'),
+              );
+            }
+          } else {
+            return const Center(
+              child: Text('File not found'),
+            );
+          }
+        },
+      );
+    } else {
+      return const Center(
+        child: Text('Unsupported file type'),
+      );
+    }
+  }
+
+  Widget _displayFile(File file) {
+    final fileExtension = file.path.split('.').last.toLowerCase();
+
+    if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
+      return Image.file(
+        file,
+        width: 200, // Set the desired width
+        height: 200, // Set the desired height
+        fit: BoxFit.cover, // Adjust the image to cover the box
+      );
+    } else if (['mp4', 'mov'].contains(fileExtension)) {
+      return _displayVideo(file);
+    } else {
+      throw Exception('Unsupported file type');
+    }
+  }
+
+  Widget _displayVideo(File file) {
+    VideoPlayerController controller = VideoPlayerController.file(file);
+
+    return FutureBuilder<void>(
+      future: controller.initialize(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                width: 200, // Set the desired width
+                height: 200, // Set the desired height
+                child: AspectRatio(
+                  aspectRatio: controller.value.aspectRatio,
+                  child: VideoPlayer(controller),
+                ),
+              ),
+              Icon(
+                Icons.play_circle_outline,
+                size: 50,
+                color: Colors.white.withOpacity(0.7),
+              ),
+            ],
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
       },
     );
   }

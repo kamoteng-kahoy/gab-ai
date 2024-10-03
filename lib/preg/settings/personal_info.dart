@@ -117,6 +117,13 @@ class MainInfoCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: SystemColors.secondaryColor2,
         borderRadius: BorderRadius.circular(21),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 5,
+          ),
+        ],
       ),
       child: Center(
         child: Column(
@@ -197,7 +204,7 @@ class EditButton extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => EditPersonalInfo()),
+              MaterialPageRoute(builder: (context) => const EditPersonalInfo()),
             );
           },
           backgroundColor: SystemColors.primaryColorDarker,
