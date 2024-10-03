@@ -1,6 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:video_player/video_player.dart';
 
 class BookedMessage extends StatelessWidget {
   final String name;
@@ -44,16 +47,48 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
+  File? _selectedFile;
+  VideoPlayerController? _videoController;
 
   void _handleSubmitted(String text) {
     _controller.clear();
     ChatMessage message = ChatMessage(
       text: text,
       isSent: true,
+      file: _selectedFile,
+      videoController: _videoController,
     );
     setState(() {
       _messages.insert(0, message);
+      _selectedFile = null;
+      _videoController = null;
     });
+  }
+
+  Future<void> _handleAttachment() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'mp4'],
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedFile = File(result.files.single.path!);
+        _controller.text = result.files.single.name; // Show only the file name
+        if (_selectedFile!.path.endsWith('.mp4')) {
+          _videoController = VideoPlayerController.file(_selectedFile!)
+            ..initialize().then((_) {
+              setState(() {});
+            });
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _videoController?.dispose();
+    super.dispose();
   }
 
   Widget _buildTextComposer() {
@@ -94,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(FluentIcons.attach_24_filled,
                 color: SystemColors.textColorDarker,
               ),
-              onPressed: () => print('Attach'),
+              onPressed: _handleAttachment,
             ),
             IconButton(
               icon: const Icon(FluentIcons.send_24_filled,
@@ -135,8 +170,10 @@ class _ChatScreenState extends State<ChatScreen> {
 class ChatMessage extends StatelessWidget {
   final String text;
   final bool isSent;
+  final File? file;
+  final VideoPlayerController? videoController;
 
-  const ChatMessage({super.key, required this.text, required this.isSent});
+  const ChatMessage({super.key, required this.text, required this.isSent, this.file, this.videoController});
 
   @override
   Widget build(BuildContext context) {
@@ -154,12 +191,32 @@ class ChatMessage extends StatelessWidget {
             bottomRight: isSent ? const Radius.circular(0) : const Radius.circular(15),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSent ? Colors.white : Colors.black,
-            fontSize: 16,
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (file != null)
+              file!.path.endsWith('.mp4')
+                  ? videoController != null && videoController!.value.isInitialized
+                      ? AspectRatio(
+                          aspectRatio: videoController!.value.aspectRatio,
+                          child: VideoPlayer(videoController!),
+                        )
+                      : Container()
+                  : Image.file(
+                      file!,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      fit: BoxFit.cover,
+                    ),
+            if (file == null && text.isNotEmpty)
+              Text(
+                text,
+                style: TextStyle(
+                  color: isSent ? Colors.white : Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+          ],
         ),
       ),
     );
