@@ -18,42 +18,92 @@ class BookedMessage extends StatelessWidget {
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
         backgroundColor: SystemColors.bgColorLighter,
-        title: InkWell(
-          onTap: () {
-            print('Appbar tapped');
-          },
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(profilePicture),
-                radius: 20,
-              ),
-              const SizedBox(width: 20),
-              Text(name,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontSize: 20,
-                ), 
-              ),
-            ],
-          ),
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(profilePicture),
+              radius: 20,
+            ),
+            const SizedBox(width: 20),
+            Text(name,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                fontSize: 20,
+              ), 
+            ),
+          ],
         ),
-        toolbarHeight: 80,
+        toolbarHeight: 50,
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_24_regular),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(FluentIcons.more_vertical_24_regular),
-            onPressed: () {
-              // Add your onPressed code here!
-            },
+          PopupMenuTheme(
+            data: PopupMenuThemeData(
+              color: SystemColors.accentColor2,
+              textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 16,
+                color: SystemColors.textColorDarker
+              ),
+            ),
+            child: PopupMenuButton<String>(
+              icon: const Icon(FluentIcons.more_vertical_24_regular),
+              onSelected: (String result) {
+                switch (result) {
+                  case 'profile':
+                    _handleprofile();
+                    break;
+                  case 'delete':
+                    _handledelete();
+                    break;
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'profile',
+                  child: Row(
+                    children: [
+                      const Icon(FluentIcons.person_circle_20_filled, color: Colors.black),
+                      const SizedBox(width: 15),
+                      Text('Profile',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      const Icon(FluentIcons.delete_20_filled, color: Colors.black),
+                      const SizedBox(width: 15),
+                      Text('Delete',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
       body: const ChatScreen(),
     );
   }
+
+  void _handleprofile() {
+    print('option 1');
+  }
+
+  void _handledelete() {
+    print('option 2');
+  }
+
 }
 
 class ChatScreen extends StatefulWidget {
@@ -68,6 +118,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
   File? _selectedFile;
   VideoPlayerController? _videoController;
+  bool _isLoading = false; // Add this line
 
   void _handleSubmitted(String text) {
     _controller.clear();
@@ -81,10 +132,15 @@ class _ChatScreenState extends State<ChatScreen> {
       _messages.insert(0, message);
       _selectedFile = null;
       _videoController = null;
+      _isLoading = false; // Reset loading state
     });
   }
 
   Future<void> _handleAttachment() async {
+    setState(() {
+      _isLoading = true; // Set loading state to true
+    });
+
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png', 'mp4'],
@@ -93,13 +149,21 @@ class _ChatScreenState extends State<ChatScreen> {
     if (result != null) {
       setState(() {
         _selectedFile = File(result.files.single.path!);
-        _controller.text = result.files.single.name; // Show only the file name
         if (_selectedFile!.path.endsWith('.mp4')) {
           _videoController = VideoPlayerController.file(_selectedFile!)
             ..initialize().then((_) {
-              setState(() {});
+              setState(() {
+                _isLoading = false; // Set loading state to false
+              });
             });
+        } else {
+          _isLoading = false; // Set loading state to false
         }
+        _controller.text = result.files.single.name; // Show only the file name
+      });
+    } else {
+      setState(() {
+        _isLoading = false; // Set loading state to false if no file is selected
       });
     }
   }
@@ -127,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   maxLines: 7, // Allow the text field to grow vertically
                   minLines: 1, // Minimum number of lines
                   decoration: InputDecoration(
-                    hintText: 'Send a message',
+                    hintText: _isLoading ? 'Loading media...' : 'Send a message', // Change hint text based on loading state
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: SystemColors.textColorDarker,
                       fontSize: 16,
@@ -141,6 +205,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     fontSize: 16,
                   ),
                   scrollPadding: const EdgeInsets.all(20.0), // Add scroll padding
+                  enabled: !_isLoading, // Disable text field when loading
                 ),
               ),
             ),
@@ -148,13 +213,13 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(FluentIcons.attach_24_filled,
                 color: SystemColors.textColorDarker,
               ),
-              onPressed: _handleAttachment,
+              onPressed: _isLoading ? null : _handleAttachment, // Disable button when loading
             ),
             IconButton(
               icon: const Icon(FluentIcons.send_24_filled,
                 color: SystemColors.textColorDarker,
               ),
-              onPressed: () => _handleSubmitted(_controller.text),
+              onPressed: _isLoading ? null : () => _handleSubmitted(_controller.text), // Disable button when loading
             ),
           ],
         ),
@@ -198,94 +263,117 @@ class ChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        decoration: BoxDecoration(
-          color: isSent ? SystemColors.primaryColorDarker : Colors.grey[300],
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(15),
-            topRight: const Radius.circular(15),
-            bottomLeft: isSent ? const Radius.circular(15) : const Radius.circular(0),
-            bottomRight: isSent ? const Radius.circular(0) : const Radius.circular(15),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        child: file != null
+            ? _buildMediaContent(context)
+            : _buildTextBubble(context),
+      ),
+    );
+  }
+
+  Widget _buildMediaContent(BuildContext context) {
+    if (file!.path.endsWith('.mp4')) {
+      return _buildVideoContent(context);
+    } else {
+      return _buildImageContent(context);
+    }
+  }
+
+  Widget _buildVideoContent(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _openPreviewScreen(context),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double aspectRatio = videoController?.value.aspectRatio ?? 16 / 9;
+          bool isLandscape = aspectRatio > 1;
+          double width = isLandscape
+              ? MediaQuery.of(context).size.width * 0.7 // 50% of screen width for landscape
+              : MediaQuery.of(context).size.width * 0.5; // 25% of screen width for portrait
+          double height = width / aspectRatio;
+
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(12.0), // Add circular border radius
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: width,
+                  height: height,
+                  child: AspectRatio(
+                    aspectRatio: aspectRatio,
+                    child: videoController != null && videoController!.value.isInitialized
+                        ? VideoPlayer(videoController!)
+                        : Container(color: Colors.black),
+                  ),
+                ),
+                Container(
+                  width: width,
+                  height: height,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                ),
+                Icon(
+                  FluentIcons.play_circle_48_filled,
+                  size: isLandscape ? 48 : 36,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildImageContent(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _openPreviewScreen(context),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0), // Add circular border radius
+        child: Image.file(
+          file!,
+          fit: BoxFit.cover,
+          width: MediaQuery.of(context).size.width * 0.5, // 50% of screen width
+          height: MediaQuery.of(context).size.width * 0.55, // Square aspect ratio
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextBubble(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      decoration: BoxDecoration(
+        color: isSent ? SystemColors.primaryColorDarker : Colors.grey[300],
+        borderRadius: BorderRadius.only(
+          topLeft: const Radius.circular(15),
+          topRight: const Radius.circular(15),
+          bottomLeft: isSent ? const Radius.circular(15) : const Radius.circular(0),
+          bottomRight: isSent ? const Radius.circular(0) : const Radius.circular(15),
+        ),
+      ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.7,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSent ? Colors.white : Colors.black,
+            fontSize: 16,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (file != null)
-              file!.path.endsWith('.mp4')
-                  ? videoController != null && videoController!.value.isInitialized
-                      ? GestureDetector(
-                          onTap: () {
-                            print('Video');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ImagePreviewScreen(imagePath: file!.path),
-                              ),
-                            );
-                          },
-                          child: AspectRatio(
-                            aspectRatio: videoController!.value.aspectRatio,
-                            child: VideoPlayer(videoController!),
-                          ),
-                        )
-                      : FutureBuilder(
-                          future: videoController!.initialize(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              return GestureDetector(
-                                onTap: () {
-                                  print('Video');
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ImagePreviewScreen(imagePath: file!.path),
-                                    ),
-                                  );
-                                },
-                                child: AspectRatio(
-                                  aspectRatio: videoController!.value.aspectRatio,
-                                  child: VideoPlayer(videoController!),
-                                ),
-                              );
-                            } else {
-                              return SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                                height: MediaQuery.of(context).size.height * 0.3,
-                                child: const Center(child: CircularProgressIndicator()),
-                              );
-                            }
-                          },
-                        )
-                  : GestureDetector(
-                      onTap: () {
-                        print('Image');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImagePreviewScreen(imagePath: file!.path),
-                          ),
-                        );
-                      },
-                      child: Image.file(
-                        file!,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-            if (file == null && text.isNotEmpty)
-              Text(
-                text,
-                style: TextStyle(
-                  color: isSent ? Colors.white : Colors.black,
-                  fontSize: 16,
-                ),
-              ),
-          ],
-        ),
+      ),
+    );
+  }
+
+  void _openPreviewScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImagePreviewScreen(imagePath: file!.path),
       ),
     );
   }

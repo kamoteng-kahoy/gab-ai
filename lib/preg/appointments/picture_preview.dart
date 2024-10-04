@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
@@ -10,7 +12,7 @@ class ImagePreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isVideo = imagePath.endsWith('.mp4'); // Check if the file is a video
+    final isVideo = imagePath.endsWith('.mp4');
 
     return Scaffold(
       appBar: AppBar(
@@ -32,17 +34,49 @@ class ImagePreviewScreen extends StatelessWidget {
       ),
       body: Container(
         color: SystemColors.bgColorLighter,
-        child: Stack(
-          children: [
-            Center(
-              child: isVideo
-                ? VideoPlayerWidget(videoPath: imagePath)
-                : Image.file(File(imagePath)),
-            ),
-          ],
+        child: Center(
+          child: isVideo
+            ? VideoPlayerWidget(videoPath: imagePath)
+            : PortraitAwareImage(imagePath: imagePath),
         ),
       ),
     );
+  }
+}
+
+class PortraitAwareImage extends StatelessWidget {
+  final String imagePath;
+
+  const PortraitAwareImage({super.key, required this.imagePath});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Size>(
+      future: _getImageSize(imagePath),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          final size = snapshot.data!;
+          final isPortrait = size.height > size.width;
+          return AspectRatio(
+            aspectRatio: isPortrait ? size.width / size.height : size.height / size.width,
+            child: Image.file(File(imagePath)),
+          );
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  Future<Size> _getImageSize(String path) async {
+    final image = Image.file(File(path));
+    final completer = Completer<Size>();
+    image.image.resolve(const ImageConfiguration()).addListener(
+      ImageStreamListener((ImageInfo info, bool _) {
+        completer.complete(Size(info.image.width.toDouble(), info.image.height.toDouble()));
+      }),
+    );
+    return completer.future;
   }
 }
 
@@ -58,7 +92,7 @@ class VideoPlayerWidget extends StatefulWidget {
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _controller;
   bool _isPlaying = false;
-  bool _isMuted = false; // Initial mute state
+  bool _isMuted = false;
 
   @override
   void initState() {
@@ -69,7 +103,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       });
     _controller.addListener(() {
       if (_controller.value.isInitialized) {
-        setState(() {}); // Update the state to reflect the current position
+        setState(() {});
       }
     });
   }
@@ -96,41 +130,58 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (_controller.value.isInitialized)
-          GestureDetector(
-            onTap: _togglePlayPause,
-            child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: VideoPlayer(_controller),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (!_controller.value.isInitialized) {
+          return const CircularProgressIndicator();
+        }
+
+        final videoRatio = _controller.value.aspectRatio;
+        final screenRatio = constraints.maxWidth / constraints.maxHeight;
+
+        double videoWidth, videoHeight;
+        if (videoRatio > screenRatio) {
+          videoWidth = constraints.maxWidth;
+          videoHeight = videoWidth / videoRatio;
+        } else {
+          videoHeight = constraints.maxHeight * 0.7; // Use 70% of available height
+          videoWidth = videoHeight * videoRatio;
+        }
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: _togglePlayPause,
+              child: SizedBox(
+                width: videoWidth,
+                height: videoHeight,
+                child: VideoPlayer(_controller),
+              ),
             ),
-          ),
-        if (_controller.value.isInitialized)
-          VideoProgressIndicator(_controller, allowScrubbing: true),
-        if (_controller.value.isInitialized)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Icon(
-                  _isPlaying ? Icons.pause : Icons.play_arrow,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: VideoProgressIndicator(_controller, allowScrubbing: true),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                  onPressed: _togglePlayPause,
                 ),
-                onPressed: _togglePlayPause,
-              ),
-              Text(
-                '${_controller.value.position.inMinutes}:${(_controller.value.position.inSeconds % 60).toString().padLeft(2, '0')} / ${_controller.value.duration.inMinutes}:${(_controller.value.duration.inSeconds % 60).toString().padLeft(2, '0')}',
-              ),
-              IconButton(
-                icon: Icon(_isMuted ? Icons.volume_off : Icons.volume_up),
-                onPressed: _toggleMute,
-              ),
-            ],
-          ),
-        if (!_controller.value.isInitialized)
-          const CircularProgressIndicator(),
-      ],
+                Text(
+                  '${_controller.value.position.inMinutes}:${(_controller.value.position.inSeconds % 60).toString().padLeft(2, '0')} / ${_controller.value.duration.inMinutes}:${(_controller.value.duration.inSeconds % 60).toString().padLeft(2, '0')}',
+                ),
+                IconButton(
+                  icon: Icon(_isMuted ? Icons.volume_off : Icons.volume_up),
+                  onPressed: _toggleMute,
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
