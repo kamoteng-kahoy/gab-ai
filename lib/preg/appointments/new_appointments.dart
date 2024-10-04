@@ -310,7 +310,6 @@ class PatientDetails extends StatefulWidget {
 
 class _PatientDetailsState extends State<PatientDetails> {
   final String _name = "John Doe"; // Replace with the actual logged-in user's name
-  final int _selectedAge = 18;
   String? _selectedWeeksPregnant;
   String? selectedInterval;
 

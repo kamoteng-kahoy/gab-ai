@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_snacks.dart';
-import 'package:gab_ai/preg/meal%20plan/preferences_personal-info.dart';
+import 'package:gab_ai/preg/meal%20plan/preferences_personal_info.dart';
 import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';

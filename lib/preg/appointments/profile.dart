@@ -218,7 +218,7 @@ class BookAppointmentButton extends StatelessWidget {
           child: Text('Book Appointment',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w600,
-              fontSize: 20,
+              fontSize: 18,
               color: SystemColors.bgWhite
             ),
           ),

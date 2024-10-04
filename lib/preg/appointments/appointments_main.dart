@@ -31,20 +31,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
       backgroundColor: SystemColors.bgColorLighter,
       body: Column(
         children: [
-          SizedBox(
+          Container(
             width: 300,
+            decoration: BoxDecoration(
+              color: Colors.grey[200], // Light grey background for inactive tab
+              borderRadius: BorderRadius.circular(15),
+            ),
             child: TabBar(
               controller: _tabController,
               indicator: BoxDecoration(
-                color: SystemColors.primaryColor,
+                color: SystemColors.primaryColorDarker,
                 borderRadius: BorderRadius.circular(15),
               ),
               indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
+              dividerColor: Colors.transparent,
+              labelColor: Colors.white, // Active tab text color
+              labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 18,
+              ),
+              unselectedLabelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 18,
+              ),
+              unselectedLabelColor: Colors.black, // Inactive tab text color
+              tabs: const [
                 Tab(
                   child: Text(
                     'Available',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                     ),
@@ -53,7 +66,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> with SingleTicker
                 Tab(
                   child: Text(
                     'Booked',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 15,
                     ),

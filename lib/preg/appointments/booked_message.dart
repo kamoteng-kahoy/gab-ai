@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:gab_ai/preg/appointments/picture_preview.dart';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
 
@@ -17,20 +18,38 @@ class BookedMessage extends StatelessWidget {
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
         backgroundColor: SystemColors.bgColorLighter,
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(profilePicture),
-            ),
-            const SizedBox(width: 10),
-            Text(name),
-          ],
+        title: InkWell(
+          onTap: () {
+            print('Appbar tapped');
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(profilePicture),
+                radius: 20,
+              ),
+              const SizedBox(width: 20),
+              Text(name,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontSize: 20,
+                ), 
+              ),
+            ],
+          ),
         ),
         toolbarHeight: 80,
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_24_regular),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(FluentIcons.more_vertical_24_regular),
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+          ),
+        ],
       ),
       body: const ChatScreen(),
     );
@@ -197,16 +216,65 @@ class ChatMessage extends StatelessWidget {
             if (file != null)
               file!.path.endsWith('.mp4')
                   ? videoController != null && videoController!.value.isInitialized
-                      ? AspectRatio(
-                          aspectRatio: videoController!.value.aspectRatio,
-                          child: VideoPlayer(videoController!),
+                      ? GestureDetector(
+                          onTap: () {
+                            print('Video');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ImagePreviewScreen(imagePath: file!.path),
+                              ),
+                            );
+                          },
+                          child: AspectRatio(
+                            aspectRatio: videoController!.value.aspectRatio,
+                            child: VideoPlayer(videoController!),
+                          ),
                         )
-                      : Container()
-                  : Image.file(
-                      file!,
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      fit: BoxFit.cover,
+                      : FutureBuilder(
+                          future: videoController!.initialize(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return GestureDetector(
+                                onTap: () {
+                                  print('Video');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImagePreviewScreen(imagePath: file!.path),
+                                    ),
+                                  );
+                                },
+                                child: AspectRatio(
+                                  aspectRatio: videoController!.value.aspectRatio,
+                                  child: VideoPlayer(videoController!),
+                                ),
+                              );
+                            } else {
+                              return SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                height: MediaQuery.of(context).size.height * 0.3,
+                                child: const Center(child: CircularProgressIndicator()),
+                              );
+                            }
+                          },
+                        )
+                  : GestureDetector(
+                      onTap: () {
+                        print('Image');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImagePreviewScreen(imagePath: file!.path),
+                          ),
+                        );
+                      },
+                      child: Image.file(
+                        file!,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        fit: BoxFit.cover,
+                      ),
                     ),
             if (file == null && text.isNotEmpty)
               Text(

@@ -28,6 +28,7 @@ class ImagePreviewScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: SystemColors.bgColorLighter,
+        toolbarHeight: 80,
       ),
       body: Container(
         color: SystemColors.bgColorLighter,
