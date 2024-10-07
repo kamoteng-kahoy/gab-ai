@@ -33,8 +33,6 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/icons/icon.png"
-  adaptive_icon_background: "#FFF5E1"
-  adaptive_icon_foreground: "assets/icons/icon.png"
 
 flutter:
   uses-material-design: true
@@ -61,7 +59,6 @@ flutter:
     - assets/icons/icon_lunch_outlined.png
     - assets/icons/icon_snacks_outlined.png
     - assets/icons/icon_dinner_outlined.png
-    - assets/icons/fg.png
     - assets/background_images/
     - assets/cover_photos/
     - assets/icons/icon_message.png

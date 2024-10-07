@@ -121,20 +121,25 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isLoading = false; // Add this line
 
   void _handleSubmitted(String text) {
-    _controller.clear();
-    ChatMessage message = ChatMessage(
-      text: text,
-      isSent: true,
-      file: _selectedFile,
-      videoController: _videoController,
-    );
-    setState(() {
-      _messages.insert(0, message);
-      _selectedFile = null;
-      _videoController = null;
-      _isLoading = false; // Reset loading state
-    });
+  if (text.isEmpty && _selectedFile == null) {
+    // Do not send the message if both text and attachment are empty
+    return;
   }
+
+  _controller.clear();
+  ChatMessage message = ChatMessage(
+    text: text,
+    isSent: true,
+    file: _selectedFile,
+    videoController: _videoController,
+  );
+  setState(() {
+    _messages.insert(0, message);
+    _selectedFile = null;
+    _videoController = null;
+    _isLoading = false; // Reset loading state
+  });
+}
 
   Future<void> _handleAttachment() async {
     setState(() {
