@@ -221,7 +221,7 @@ class _SaveButtonState extends State<SaveButton> {
       onPressed: _isLoading ? null : _handleSave,
       style: ElevatedButton.styleFrom(
         backgroundColor: SystemColors.primaryColorDarker,
-        minimumSize: const Size(double.infinity, 50),
+        minimumSize: Size(MediaQuery.of(context).size.width * 0.6, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),

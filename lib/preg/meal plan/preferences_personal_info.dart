@@ -431,45 +431,84 @@ class _SubmitButtonState extends State<SubmitButton> {
         child: ElevatedButton(
           onPressed: () async {
             if (widget.formKey.currentState!.validate()) {
-              setState(() {
-                _isLoading = true;
-              });
-
-              // Simulate a network request or any async operation
-              await Future.delayed(const Duration(seconds: 2));
-
-              setState(() {
-                _isLoading = false;
-              });
-
-              const snackBar = SnackBar(
-                content: AwesomeSnackbarContent(
-                  title: 'Success',
-                  message: 'Preferences Saved!',
-                  contentType: ContentType.success,
-                ),
-                backgroundColor: Colors.transparent,
-                behavior: SnackBarBehavior.floating,
-                elevation: 0,
+              bool? confirm = await showDialog<bool>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Confirm Submission',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    content: Text('Are you sure the inputted fields are correct?',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 16,
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: const Text('Cancel',
+                          style: TextStyle(
+                            color: SystemColors.primaryColorDarker,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text('Confirm',
+                          style: TextStyle(
+                            color: SystemColors.primaryColorDarker,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               );
 
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              if (confirm == true) {
+                setState(() {
+                  _isLoading = true;
+                });
 
-              Navigator.pop(context);
+                // Remove the keyboard
+                FocusScope.of(context).unfocus();
 
+                await Future.delayed(const Duration(seconds: 2)); // Simulate a network request
+
+                // Add your form submission logic here
+
+                setState(() {
+                  _isLoading = false;
+                });
+
+                const snackBar = SnackBar(
+                  content: AwesomeSnackbarContent(
+                    title: 'Confirmed',
+                    message: 'Preferences set successfully!',
+                    contentType: ContentType.success,
+                  ),
+                  backgroundColor: Colors.transparent,
+                  behavior: SnackBarBehavior.floating,
+                  elevation: 0,
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                Navigator.pop(context);
+              }
             } else {
-              const snackBar = SnackBar(
-                content: AwesomeSnackbarContent(
-                  title: 'Sorry!',
-                  message: 'Please fill all required fields.',
-                  contentType: ContentType.failure,
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Please correct the errors in the form.'),
                 ),
-                backgroundColor: Colors.transparent,
-                behavior: SnackBarBehavior.floating,
-                elevation: 0,
               );
-
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
           },
           style: ElevatedButton.styleFrom(
@@ -480,12 +519,12 @@ class _SubmitButtonState extends State<SubmitButton> {
           ),
           child: _isLoading
               ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(SystemColors.bgWhite),
                   ),
-              )
+                )
               : const Text(
                   'Submit',
                   style: TextStyle(

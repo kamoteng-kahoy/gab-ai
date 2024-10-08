@@ -32,6 +32,7 @@ class ProfileDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SystemColors.bgColorLighter,
       body: CustomScrollView(
         slivers: [
           CustomSliverAppBar(name: name),
