@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       final email = _emailController.text;
       final password = _passwordController.text;
-      if (email.isEmpty && password.isEmpty) {
+      if (email.isEmpty || password.isEmpty) {
         _errorMessage = 'Please fill in all fields.';
       } else {
         _errorMessage = '';

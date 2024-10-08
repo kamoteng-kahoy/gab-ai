@@ -51,10 +51,13 @@ class BookedMessage extends StatelessWidget {
               onSelected: (String result) {
                 switch (result) {
                   case 'profile':
-                    _handleprofile();
+                    _handleProfile();
                     break;
                   case 'delete':
-                    _handledelete();
+                    _handleSearch();
+                    break;
+                  case 'delete':
+                    _handleDelete();
                     break;
                 }
               },
@@ -66,6 +69,20 @@ class BookedMessage extends StatelessWidget {
                       const Icon(FluentIcons.person_circle_20_filled, color: Colors.black),
                       const SizedBox(width: 15),
                       Text('Profile',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'search',
+                  child: Row(
+                    children: [
+                      const Icon(FluentIcons.search_20_filled, color: Colors.black),
+                      const SizedBox(width: 15),
+                      Text('Search',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 16,
                         ),
@@ -96,12 +113,16 @@ class BookedMessage extends StatelessWidget {
     );
   }
 
-  void _handleprofile() {
+  void _handleProfile() {
     print('option 1');
   }
 
-  void _handledelete() {
+  void _handleSearch() {
     print('option 2');
+  }
+
+  void _handleDelete() {
+    print('option 3');
   }
 
 }
