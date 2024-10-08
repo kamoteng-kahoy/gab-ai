@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:gab_ai/preg/appointments/picture_preview.dart';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
+import 'package:intl/intl.dart';
 
 class BookedMessage extends StatelessWidget {
   final String name;
@@ -32,7 +33,7 @@ class BookedMessage extends StatelessWidget {
             ),
           ],
         ),
-        toolbarHeight: 50,
+        toolbarHeight: 60,
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_24_regular),
           onPressed: () => Navigator.pop(context),
@@ -53,7 +54,7 @@ class BookedMessage extends StatelessWidget {
                   case 'profile':
                     _handleProfile();
                     break;
-                  case 'delete':
+                  case 'search':
                     _handleSearch();
                     break;
                   case 'delete':
@@ -142,25 +143,27 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isLoading = false; // Add this line
 
   void _handleSubmitted(String text) {
-  if (text.isEmpty && _selectedFile == null) {
-    // Do not send the message if both text and attachment are empty
-    return;
-  }
+    if (text.isEmpty && _selectedFile == null) {
+      // Do not send the message if both text and attachment are empty
+      return;
+    }
 
-  _controller.clear();
-  ChatMessage message = ChatMessage(
-    text: text,
-    isSent: true,
-    file: _selectedFile,
-    videoController: _videoController,
-  );
-  setState(() {
-    _messages.insert(0, message);
-    _selectedFile = null;
-    _videoController = null;
-    _isLoading = false; // Reset loading state
-  });
-}
+    _controller.clear();
+    ChatMessage message = ChatMessage(
+      text: text,
+      isSent: true,
+      file: _selectedFile,
+      videoController: _videoController,
+      timestamp: DateTime.now(),
+      status: MessageStatus.sent, // Set initial status to sent
+    );
+    setState(() {
+      _messages.insert(0, message);
+      _selectedFile = null;
+      _videoController = null;
+      _isLoading = false; // Reset loading state
+    });
+  }
 
   Future<void> _handleAttachment() async {
     setState(() {
@@ -277,13 +280,25 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
+enum MessageStatus { sent, delivered, seen }
+
 class ChatMessage extends StatelessWidget {
   final String text;
   final bool isSent;
   final File? file;
   final VideoPlayerController? videoController;
+  final DateTime timestamp;
+  final MessageStatus status;
 
-  const ChatMessage({super.key, required this.text, required this.isSent, this.file, this.videoController});
+  const ChatMessage({
+    super.key, 
+    required this.text, 
+    required this.isSent, 
+    this.file, 
+    this.videoController, 
+    required this.timestamp,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -299,11 +314,44 @@ class ChatMessage extends StatelessWidget {
   }
 
   Widget _buildMediaContent(BuildContext context) {
-    if (file!.path.endsWith('.mp4')) {
-      return _buildVideoContent(context);
-    } else {
-      return _buildImageContent(context);
-    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (file!.path.endsWith('.mp4'))
+          _buildVideoContent(context)
+        else
+          _buildImageContent(context),
+        const SizedBox(height: 5),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              DateFormat('hh:mm a').format(timestamp),
+              style: TextStyle(
+                color: isSent ? Colors.black : Colors.black54,
+                fontSize: 10,
+              ),
+            ),
+            const SizedBox(width: 5),
+            if (isSent) ...[
+              Icon(
+                status == MessageStatus.sent
+                    ? Icons.check
+                    : status == MessageStatus.delivered
+                        ? Icons.done_all
+                        : FluentIcons.eye_24_filled,
+                size: 12,
+                color: status == MessageStatus.sent
+                    ? Colors.black // send color
+                    : status == MessageStatus.delivered
+                        ? Colors.blue // delivered color
+                        : Colors.green, // seen color
+              ),
+            ],
+          ],
+        ),
+      ],
+    );
   }
 
   Widget _buildVideoContent(BuildContext context) {
@@ -369,26 +417,65 @@ class ChatMessage extends StatelessWidget {
   }
 
   Widget _buildTextBubble(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-      decoration: BoxDecoration(
-        color: isSent ? SystemColors.primaryColorDarker : Colors.grey[300],
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(15),
-          topRight: const Radius.circular(15),
-          bottomLeft: isSent ? const Radius.circular(15) : const Radius.circular(0),
-          bottomRight: isSent ? const Radius.circular(0) : const Radius.circular(15),
-        ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.7,
       ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isSent ? SystemColors.primaryColorDarker : Colors.grey[300],
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(18),
+            topRight: const Radius.circular(18),
+            bottomLeft: isSent ? const Radius.circular(18) : Radius.zero,
+            bottomRight: isSent ? Radius.zero : const Radius.circular(18),
+          ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSent ? Colors.white : Colors.black,
-            fontSize: 16,
+        child: IntrinsicWidth(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                  color: isSent ? Colors.white : Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      DateFormat('hh:mm a').format(timestamp),
+                      style: TextStyle(
+                        color: isSent ? Colors.white70 : Colors.black54,
+                        fontSize: 10,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    if (isSent) ...[
+                      Icon(
+                        status == MessageStatus.sent
+                            ? Icons.check
+                            : status == MessageStatus.delivered
+                                ? Icons.done_all
+                                : Icons.done_all,
+                        size: 12,
+                        color: status == MessageStatus.sent
+                            ? Colors.white // sent color
+                            : status == MessageStatus.delivered
+                                ? Colors.blue // delivered color
+                                : Colors.green, // seen color
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
