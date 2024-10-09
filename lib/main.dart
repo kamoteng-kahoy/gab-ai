@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
+import 'package:gab_ai/services_supabase.dart';
 import 'preg/main_screen.dart';
 import 'colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SupabaseService().initializeSupabase();
   runApp(const MainApp());
 }
 

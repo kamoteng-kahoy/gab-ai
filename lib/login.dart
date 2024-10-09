@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/preg/main_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:gab_ai/services_supabase.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -37,23 +38,48 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoadingLogin = false;
   String _errorMessage = '';
 
-  void _submit() {
-    setState(() {
-      final email = _emailController.text;
-      final password = _passwordController.text;
-      if (email.isEmpty || password.isEmpty) {
+  void _submit() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
         _errorMessage = 'Please fill in all fields.';
-      } else {
+      });
+    } else {
+      setState(() {
         _errorMessage = '';
         _isLoadingLogin = true;
-        // Add your login logic here
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-          (route) => false,
+      });
+      try {
+        final response = await SupabaseService().client.auth.signInWithPassword(
+          email: email,
+          password: password,
         );
+
+        if (response.user != null) {
+          final id = response.user!.id;
+          print('User UID: $id');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+            (route) => false,
+          );
+        } else {
+          setState(() {
+            _errorMessage = 'Invalid email or password';
+          });
+        }
+        
+      } catch (e) {
+        setState(() {
+          _errorMessage = 'An error occurred: $e';
+        });
+      } finally {
+        setState(() {
+          _isLoadingLogin = false;
+        });
       }
-    });
+    }
   }
 
   @override

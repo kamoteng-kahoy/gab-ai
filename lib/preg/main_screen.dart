@@ -9,11 +9,14 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gab_ai/preg/dashboard/dashboard.dart';
 import 'package:gab_ai/login.dart';
 import 'package:gab_ai/preg/meal%20plan/meal_plan.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../services_supabase.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialTabIndex;
+  final String? userId;
 
-  const MainScreen({Key? key, this.initialTabIndex = 0}) : super(key: key);
+  const MainScreen({Key? key, this.initialTabIndex = 0, this.userId}) : super(key: key);
 
   @override
   MainScreenState createState() => MainScreenState();
@@ -35,6 +38,37 @@ class MainScreenState extends State<MainScreen> {
     Text('Journals'),
     Text('Settings'),
   ];
+
+  // Fetch user profile from Supabase
+  Future<Map<String, dynamic>?> fetchUserProfile() async {
+  try {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) {
+      print("User is not logged in.");
+      return null; // No user is logged in
+    }
+
+    print("Fetching profile for user ID: ${user.id}");
+
+    // Fetch profile based on user id
+    final response = await Supabase.instance.client
+        .from('profiles')
+        .select('first_name, last_name')
+        .eq('id', user.id)
+        .maybeSingle();
+
+    if (response != null) {
+      print("User data retrieved: $response");
+      return response as Map<String, dynamic>;
+    } else {
+      print("No data found for user.");
+      return null;
+    }
+  } catch (error) {
+    print('Error fetching profile: $error');
+    return null;
+  }
+}
 
   @override
   void initState() {
@@ -81,6 +115,8 @@ class MainScreenState extends State<MainScreen> {
   
   @override
   Widget build(BuildContext context) {
+    final user = Supabase.instance.client.auth.currentUser;
+
     return WillPopScope(
       onWillPop: () async {
         if (_selectedIndex != 0) {
@@ -197,31 +233,78 @@ class MainScreenState extends State<MainScreen> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [SystemColors.secondaryColor2, SystemColors.bgColor],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    const CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
+              FutureBuilder<Map<String, dynamic>?>(
+              future: fetchUserProfile(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const DrawerHeader(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.blue, Colors.lightBlueAccent],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Account Name',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                } else if (snapshot.hasError) {
+                  return const DrawerHeader(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.red, Colors.redAccent],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Text(
+                      'Error loading user data',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                } else if (snapshot.data == null) {
+                  return const DrawerHeader(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.red, Colors.redAccent],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: Text(
+                      'No user data found',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                } else {
+                  final userData = snapshot.data!;
+                  final userName = '${userData['first_name']} ${userData['last_name']}'.trim();
+                  return UserAccountsDrawerHeader(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [SystemColors.secondaryColor2, SystemColors.accentColor2],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    accountName: Text(
+                      userName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
-                  ],
-                ),
-              ),
+                    accountEmail: const Text('user@example.com'), // Replace with actual user email
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Text(
+                        userName.isNotEmpty ? userName[0] : '',
+                        style: const TextStyle(fontSize: 40.0, color: Colors.blue),
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
               const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(FluentIcons.person_24_filled),
