@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gab_ai/preg/main_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:gab_ai/services_supabase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -56,20 +58,45 @@ class _LoginPageState extends State<LoginPage> {
           password: password,
         );
 
+        final session = response.session;
+        if (session != null) {
+          final accessToken = session.accessToken;
+          print('Access Token: $accessToken');
+        }
+
         if (response.user != null) {
           final id = response.user!.id;
           print('User UID: $id');
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const MainScreen()),
-            (route) => false,
-          );
+
+          // Check the isPregnant status in the profiles table
+          final profileResponse = await SupabaseService().client
+              .from('profiles')
+              .select('isPregnant')
+              .eq('id', id)
+              .single();
+
+          final isPregnant = profileResponse['isPregnant'] as bool;
+
+          if (isPregnant) {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setBool('isLoggedIn', true);
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const MainScreen()),
+              (route) => false,
+            );
+          } else {
+            // Display a temporary message for non-pregnant users
+            setState(() {
+              _errorMessage = 'User is not marked as pregnant in the system.';
+            });
+          }
         } else {
           setState(() {
             _errorMessage = 'Invalid email or password';
           });
         }
-        
       } catch (e) {
         setState(() {
           _errorMessage = 'An error occurred: $e';

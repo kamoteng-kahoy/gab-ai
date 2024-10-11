@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/login.dart';
 import 'package:gab_ai/services_supabase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'preg/main_screen.dart';
 import 'colors.dart';
+import 'theme.dart'; // Import the theme
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: appTheme, // Apply the theme here
       home: const SplashScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
@@ -32,7 +35,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -42,13 +44,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigateToNextPage() async {
     // Simulate checking login status
     await Future.delayed(const Duration(seconds: 2)); // Simulate loading time
-    bool isLoggedIn = false; // Replace with actual login check
-
+    bool isLoggedIn = await _checkLoginStatus();
     if (isLoggedIn) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const MainScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainScreen()));
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  const LoginScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
     }
+  }
+
+  Future<bool> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
   }
 
   @override

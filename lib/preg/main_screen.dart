@@ -4,13 +4,13 @@ import 'package:gab_ai/preg/appointments/appointments_main.dart';
 import 'package:gab_ai/preg/journals/journals.dart';
 import 'package:gab_ai/preg/settings/profile.dart';
 import 'package:gab_ai/preg/settings/settings_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:gab_ai/preg/dashboard/dashboard.dart';
 import 'package:gab_ai/login.dart';
 import 'package:gab_ai/preg/meal%20plan/meal_plan.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../services_supabase.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -59,7 +59,7 @@ class MainScreenState extends State<MainScreen> {
 
     if (response != null) {
       print("User data retrieved: $response");
-      return response as Map<String, dynamic>;
+      return response;
     } else {
       print("No data found for user.");
       return null;
@@ -67,6 +67,37 @@ class MainScreenState extends State<MainScreen> {
   } catch (error) {
     print('Error fetching profile: $error');
     return null;
+  }
+}
+
+Future<void> _logout(BuildContext context) async {
+  try {
+    // Step 1: Sign out from Supabase
+    await Supabase.instance.client.auth.signOut();
+
+    // Step 2: Clear stored user data
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Step 3: Show a confirmation message
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have been logged out.')),
+      );
+    }
+
+    // Step 4: Navigate to the login screen
+    await Future.delayed(const Duration(seconds: 1)); // Give time for SnackBar to be seen
+    if (context.mounted) {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
+  } catch (e) {
+    print('Error during logout: $e');
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('An unexpected error occurred during logout.')),
+      );
+    }
   }
 }
 
