@@ -3,7 +3,6 @@ import 'package:gab_ai/preg/main_screen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:gab_ai/services_supabase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'colors.dart';
 import 'theme.dart';
 import 'fp_email.dart';
@@ -216,7 +215,7 @@ class EmailTextField extends StatelessWidget {
         fontSize: 16,
       ),
       decoration: const InputDecoration(
-        labelText: 'Username or Email',
+        labelText: 'Email or Phone',
         labelStyle: TextStyle(
           color: SystemColors.textColor,
           fontFamily: 'Merriweather',

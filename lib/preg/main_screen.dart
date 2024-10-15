@@ -24,6 +24,7 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  Map<String, dynamic>? _cachedUserProfile;
 
   final List<Widget> _pages = [
     const HomePage(),
@@ -41,65 +42,78 @@ class MainScreenState extends State<MainScreen> {
 
   // Fetch user profile from Supabase
   Future<Map<String, dynamic>?> fetchUserProfile() async {
-  try {
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user == null) {
-      print("User is not logged in.");
-      return null; // No user is logged in
+    if (_cachedUserProfile != null) {
+      return _cachedUserProfile;
     }
 
-    print("Fetching profile for user ID: ${user.id}");
+    try {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user == null) {
+        print("User is not logged in.");
+        return null; // No user is logged in
+      }
 
-    // Fetch profile based on user id
-    final response = await Supabase.instance.client
-        .from('profiles')
-        .select('first_name, last_name')
-        .eq('id', user.id)
-        .maybeSingle();
+      print("Fetching profile for user ID: ${user.id}");
 
-    if (response != null) {
-      print("User data retrieved: $response");
-      return response;
-    } else {
-      print("No data found for user.");
+      // Fetch profile based on user id
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('first_name, last_name')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (response != null) {
+        print("User data retrieved: $response");
+        response['email'] = user.email;
+        _cachedUserProfile = response;
+        return response;
+      } else {
+        print("No data found for user.");
+        return null;
+      }
+    } catch (error) {
+      print('Error fetching profile: $error');
       return null;
     }
-  } catch (error) {
-    print('Error fetching profile: $error');
-    return null;
   }
-}
 
-Future<void> _logout(BuildContext context) async {
-  try {
-    // Step 1: Sign out from Supabase
-    await Supabase.instance.client.auth.signOut();
+  Future<void> _logout(BuildContext context) async {
+    try {
+      // Step 1: Sign out from Supabase
+      await Supabase.instance.client.auth.signOut();
 
-    // Step 2: Clear stored user data
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+      // Step 2: Clear stored user data
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
 
-    // Step 3: Show a confirmation message
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You have been logged out.')),
-      );
-    }
+      // Step 3: Clear cached user profile
+      _cachedUserProfile = null;
 
-    // Step 4: Navigate to the login screen
-    await Future.delayed(const Duration(seconds: 1)); // Give time for SnackBar to be seen
-    if (context.mounted) {
-      Navigator.of(context).pushReplacementNamed('/login');
-    }
-  } catch (e) {
-    print('Error during logout: $e');
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred during logout.')),
-      );
+      // Step 4: Show a confirmation message
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('You have been logged out.')),
+        );
+      }
+
+      // Step 5: Navigate to the login screen
+      await Future.delayed(const Duration(seconds: 1)); // Give time for SnackBar to be seen
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      }
+    } catch (e) {
+      print('Error during logout: $e');
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An unexpected error occurred during logout.')),
+        );
+      }
     }
   }
-}
 
   @override
   void initState() {
@@ -112,7 +126,7 @@ Future<void> _logout(BuildContext context) async {
       _selectedIndex = index;
     });
   }
-  
+
   void navigateToMealPlan() {
     setState(() {
       _selectedIndex = 1;
@@ -143,7 +157,7 @@ Future<void> _logout(BuildContext context) async {
         return '';
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final user = Supabase.instance.client.auth.currentUser;
@@ -194,7 +208,7 @@ Future<void> _logout(BuildContext context) async {
                 onSelected: (String result) {
                   switch (result) {
                     case 'Notification 1': //based on the value of the selected item
-                      print('Notification 1');
+
                     break;
                     case 'Notification 2':
                       print('Notification 2');
@@ -265,77 +279,82 @@ Future<void> _logout(BuildContext context) async {
             padding: EdgeInsets.zero,
             children: <Widget>[
               FutureBuilder<Map<String, dynamic>?>(
-              future: fetchUserProfile(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const DrawerHeader(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.blue, Colors.lightBlueAccent],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                future: fetchUserProfile(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const DrawerHeader(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.blue, Colors.lightBlueAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
-                    ),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                } else if (snapshot.hasError) {
-                  return const DrawerHeader(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.red, Colors.redAccent],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const DrawerHeader(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.red, Colors.redAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Error loading user data',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
-                } else if (snapshot.data == null) {
-                  return const DrawerHeader(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.red, Colors.redAccent],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: Text(
-                      'No user data found',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
-                } else {
-                  final userData = snapshot.data!;
-                  final userName = '${userData['first_name']} ${userData['last_name']}'.trim();
-                  return UserAccountsDrawerHeader(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [SystemColors.secondaryColor2, SystemColors.accentColor2],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    accountName: Text(
-                      userName,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    accountEmail: const Text('user@example.com'), // Replace with actual user email
-                    currentAccountPicture: CircleAvatar(
-                      backgroundColor: Colors.white,
                       child: Text(
-                        userName.isNotEmpty ? userName[0] : '',
-                        style: const TextStyle(fontSize: 40.0, color: Colors.blue),
+                        'Error loading user data',
+                        style: TextStyle(color: Colors.white),
                       ),
-                    ),
-                  );
-                }
-              },
-            ),
+                    );
+                  } else if (snapshot.data == null) {
+                    return const DrawerHeader(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.red, Colors.redAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Text(
+                        'No user data found',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  } else {
+                    final userData = snapshot.data!;
+                    final userName = '${userData['first_name']} ${userData['last_name']}'.trim();
+                    final userEmail = userData['email'] ?? 'No Email'; // Fetch the email
+                    return UserAccountsDrawerHeader(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [SystemColors.secondaryColor2, SystemColors.accentColor2],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      accountName: Text(
+                        userName,
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      accountEmail: Text(userEmail,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                      ),
+                      currentAccountPicture: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Text(
+                          userName.isNotEmpty ? userName[0] : '',
+                          style: const TextStyle(fontSize: 40.0, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
               const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(FluentIcons.person_24_filled),
@@ -400,13 +419,9 @@ Future<void> _logout(BuildContext context) async {
                       );
                     },
                   );
-      
+
                   if (confirmLogout == true) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      (route) => false,
-                    );
+                    await _logout(context);
                   }
                 },
               ),
