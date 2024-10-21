@@ -57,9 +57,9 @@ class MainScreenState extends State<MainScreen> {
 
       // Fetch profile based on user id
       final response = await Supabase.instance.client
-          .from('profiles')
+          .from('users')
           .select('first_name, last_name')
-          .eq('id', user.id)
+          .eq('user_id', user.id)
           .maybeSingle();
 
       if (response != null) {

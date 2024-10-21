@@ -40,73 +40,124 @@ class _LoginPageState extends State<LoginPage> {
   String _errorMessage = '';
 
   void _submit() async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-    if (email.isEmpty || password.isEmpty) {
+  final email = _emailController.text;
+  final password = _passwordController.text;
+
+  if (email.isEmpty || password.isEmpty) {
+    setState(() {
+      _errorMessage = 'Please fill in all fields.';
+    });
+    return;
+  }
+
+  setState(() {
+    _errorMessage = '';
+    _isLoadingLogin = true;
+  });
+
+  try {
+    // 1. First authenticate with Supabase Auth
+    final response = await SupabaseService().client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+
+    if (response.user == null) {
       setState(() {
-        _errorMessage = 'Please fill in all fields.';
+        _errorMessage = 'Invalid email or password';
+      });
+      return;
+    }
+
+    // 2. After successful auth, get the user's UUID
+    final userId = response.user!.id;
+    print('Auth successful. User ID: $userId'); // Debug print
+
+    // 3. Query the users table using the UUID with correct syntax
+    final userResponse = await SupabaseService().client
+        .from('users')
+        .select('role, is_pregnant, is_verified_nd, first_name, last_name')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+    print('User data response: $userResponse'); // Debug print
+
+    // Check if we got any data back
+    if (userResponse == null) {
+      setState(() {
+        _errorMessage = 'User profile not found. Please complete registration.';
+      });
+      return;
+    }
+
+    // Store user session
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('userId', userId);
+    await prefs.setString('userRole', userResponse['role'] as String);
+    await prefs.setString('firstName', userResponse['first_name'] as String);
+    await prefs.setString('lastName', userResponse['last_name'] as String);
+
+    // Handle different user roles
+    final role = userResponse['role'] as String;
+    final isPregnant = userResponse['is_pregnant'] as bool;
+    final isVerifiedNd = userResponse['is_verified_nd'] as bool;
+
+    if (!mounted) return;
+
+    switch (role) {
+      case 'PregnantWoman':
+        if (isPregnant) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+            (route) => false,
+          );
+        } else {
+          setState(() {
+            _errorMessage = 'Account not marked as pregnant. Please update your profile.';
+          });
+        }
+        break;
+
+      case 'Nutritionist':
+        if (isVerifiedNd) {
+          //
+        } else {
+          setState(() {
+            _errorMessage = 'Your nutritionist account is pending verification.';
+          });
+        }
+        break;
+
+      case 'GeneralUser':
+        //
+        break;
+
+      default:
+        setState(() {
+          _errorMessage = 'Invalid user role.';
+        });
+    }
+
+  } catch (e) {
+    print('Error during login: $e'); // Debug print
+    
+    if (e.toString().contains('JSON object requested, multiple (or no) rows returned')) {
+      setState(() {
+        _errorMessage = 'User profile not found. Please complete registration.';
       });
     } else {
       setState(() {
-        _errorMessage = '';
-        _isLoadingLogin = true;
+        _errorMessage = 'An error occurred while logging in. Please try again.';
       });
-      try {
-        final response = await SupabaseService().client.auth.signInWithPassword(
-          email: email,
-          password: password,
-        );
-
-        final session = response.session;
-        if (session != null) {
-          final accessToken = session.accessToken;
-          print('Access Token: $accessToken');
-        }
-
-        if (response.user != null) {
-          final id = response.user!.id;
-          print('User UID: $id');
-
-          // Check the isPregnant status in the profiles table
-          final profileResponse = await SupabaseService().client
-              .from('profiles')
-              .select('isPregnant')
-              .eq('id', id)
-              .single();
-
-          final isPregnant = profileResponse['isPregnant'] as bool;
-
-          if (isPregnant) {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('isLoggedIn', true);
-
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const MainScreen()),
-              (route) => false,
-            );
-          } else {
-            // Display a temporary message for non-pregnant users
-            setState(() {
-              _errorMessage = 'User is not marked as pregnant in the system.';
-            });
-          }
-        } else {
-          setState(() {
-            _errorMessage = 'Invalid email or password';
-          });
-        }
-      } catch (e) {
-        setState(() {
-          _errorMessage = 'An error occurred: $e';
-        });
-      } finally {
-        setState(() {
-          _isLoadingLogin = false;
-        });
-      }
     }
+  } finally {
+    setState(() {
+      _isLoadingLogin = false;
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) {
