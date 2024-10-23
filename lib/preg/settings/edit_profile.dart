@@ -37,6 +37,9 @@ bool _isPasswordVisible = false;
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         backgroundColor: SystemColors.bgColorLighter,
         title: Text('Edit Profile',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(

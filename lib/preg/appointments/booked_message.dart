@@ -18,6 +18,9 @@ class BookedMessage extends StatelessWidget {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         backgroundColor: SystemColors.bgColorLighter,
         title: Row(
           children: [

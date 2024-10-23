@@ -18,6 +18,9 @@ class _RegisBasicsState extends State<RegisBasics> {
     return Scaffold(
       backgroundColor: SystemColors.bgColor,
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         backgroundColor: Colors.transparent,
         title: Image.asset(
           'assets/logo-word.png',

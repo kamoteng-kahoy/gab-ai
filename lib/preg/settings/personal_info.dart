@@ -26,6 +26,9 @@ class PersonalInfoScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         title: Text('Personal Information',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,

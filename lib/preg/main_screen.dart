@@ -168,6 +168,9 @@ class MainScreenState extends State<MainScreen> {
       child: Scaffold(
         backgroundColor: SystemColors.bgColorLighter,
         appBar: AppBar(
+          elevation: 0,
+          shadowColor: Colors.transparent, // Removes shadow when scrolling
+          scrolledUnderElevation: 0, // Prevents shadow when scrolling
           toolbarHeight: 70,
           backgroundColor: SystemColors.bgColorLighter,
           centerTitle: true,

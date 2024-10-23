@@ -22,6 +22,8 @@ class BookedDetails extends StatelessWidget {
         ),
         backgroundColor: SystemColors.bgColorLighter,
         elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_24_filled),
           onPressed: () {
@@ -62,7 +64,7 @@ class BookedDetails extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 10),
             const AppointmentDetails(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             const PatientInformation(),
             const SizedBox(height: 60),
             Center(
@@ -123,7 +125,7 @@ class AppointmentDetails extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(
@@ -180,7 +182,7 @@ class PatientInformation extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Row(

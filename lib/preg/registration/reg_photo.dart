@@ -12,12 +12,15 @@ class RegPhoto extends StatelessWidget {
     return Scaffold(
       backgroundColor: SystemColors.bgColor,
       appBar: AppBar(
-		  backgroundColor: SystemColors.bgColor,
-		  title: Image.asset(
-			'assets/logo-word.png',
-			height: 40.0,
-			fit: BoxFit.contain,
-		  ),
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
+        backgroundColor: SystemColors.bgColor,
+        title: Image.asset(
+        'assets/logo-word.png',
+        height: 40.0,
+        fit: BoxFit.contain,
+      ),
 		  centerTitle: true,
 		  ),
 

@@ -104,6 +104,9 @@ class _NewJournalState extends State<NewJournal> {
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         title: Text('New Journal',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w600,

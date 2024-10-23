@@ -16,6 +16,9 @@ class ImagePreviewScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        shadowColor: Colors.transparent, // Removes shadow when scrolling
+        scrolledUnderElevation: 0, // Prevents shadow when scrolling
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_20_filled),
           onPressed: () {
@@ -30,7 +33,7 @@ class ImagePreviewScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: SystemColors.bgColorLighter,
-        toolbarHeight: 80,
+        toolbarHeight: 70,
       ),
       body: Container(
         color: SystemColors.bgColorLighter,
