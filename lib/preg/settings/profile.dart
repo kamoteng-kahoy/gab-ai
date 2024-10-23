@@ -40,7 +40,7 @@ class ProfilePage extends StatelessWidget {
         ),
         backgroundColor: SystemColors.bgColorLighter,
         centerTitle: true,
-        toolbarHeight: 80,
+        toolbarHeight: 70,
         leading: IconButton(
           icon: const Icon(FluentIcons.arrow_left_20_filled),
           onPressed: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/appointments/appointments_main.dart';
 import 'package:gab_ai/preg/journals/journals.dart';
@@ -88,16 +89,8 @@ class MainScreenState extends State<MainScreen> {
 
       // Step 3: Clear cached user profile
       _cachedUserProfile = null;
-
-      // Step 4: Show a confirmation message
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('You have been logged out.')),
-        );
-      }
-
-      // Step 5: Navigate to the login screen
-      await Future.delayed(const Duration(seconds: 1)); // Give time for SnackBar to be seen
+     
+      // Step 4: Navigate to the login screen
       if (context.mounted) {
         Navigator.pushReplacement(
           context,
@@ -174,105 +167,100 @@ class MainScreenState extends State<MainScreen> {
       },
       child: Scaffold(
         backgroundColor: SystemColors.bgColorLighter,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(70),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: AppBar(
-              backgroundColor: SystemColors.bgColorLighter,
-              centerTitle: true,
-              title: Text(_getAppBarTitle(),
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold
-                ),
-              ),
-              leading: Builder(
-              builder: (context) => Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: const CircleAvatar(
-                    radius: 10,
-                    backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
-                  ),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              PopupMenuButton<String>(
-                icon: const Icon(FluentIcons.alert_20_regular),
-                color: SystemColors.accentColor2,
-                onSelected: (String result) {
-                  switch (result) {
-                    case 'Notification 1': //based on the value of the selected item
-
-                    break;
-                    case 'Notification 2':
-                      print('Notification 2');
-                    break;
-                    default:
-                      print('no notification');
-                  }
-                },
-                offset: const Offset(0, 40),
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'Notification 1',
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CircleAvatar(
-                            backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/girl'), // Replace with your logo asset
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                              softWrap: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'Notification 2',
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const CircleAvatar(
-                            backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/boy'), // Replace with your logo asset
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                              softWrap: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // Add more notifications here
-                ],
-              ),
-            ],
+        appBar: AppBar(
+          toolbarHeight: 70,
+          backgroundColor: SystemColors.bgColorLighter,
+          centerTitle: true,
+          title: Text(_getAppBarTitle(),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.bold
             ),
           ),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Builder(
+            builder: (context) => GestureDetector(
+              onTap: () {
+                Scaffold.of(context).openDrawer();
+              },
+              child: const CircleAvatar(
+                radius: 5,
+                backgroundImage: NetworkImage('https://avatar.iran.liara.run/public'), // Replace with the actual profile image URL
+                ),
+              ),
+            ),
+          ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            icon: const Icon(FluentIcons.alert_20_regular),
+            color: SystemColors.accentColor2,
+            onSelected: (String result) {
+              switch (result) {
+                case 'Notification 1': //based on the value of the selected item
+                
+                break;
+                case 'Notification 2':
+                  print('Notification 2');
+                break;
+                default:
+                  print('no notification');
+              }
+            },
+            offset: const Offset(0, 40),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'Notification 1',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/girl'), // Replace with your logo asset
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'Notification 2',
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: NetworkImage('https://avatar.iran.liara.run/public/boy'), // Replace with your logo asset
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut nec odio nec turpis.',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Add more notifications here
+            ],
+          ),
+        ],
         ),
         drawer: Drawer(
           child: ListView(

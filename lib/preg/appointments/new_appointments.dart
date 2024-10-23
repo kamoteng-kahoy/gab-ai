@@ -42,7 +42,7 @@ class _NewAppointmentsState extends State<NewAppointments> {
             fontSize: 22,
           ),
         ),
-        toolbarHeight: 80,
+        toolbarHeight: 70,
         backgroundColor: SystemColors.bgColorLighter,
         centerTitle: true,
         leading: IconButton(

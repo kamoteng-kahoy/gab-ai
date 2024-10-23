@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
-import 'package:gab_ai/preg/appointments/booked_message.dart';
+import 'appointment_details.dart'; // Import the AppointmentScreen
 
 class BookedAppointments extends StatelessWidget {
   const BookedAppointments({super.key});
@@ -42,10 +42,11 @@ class ListedMessages extends StatelessWidget {
     ];
 
     void onTapFunction(BuildContext context, int index) {
+      print('Tapped on ${appointments[index]['name']}');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => BookedMessage(
+          builder: (context) =>BookedDetails(
             name: appointments[index]['name']!,
             profilePicture: appointments[index]['profilePicture']!,
           ),

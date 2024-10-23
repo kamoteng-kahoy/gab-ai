@@ -156,7 +156,7 @@ class OtherInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> otherInfoList = [
-      {'title': 'Trimester', 'value': '2nd Trimester'},
+      {'title': 'Weeks Pregnant', 'value': '21-25 weeks'},
       {'title': 'Address', 'value': '123 Main Street, Davao City'},
       {'title': 'Phone Number', 'value': '+639123456789'},
       {'title': 'Email', 'value': 'alicedoe@gmail.com'},

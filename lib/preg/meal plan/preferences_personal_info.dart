@@ -13,24 +13,19 @@ class PreferencesPersonal extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: SystemColors.bgColorLighter,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: AppBar(
-            title: Image.asset('assets/logo-word.png',
-              height: 40,
-            ),
-            backgroundColor: SystemColors.bgColorLighter,
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(FluentIcons.arrow_left_20_filled),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
+      appBar: AppBar(
+        title: Image.asset('assets/logo-word.png',
+          height: 40,
         ),
+        backgroundColor: SystemColors.bgColorLighter,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(FluentIcons.arrow_left_20_filled),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        toolbarHeight: 70,
       ),
       body: SingleChildScrollView(
         child: Padding(

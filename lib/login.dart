@@ -425,6 +425,7 @@ class SignUpRow extends StatelessWidget {
         const Text("Don't have an account? "),
         TextButton(
           onPressed: () {
+            
             // Navigate to Register As screen
             Navigator.push(
               context,
@@ -456,20 +457,7 @@ class SocialMediaButtons extends StatelessWidget {
         children: [
           IconButton(
             onPressed: () async {
-              try {
-                final LoginResult result = await FacebookAuth.instance.login();
-                if (result.status == LoginStatus.success) {
-                  // You are logged in
-                  final AccessToken accessToken = result.accessToken!;
-                  // Handle the access token as needed
-                } else {
-                  // Handle login failure
-                  print(result.status);
-                  print(result.message);
-                }
-              } catch (e) {
-                print('Error during Facebook login: $e');
-              }
+              
             },
             icon: ClipRRect(
               borderRadius: BorderRadius.circular(15),
