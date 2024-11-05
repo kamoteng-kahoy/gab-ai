@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/preg/main_screen.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:gab_ai/services_supabase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'colors.dart';

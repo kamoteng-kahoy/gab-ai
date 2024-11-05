@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/appointments/appointments_main.dart';
 import 'package:gab_ai/preg/journals/journals.dart';

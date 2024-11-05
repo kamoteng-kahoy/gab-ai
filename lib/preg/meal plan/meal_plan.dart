@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gab_ai/colors.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_snacks.dart';
-import 'package:gab_ai/preg/meal%20plan/preferences_personal_info.dart';
 import 'package:intl/intl.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_breakfast.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_dinner.dart';
 import 'package:gab_ai/preg/meal%20plan/mealplan_lunch.dart';
+
+import 'preferences_personal_info.dart';
 
 class MealPlanPage extends StatelessWidget {
   const MealPlanPage({super.key});
@@ -181,6 +182,10 @@ class PreferencesButton extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) =>const PreferencesPersonal()),
             );
+            /*Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>const GenerateMealPlanScreen()),
+            );*/
           },
           child: const Padding(
             padding: EdgeInsets.zero,

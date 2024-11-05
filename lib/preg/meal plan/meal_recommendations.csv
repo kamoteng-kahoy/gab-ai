@@ -1,0 +1,107 @@
+Day,Item,Meal,Food,Portion,Unit
+1,1,Breakfast,Ripe Papaya,1,"slice (10x6x2"")"
+1,2,Breakfast,Fired Egg,1,piece
+1,3,Breakfast,Bisugo Daing,0.5,piece (15½x8)
+1,4,Breakfast,Rice,1,cup
+1,5,Breakfast,Whole Milk,1,cup (4T powder in 1c water
+1,1,Lunch,Paksiw Na Galunggong,1.25,"piece (med, 14x3½)"
+1,2,Lunch,Munggo Gisado w/ malunggay leaves,1.25,cup
+1,3,Lunch,Rice,1,cup
+1,4,Lunch,Latundan,1,piece (9x3)
+1,1,Dinner,Breaded Pork,1.25,slice (9½x6x0.25)
+1,2,Dinner,Pinakbet,1.25,cup
+1,3,Dinner,Rice,1,cup
+1,4,Dinner,Latundan,1,piece (9x3)
+1,1,Snacks,Taho,1,cup
+1,2,Snacks,Boiled Camote,1,piece (11cm long x 4½cm diameter)
+1,3,Snacks,Fruit Juice,1,glass
+2,1,Breakfast,Ripe Mango,1,slice (12x7)
+2,2,Breakfast,Fried Hotdog,4,piece (cocktails)
+2,3,Breakfast,Oatmeal,1.25,cup (thick consistency w/ Powdered Milk
+2,4,Breakfast,Coffee,2,cup (optional)
+2,1,Lunch,Chicken Adobo,1.25,"piece (leg, small)"
+2,2,Lunch,Chopsuey,1,cup
+2,3,Lunch,Rice,1,cup
+2,4,Lunch,Sweetened White Kidney Beans,0.25,cup
+2,1,Dinner,Fried Tilapia,1.25,piece (12x5)
+2,2,Dinner,Laing,0.5,cup
+2,3,Dinner,Rice,1,cup
+2,4,Dinner,Lakatan,1,piece (9x3)
+2,1,Snacks,Puto Puti,2,slice (9½x3x3¼)
+2,2,Snacks,Pan Americano,4,slice (9x8x1)
+2,3,Snacks,Margarine,0.5,teaspoon 
+2,4,Snacks,Whole Milk,2,cup
+3,1,Breakfast,Melon,1,cup
+3,2,Breakfast,Scrambled Egg,1,piece
+3,3,Breakfast,Pandesal,7,piece (small)
+3,4,Breakfast,Margarine,1,teaspoon 
+3,5,Breakfast,Whole Milk,1,cup
+3,1,Lunch,Pork Sinigang,1.25,slice (5x3¼x1½ mbs)
+3,2,Lunch,Vegetables and Gabi,1,cup
+3,3,Lunch,Rice,1,cup
+3,4,Lunch,Ripe Langka,3,segments
+3,1,Dinner,Fried Daing Na Bangus,1.25,slice (7x3x2)
+3,2,Dinner,Pechay Gisado w/ Tokwa,1,cup
+3,3,Dinner,Rice,4,cup
+3,1,Snacks,Palitaw ,0.5,piece (8x5x0.7)
+3,2,Snacks,Calamansi Juice,1,glass
+3,3,Snacks,Pasencia Cookies,30,piece (3cm diameter)
+4,1,Breakfast,Latundan,1,piece (small)
+4,2,Breakfast,Satueed Sardines,2.5,piece (10x4½)
+4,3,Breakfast,Rice,1,cup
+4,4,Breakfast,Whole Milk,1,cup
+4,1,Lunch,Chicken Tinola,1.25,"piece (leg, small)"
+4,2,Lunch,Vegetables,1,cup
+4,3,Lunch,Rice,1,cup
+4,4,Lunch,Red Guava,2,piece (4cm diameter)
+4,1,Dinner,Steamed Alimasag,1.25,piece (medium)
+4,2,Dinner,Malunggay,1,tablespoon
+4,3,Dinner,Sayote Gisado,3,cup
+4,4,Dinner,Rice,1,cup
+4,1,Snacks,Ensaymada,2,piece (small)
+4,2,Snacks,Boiled Peanuts,0.5,cup
+4,3,Snacks,Biko,1,slice (10x5x1)
+4,4,Snacks,Pineapple Juice,0.5,glass (unsweetened)
+5,1,Breakfast,Ripe Papaya,1,slice
+5,2,Breakfast,Oatmeal,1.25,cup (thick consistency w/ Powdered Milk
+5,3,Breakfast,Hard Boiled Egg,1,piece
+5,4,Breakfast,Coffee,0,cup (optional)
+5,1,Lunch,Fried Dilis,1.25,cup (small)
+5,2,Lunch,Togue-Cabbage-Carrot Guisado,1.5,cup
+5,3,Lunch,Rice,1,cup
+5,4,Lunch,Indian Mango,1,piece (6cm diameter)
+5,1,Dinner,Ginataang Tilapia,1.25,piece (12x5)
+5,2,Dinner,Pechay,0.5,cup
+5,3,Dinner,Rice,1,cup
+5,1,Snacks,Cuchinta,2,piece (2½ x 6cm diameter)
+5,2,Snacks,Whole Milk,0.5,cup
+5,3,Snacks,Pancit Bihon,0.5,cup
+6,1,Breakfast,Dalanghhita,1,piece (6cm diameter)
+6,2,Breakfast,Tocino,1.25,slice (11x4x0.5)
+6,3,Breakfast,Salted Egg w/ tomatoes,0.5,piece
+6,4,Breakfast,Rice,1,cup
+6,5,Breakfast,Whole Milk,1,cup
+6,1,Lunch,Nilagang Baka,1.25,slice (5x3¼x1½ mbs)
+6,2,Lunch,Vegtables and Potato,1.5,cup
+6,3,Lunch,Rice,1,cup
+6,4,Lunch,Avocado,0.5,slice (12x7)
+6,1,Dinner,Adobong Pusit ,4,piece (7x3)
+6,2,Dinner,Eggplant,0.5,cup
+6,3,Dinner,Rice,1,cup
+6,1,Snacks,Salted Crackers,2,pack
+6,2,Snacks,Liver Spread,2,tablespoon
+6,3,Snacks,Suman Kamoteng Kahoy,2,piece (12x3x2)
+6,4,Snacks,Calamansi Juice,1,glass
+7,1,Breakfast,Fresh Pineapple,1,slice (10x6x2)
+7,2,Breakfast,Chicken Arroz Caldo,1.5,cup
+7,3,Breakfast,Chicken Leg,1.25,piece (small)
+7,4,Breakfast,Whole Milk,1,cup
+7,1,Lunch,Menudo,1.25,cup
+7,2,Lunch,Rice,1,cup
+7,3,Lunch,Chico,1,piece (4cm diameter)
+7,1,Dinner,Paksiw Na Ayungin,3,piece (10x5)
+7,2,Dinner,"Steamed Talong, Okra, Kangkong Leaves w/ calamansi",1,cup
+7,3,Dinner,Rice,1,cup
+7,1,Snacks,Pandemonay,2,piece (10x9x4)
+7,2,Snacks,Cheese Pimiento,2,tablespoon
+7,3,Snacks,Fried Saba,2,piece (small)

@@ -64,8 +64,9 @@ class MealPlanDinner extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
+                  const SizedBox(height: 20),
                   const RecommendedFoodsCard(),
-                  const SizedBox(height: 20)
+                  const SizedBox(height: 30)
                 ],
               ),
             ),
@@ -81,102 +82,59 @@ class RecommendedFoodsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RecommededFoodsCard(
-          title: 'Rice',
-          imagePath: 'assets/background_images/bg_rice.jpg', 
-          description: '1 cup',
-        ),
-        RecommededFoodsCard(
-          title: 'Egg', 
-          imagePath: 'assets/background_images/bg_egg.jpg', 
-          description: '1 piece',
-        ),
-        RecommededFoodsCard(
-          title: 'Daing na Bisugo', 
-          imagePath: 'assets/background_images/bg_dried-fish.jpg', 
-          description: '½ pc of 15½ x 8 cm',
-        ),
-      ],
-    );
-  }
-}
+    final List<Map<String, String>> foods = [
+      {'title': 'Rice', 'subtitle': '1 cup'},
+      {'title': 'Egg', 'subtitle': '1 piece'},
+      {'title': 'Daing na Bisugo', 'subtitle': '½ pc of 15½ x 8 cm'},
+    ];
 
-class RecommededFoodsCard extends StatelessWidget {
-  final String title;
-  final String imagePath;
-  final String description;
-
-  const RecommededFoodsCard({super.key, 
-    required this.title, 
-    required this.imagePath,
-    required this.description
-    });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 15.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0), // Adjust the radius as needed
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
       ),
-      child: SizedBox(
-        height: 120,
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                gradient: const LinearGradient(
-                  colors: [Colors.black, Colors.transparent],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white, 
-                    ),
+      itemCount: foods.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 2,
+          color: SystemColors.accentColor2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    foods[index]['title']!,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    description,
+                  const SizedBox(height: 5),
+                  Text(
+                    foods[index]['subtitle']!,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: Colors.white,
-                      fontSize: 15
-                    ),
+                          color: Colors.black.withOpacity(0.6),
+                          fontSize: 14,
+                        ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
